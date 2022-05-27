@@ -25,7 +25,12 @@ class MyApp extends StatelessWidget {
         ),
         fontFamily: 'Poppins',
       ),
-      home: const LoginScreen(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const LoginScreen(),
+        '/register': (context) => const RegisterScreen(),
+        '/forgetPassword': (context) => const ForgetPasswordScreen(),
+      },
     );
   }
 }

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   bool _passwordVisible = true;
 
   @override
@@ -35,15 +35,51 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             const Center(
                 child: Text(
-              'Welcome Back',
+              'Register Now',
               style: TextStyle(fontSize: 28),
             )),
             const Center(
                 child: Text(
-              'Please login with your account to continue',
+              'Create an account and learn with us',
               style: TextStyle(fontSize: 13, color: Colors.grey),
             )),
             const SizedBox(height: 8),
+            Row(
+              children: const [
+                Expanded(child: Text('First Name')),
+                Expanded(child: Text('Last Name')),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(8),
+                        ),
+                      ),
+                      hintText: 'Enter your first name',
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(8),
+                        ),
+                      ),
+                      hintText: 'Enter your last name',
+                    ),
+                  ),
+                ),
+              ],
+            ),
             const Text('Email'),
             TextFormField(
               decoration: const InputDecoration(
@@ -77,33 +113,42 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                TextButton(
-                  onPressed: () =>
-                      Navigator.pushNamed(context, '/forgetPassword'),
-                  child: const Text(
-                    'Forget password?',
-                    style: TextStyle(color: Colors.black),
+            const Text('Confirm Password'),
+            TextFormField(
+              obscureText: !_passwordVisible,
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(8),
                   ),
                 ),
-              ],
+                hintText: 'Enter the same password',
+                suffixIcon: IconButton(
+                  onPressed: () {
+                    setState(() {
+                      _passwordVisible = !_passwordVisible;
+                    });
+                  },
+                  icon: Icon(_passwordVisible
+                      ? Icons.visibility
+                      : Icons.visibility_off),
+                ),
+              ),
             ),
             Center(
               child: ElevatedButton(
                 onPressed: () {},
-                child: const Text('LOGIN'),
+                child: const Text('SIGN UP'),
               ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text('Don\'t have an account?'),
+                const Text('Already have an account?'),
                 TextButton(
-                  onPressed: () => Navigator.pushNamed(context, '/register'),
+                  onPressed: () => Navigator.pushNamed(context, '/'),
                   child: Text(
-                    'Sign up',
+                    'Sign in',
                     style: TextStyle(color: Theme.of(context).primaryColor),
                   ),
                 ),
