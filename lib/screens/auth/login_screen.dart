@@ -33,10 +33,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).primaryColor),
             ),
-            const Center(child: Text('Welcome Back')),
             const Center(
-                child: Text('Please login with your account to continue')),
-            const SizedBox(height: 24),
+                child: Text(
+              'Welcome Back',
+              style: TextStyle(fontSize: 28),
+            )),
+            const Center(
+                child: Text(
+              'Please login with your account to continue',
+              style: TextStyle(fontSize: 13, color: Colors.grey),
+            )),
+            const SizedBox(height: 8),
             const Text('Email'),
             TextFormField(
               decoration: const InputDecoration(
