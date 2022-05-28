@@ -23,7 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: SafeArea(
         minimum: const EdgeInsets.fromLTRB(27, 0, 27, 0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
@@ -33,48 +33,67 @@ class _LoginScreenState extends State<LoginScreen> {
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).primaryColor),
             ),
-            const Center(
-                child: Text(
-              'Welcome Back',
-              style: TextStyle(fontSize: 28),
-            )),
-            const Center(
-                child: Text(
-              'Please login with your account to continue',
-              style: TextStyle(fontSize: 13, color: Colors.grey),
-            )),
-            const SizedBox(height: 8),
-            const Text('Email'),
-            TextFormField(
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(8),
+            Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: const [
+                  Text(
+                    'Welcome Back',
+                    style: TextStyle(fontSize: 28),
                   ),
-                ),
-                hintText: 'Enter your email',
+                  Text(
+                    'Please login with your account to continue',
+                    style: TextStyle(fontSize: 13, color: Colors.grey),
+                  ),
+                ],
               ),
             ),
-            const Text('Password'),
-            TextFormField(
-              obscureText: !_passwordVisible,
-              decoration: InputDecoration(
-                border: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(8),
+            const SizedBox(height: 8),
+            Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('Email'),
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(8),
+                        ),
+                      ),
+                      hintText: 'Enter your email',
+                    ),
                   ),
-                ),
-                hintText: 'Enter your password',
-                suffixIcon: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      _passwordVisible = !_passwordVisible;
-                    });
-                  },
-                  icon: Icon(_passwordVisible
-                      ? Icons.visibility
-                      : Icons.visibility_off),
-                ),
+                ],
+              ),
+            ),
+            Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('Password'),
+                  TextFormField(
+                    obscureText: !_passwordVisible,
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(8),
+                        ),
+                      ),
+                      hintText: 'Enter your password',
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _passwordVisible = !_passwordVisible;
+                          });
+                        },
+                        icon: Icon(_passwordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
             Row(

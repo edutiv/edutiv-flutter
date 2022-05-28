@@ -15,7 +15,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
       body: SafeArea(
         minimum: const EdgeInsets.fromLTRB(27, 0, 27, 0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
@@ -25,23 +25,25 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).primaryColor),
             ),
-            const Center(
-                child: Text(
-              'Icon',
-              style: TextStyle(fontSize: 28),
-            )),
-            const Center(
-                child: Text(
-              'Forget Password',
-              style: TextStyle(fontSize: 28),
-            )),
-            const Center(
-                child: Text(
-              'No worries, we\'ll send you reset instruction',
-              style: TextStyle(fontSize: 13, color: Colors.grey),
-            )),
+            Center(
+              child: Image.asset('assets/key_icon.png', width: 48, height: 48),
+            ),
+            Center(
+              child: Column(
+                children: const [
+                  Text(
+                    'Forget Password',
+                    style: TextStyle(fontSize: 28),
+                  ),
+                  Text(
+                    'No worries, we\'ll send you reset instruction',
+                    style: TextStyle(fontSize: 13, color: Colors.grey),
+                  )
+                ],
+              ),
+            ),
             const SizedBox(height: 8),
-            Container(
+            Center(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -62,7 +64,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
             ),
             Center(
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () =>
+                    Navigator.pushNamed(context, '/confirmPasswordReset'),
                 child: const Text('SEND RESET LINK'),
               ),
             ),

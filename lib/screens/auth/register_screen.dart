@@ -23,7 +23,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       body: SafeArea(
         minimum: const EdgeInsets.fromLTRB(27, 0, 27, 0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
@@ -33,16 +33,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).primaryColor),
             ),
-            const Center(
-                child: Text(
-              'Register Now',
-              style: TextStyle(fontSize: 28),
-            )),
-            const Center(
-                child: Text(
-              'Create an account and learn with us',
-              style: TextStyle(fontSize: 13, color: Colors.grey),
-            )),
+            Center(
+              child: Column(
+                children: const [
+                  Text(
+                    'Register Now',
+                    style: TextStyle(fontSize: 28),
+                  ),
+                  Text(
+                    'Create an account and learn with us',
+                    style: TextStyle(fontSize: 13, color: Colors.grey),
+                  ),
+                ],
+              ),
+            ),
             const SizedBox(height: 8),
             Row(
               children: const [
