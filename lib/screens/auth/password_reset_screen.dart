@@ -43,57 +43,67 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
             )),
             const Center(
                 child: Text(
-              'Your new password must be different to\npreviously used password',
-              style: TextStyle(fontSize: 13, color: Colors.grey),
-            )),
-            const Center(
-                child: Text(
-              'admin@gmail.com',
+              'Your new password must be different to previously used password',
+              textAlign: TextAlign.center,
               style: TextStyle(fontSize: 13, color: Colors.grey),
             )),
             const SizedBox(height: 8),
-            const Text('Password'),
-            TextFormField(
-              obscureText: !_passwordVisible,
-              decoration: InputDecoration(
-                border: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(8),
+            Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('Password'),
+                  TextFormField(
+                    obscureText: !_passwordVisible,
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(8),
+                        ),
+                      ),
+                      hintText: 'Enter your password',
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _passwordVisible = !_passwordVisible;
+                          });
+                        },
+                        icon: Icon(_passwordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off),
+                      ),
+                    ),
                   ),
-                ),
-                hintText: 'Enter your password',
-                suffixIcon: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      _passwordVisible = !_passwordVisible;
-                    });
-                  },
-                  icon: Icon(_passwordVisible
-                      ? Icons.visibility
-                      : Icons.visibility_off),
-                ),
+                ],
               ),
             ),
-            const Text('Confirm Password'),
-            TextFormField(
-              obscureText: !_passwordVisible,
-              decoration: InputDecoration(
-                border: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(8),
+            Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('Confirm Password'),
+                  TextFormField(
+                    obscureText: !_passwordVisible,
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(8),
+                        ),
+                      ),
+                      hintText: 'Enter the same password',
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _passwordVisible = !_passwordVisible;
+                          });
+                        },
+                        icon: Icon(_passwordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off),
+                      ),
+                    ),
                   ),
-                ),
-                hintText: 'Enter the same password',
-                suffixIcon: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      _passwordVisible = !_passwordVisible;
-                    });
-                  },
-                  icon: Icon(_passwordVisible
-                      ? Icons.visibility
-                      : Icons.visibility_off),
-                ),
+                ],
               ),
             ),
             Center(
