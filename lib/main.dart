@@ -23,6 +23,11 @@ class MyApp extends StatelessWidget {
             textStyle: const TextStyle(),
           ),
         ),
+        appBarTheme: const AppBarTheme(
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+        ),
+        iconTheme: IconThemeData(color: Colors.grey[800]),
         fontFamily: 'Poppins',
       ),
       initialRoute: '/',
@@ -35,6 +40,8 @@ class MyApp extends StatelessWidget {
         '/passwordReset': (context) => const PasswordResetScreen(),
         '/passwordResetSuccess': (context) =>
             const PasswordResetSuccessScreen(),
+        '/homescreen': (context) => const HomeScreen(),
+        '/search': (context) => const SearchScreen(),
       },
     );
   }
