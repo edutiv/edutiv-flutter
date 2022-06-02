@@ -112,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Center(
               child: ElevatedButton(
                 onPressed: () =>
-                    Navigator.pushReplacementNamed(context, '/homescreen'),
+                    Navigator.pushReplacementNamed(context, '/mainpage'),
                 child: const Text('LOGIN'),
               ),
             ),

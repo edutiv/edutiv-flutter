@@ -1,4 +1,3 @@
-import 'package:edutiv/components/bottomnavbar.dart';
 import 'package:edutiv/components/logo.dart';
 import 'package:flutter/material.dart';
 
@@ -25,7 +24,6 @@ class _HomeScreenState extends State<HomeScreen> {
           )
         ],
       ),
-      bottomNavigationBar: const BottomNavBar(),
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         children: [
