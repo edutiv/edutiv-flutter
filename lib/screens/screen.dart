@@ -13,6 +13,7 @@ export './homescreen/search_screen.dart';
 
 //MyCourse
 export './course/my_course_screen.dart';
+export './course/course_detail.dart';
 
 //Profile
 export './profile/profile_screen.dart';

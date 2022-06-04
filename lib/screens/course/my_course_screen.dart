@@ -15,6 +15,12 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Logo(),
+        actions: [
+          IconButton(
+            onPressed: () => Navigator.pushNamed(context, '/courseDetail'),
+            icon: const Icon(Icons.bookmark_outline, color: Colors.black),
+          ),
+        ],
       ),
       body: const Center(
         child: Text('My Course'),

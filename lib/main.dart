@@ -43,6 +43,7 @@ class MyApp extends StatelessWidget {
         '/mainpage': (context) => const MainPage(),
         '/homeScreen': (context) => const HomeScreen(),
         '/myCourse': (context) => const MyCourseScreen(),
+        '/courseDetail': (context) => const CourseDetailScreen(),
         '/profile': (context) => const ProfileScreen(),
         '/search': (context) => const SearchScreen(),
       },

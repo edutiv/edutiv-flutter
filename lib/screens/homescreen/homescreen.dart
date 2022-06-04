@@ -1,7 +1,8 @@
+import 'package:edutiv/components/course_card.dart';
 import 'package:edutiv/components/logo.dart';
+import 'package:edutiv/components/searchbar.dart';
+import 'package:edutiv/components/teks_banner.dart';
 import 'package:flutter/material.dart';
-
-import '../../components/course_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -24,53 +25,42 @@ class _HomeScreenState extends State<HomeScreen> {
           )
         ],
       ),
-      body: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        children: [
-          InkWell(
-            borderRadius: BorderRadius.circular(15),
-            onTap: () => Navigator.pushNamed(context, '/search'),
-            child: Ink(
-              padding: const EdgeInsets.fromLTRB(16, 8, 8, 8),
-              width: 300,
-              height: 50,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(15),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Column(
+            children: [
+              const SearchBar(),
+              TeksBanner(
+                title: 'Edutiv GO!',
+                desc:
+                    'Belajar mandiri sesuai ritme belajar kamu dengan berbagai video menarik dan interaktif',
               ),
-              child: Row(
-                children: const [
-                  Icon(Icons.search),
-                  SizedBox(width: 8),
-                  Text('Search'),
-                ],
+              ListView.builder(
+                shrinkWrap: true,
+                itemCount: 3,
+                itemBuilder: (context, index) {
+                  return const CourseCard();
+                },
               ),
-            ),
+              TeksBanner(
+                title: 'Edutiv Insight',
+                desc: 'Diskusi langsung bersama ahlinya',
+              ),
+              ListView.builder(
+                shrinkWrap: true,
+                itemCount: 3,
+                itemBuilder: (context, index) {
+                  return const CourseCard();
+                },
+              ),
+              TeksBanner(
+                title: 'Edutiv Bootcamp',
+                desc: '-----------',
+              ),
+            ],
           ),
-          const SizedBox(height: 8),
-          Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Edutiv GO!',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                ),
-                TextButton(
-                    onPressed: () {},
-                    child: const Text(
-                      'See all',
-                      style: TextStyle(color: Color(0xFF126E64)),
-                    )),
-              ],
-            ),
-          ),
-          const CourseCard(),
-          const CourseCard(),
-          const CourseCard(),
-          const CourseCard(),
-          const CourseCard(),
-        ],
+        ),
       ),
     );
   }

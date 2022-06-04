@@ -6,10 +6,10 @@ class CourseCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 100,
-      height: 140,
+      width: double.infinity,
+      height: 120,
       child: Card(
-        elevation: 0,
+        elevation: 1,
         child: Row(
           children: [
             Flexible(
@@ -62,10 +62,10 @@ class CourseCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   Row(
-                    children: const [
-                      ChipIcon(),
-                      ChipIcon(),
-                      ChipIcon(),
+                    children: [
+                      ChipIcon(icon: Icons.timer, teks: '1h4m'),
+                      ChipIcon(icon: Icons.videocam_outlined, teks: '8 Vide'),
+                      ChipIcon(icon: Icons.star, teks: '4.6'),
                     ],
                   ),
                   const SizedBox(height: 1),
@@ -80,9 +80,10 @@ class CourseCard extends StatelessWidget {
 }
 
 class ChipIcon extends StatelessWidget {
-  const ChipIcon({
-    Key? key,
-  }) : super(key: key);
+  IconData icon;
+  String teks;
+  ChipIcon({Key? key, required this.icon, required this.teks})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -97,9 +98,9 @@ class ChipIcon extends StatelessWidget {
             borderRadius: BorderRadius.circular(5)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: const [
-            Icon(Icons.punch_clock),
-            Text('1h4m'),
+          children: [
+            Icon(icon),
+            Text(teks),
           ],
         ),
       ),
