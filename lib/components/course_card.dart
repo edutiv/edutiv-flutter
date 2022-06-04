@@ -5,8 +5,7 @@ class CourseCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(8),
+    return SizedBox(
       width: 100,
       height: 140,
       child: Card(
