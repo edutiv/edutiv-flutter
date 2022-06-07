@@ -19,15 +19,24 @@ class MyApp extends StatelessWidget {
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             primary: const Color(0xFF126E64),
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
             textStyle: const TextStyle(),
+          ),
+        ),
+        outlinedButtonTheme: OutlinedButtonThemeData(
+          style: OutlinedButton.styleFrom(
+            primary: const Color(0xFF126E64),
+          ),
+        ),
+        checkboxTheme: CheckboxThemeData(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(100),
           ),
         ),
         appBarTheme: const AppBarTheme(
           elevation: 0,
           backgroundColor: Colors.transparent,
         ),
-        iconTheme: IconThemeData(color: Colors.grey[800]),
+        iconTheme: const IconThemeData(color: Colors.black),
         fontFamily: 'Poppins',
       ),
       initialRoute: '/',

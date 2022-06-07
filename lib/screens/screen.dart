@@ -8,12 +8,14 @@ export './auth/password_reset_success_screen.dart';
 
 //Homescreen
 export './homescreen/main_page.dart';
-export './homescreen/homescreen.dart';
+export 'homescreen/home_screen.dart';
 export './homescreen/search_screen.dart';
 
 //MyCourse
 export './course/my_course_screen.dart';
-export './course/course_detail.dart';
+export 'course/detail_course_screen.dart';
+export 'course/active_course_screen.dart';
+export 'course/history_course_screen.dart';
 
 //Profile
 export './profile/profile_screen.dart';

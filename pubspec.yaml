@@ -36,6 +36,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_svg: ^1.0.3
   flutter_native_splash: ^2.1.6
+  email_validator: ^2.0.1
+  carousel_slider: ^4.1.1
 
 
 dev_dependencies:

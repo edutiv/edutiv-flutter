@@ -5,102 +5,131 @@ class CourseCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      height: 120,
-      child: Card(
-        elevation: 1,
-        child: Row(
-          children: [
-            Flexible(
-              flex: 1,
-              fit: FlexFit.tight,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: Image.network(
-                  'https://picsum.photos/id/17/200/300',
-                  fit: BoxFit.cover,
-                ),
+    return Container(
+      height: 116,
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey),
+        borderRadius: BorderRadius.circular(5),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Container(
+              margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+              width: 100,
+              height: 100,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color: Colors.blue,
+              ),
+              child: Stack(
+                alignment: Alignment.center,
+                fit: StackFit.expand,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(5),
+                    child: Image.network(
+                      'https://picsum.photos/200/',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  Positioned(
+                    left: 8,
+                    top: 8,
+                    child: Container(
+                      padding: const EdgeInsets.all(1),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: Colors.white,
+                      ),
+                      width: 36,
+                      height: 18,
+                      child: FittedBox(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: const [
+                            Icon(Icons.star, color: Colors.amber, size: 16),
+                            Text('4.5'),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-            const SizedBox(width: 8),
-            Flexible(
-              flex: 2,
-              fit: FlexFit.tight,
+          ),
+          Expanded(
+            flex: 2,
+            child: Container(
+              margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+              width: 100,
+              height: 100,
+              // color: Colors.amber,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 1),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        alignment: Alignment.center,
-                        width: 80,
-                        height: 25,
-                        decoration: BoxDecoration(
-                            color: Theme.of(context).primaryColor,
-                            borderRadius: BorderRadius.circular(5)),
-                        child: const Text(
-                          'Category',
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.fromLTRB(0, 0, 8, 0),
-                        child: const Icon(Icons.bookmark_outline),
-                      )
-                    ],
-                  ),
                   const Text(
-                    'Membuat Landing Page',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    'Introduction to Backend Engineer with Golang',
                     overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: const [
+                      CircleAvatar(radius: 8),
+                      SizedBox(width: 8),
+                      Text('BESSIE COOPER'),
+                    ],
                   ),
                   Row(
                     children: [
-                      ChipIcon(icon: Icons.timer, teks: '1h4m'),
-                      ChipIcon(icon: Icons.videocam_outlined, teks: '8 Vide'),
-                      ChipIcon(icon: Icons.star, teks: '4.6'),
+                      GreenChipWidget(
+                        icon: Icons.timelapse,
+                        label: '1h 5m',
+                      ),
+                      const SizedBox(width: 8),
+                      GreenChipWidget(
+                        icon: Icons.videocam,
+                        label: '24 Video',
+                      ),
                     ],
                   ),
-                  const SizedBox(height: 1),
                 ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 }
 
-class ChipIcon extends StatelessWidget {
-  IconData icon;
-  String teks;
-  ChipIcon({Key? key, required this.icon, required this.teks})
+class GreenChipWidget extends StatelessWidget {
+  GreenChipWidget({Key? key, required this.icon, required this.label})
       : super(key: key);
+
+  IconData icon;
+  String label;
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        margin: const EdgeInsets.fromLTRB(0, 0, 8, 0),
-        padding: const EdgeInsets.symmetric(vertical: 3),
-        width: 50,
-        height: 30,
-        decoration: BoxDecoration(
-            color: const Color(0xFFc8dad8),
-            borderRadius: BorderRadius.circular(5)),
+    return Container(
+      padding: const EdgeInsets.all(1),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
+        color: const Color(0xFFC3CFCE),
+      ),
+      width: 74,
+      height: 20,
+      child: FittedBox(
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Icon(icon),
-            Text(teks),
+            Icon(icon, color: Theme.of(context).primaryColor, size: 16),
+            Text(label),
           ],
         ),
       ),

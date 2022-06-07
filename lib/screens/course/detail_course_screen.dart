@@ -49,7 +49,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                     children: [
                       Row(
                         children: [
-                          ElevatedButton(
+                          OutlinedButton(
                             onPressed: () {},
                             child: const Text('Previous'),
                           ),
@@ -79,29 +79,15 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
               padding: EdgeInsets.symmetric(horizontal: 8),
               child: Text('Video Course'),
             ),
-            const RadioListTile(
-              value: null,
-              groupValue: null,
-              onChanged: (null),
+            //WILL REPLACED BY LISTVIEW.BUILDER LATER
+            CheckboxListTile(
+              value: false,
+              onChanged: (isChecked) {
+                setState(() {});
+              },
               controlAffinity: ListTileControlAffinity.trailing,
-              title: Text('Pengenalan Bootstrap'),
-              secondary: Icon(Icons.play_circle_fill_outlined),
-            ),
-            const RadioListTile(
-              value: null,
-              groupValue: null,
-              onChanged: (null),
-              controlAffinity: ListTileControlAffinity.trailing,
-              title: Text('Pengenalan Bootstrap'),
-              secondary: Icon(Icons.play_circle_fill_outlined),
-            ),
-            const RadioListTile(
-              value: null,
-              groupValue: null,
-              onChanged: (null),
-              controlAffinity: ListTileControlAffinity.trailing,
-              title: Text('Pengenalan Bootstrap'),
-              secondary: Icon(Icons.play_circle_fill_outlined),
+              title: const Text('Pengenalan Bootstrap'),
+              secondary: const Icon(Icons.play_circle_fill_outlined),
             ),
             const SizedBox(height: 16),
             const Padding(
