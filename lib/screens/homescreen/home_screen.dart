@@ -5,6 +5,8 @@ import 'package:edutiv/components/searchbar.dart';
 import 'package:edutiv/components/teks_banner.dart';
 import 'package:flutter/material.dart';
 
+import '../../components/category_card.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -13,6 +15,27 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final List<String> ilust = [
+    'assets/backend_ilust.jpg',
+    'assets/mobile_ilust.jpg',
+    'assets/uiux_ilust.jpg',
+    'assets/frontend_ilust.jpg',
+  ];
+
+  final List<String> judul = [
+    'Backend Engineer',
+    'Mobile Engineer',
+    'UI/UX Designer',
+    'Frontend Engineer',
+  ];
+
+  final List<String> subjudul = [
+    'Web Developer',
+    'Mobile Developer',
+    'Product Designer',
+    'Web Designer',
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,32 +69,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2),
                 itemBuilder: (context, index) {
-                  return Card(
-                    elevation: 2,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        const CircleAvatar(
-                          radius: 30,
-                          backgroundImage: NetworkImage(
-                            'https://picsum.photos/200/',
-                          ),
-                        ),
-                        const Text(
-                          'TITLE',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          'Sub Category',
-                          style: TextStyle(
-                            fontSize: 11,
-                            color: Colors.grey[800],
-                          ),
-                        ),
-                      ],
-                    ),
+                  return CategoryCard(
+                    img: ilust[index],
+                    title: judul[index],
+                    desc: subjudul[index],
                   );
                 },
               ),
