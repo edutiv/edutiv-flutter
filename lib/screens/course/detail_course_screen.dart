@@ -1,4 +1,6 @@
+import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
+import 'package:video_player/video_player.dart';
 
 import '../../components/logo.dart';
 
@@ -10,6 +12,22 @@ class CourseDetailScreen extends StatefulWidget {
 }
 
 class _CourseDetailScreenState extends State<CourseDetailScreen> {
+  final videoPlayerController = VideoPlayerController.network(
+    'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4',
+  );
+
+  @override
+  void initState() {
+    videoPlayerController.initialize();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    videoPlayerController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,10 +42,15 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
           children: [
             Container(
               alignment: Alignment.center,
-              color: Colors.blueGrey,
               width: double.infinity,
               height: 200,
-              child: const Text('Video Will Play Here'),
+              child: Chewie(
+                controller: ChewieController(
+                  videoPlayerController: videoPlayerController,
+                  autoPlay: true,
+                  allowFullScreen: true,
+                ),
+              ),
             ),
             const SizedBox(height: 8),
             Padding(

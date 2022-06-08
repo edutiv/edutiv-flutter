@@ -38,6 +38,8 @@ dependencies:
   flutter_native_splash: ^2.1.6
   email_validator: ^2.0.1
   carousel_slider: ^4.1.1
+  video_player: ^2.4.4
+  chewie: ^1.3.3
 
 
 dev_dependencies:
