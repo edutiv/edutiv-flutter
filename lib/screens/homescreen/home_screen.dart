@@ -1,7 +1,6 @@
 import 'package:edutiv/components/carousel_hero.dart';
 import 'package:edutiv/components/course_card.dart';
 import 'package:edutiv/components/logo.dart';
-import 'package:edutiv/components/searchbar.dart';
 import 'package:edutiv/components/teks_banner.dart';
 import 'package:flutter/material.dart';
 
@@ -55,7 +54,6 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SearchBar(),
               const CarouselHero(),
               const SizedBox(height: 8),
               const Text(
@@ -84,7 +82,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 shrinkWrap: true,
                 itemCount: 3,
                 itemBuilder: (context, index) {
-                  return const CourseCard();
+                  return GestureDetector(
+                    onTap: () => Navigator.pushNamed(context, '/courseInfo'),
+                    child: const CourseCard(),
+                  );
                 },
               ),
             ],

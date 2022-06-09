@@ -1,4 +1,3 @@
-import 'package:edutiv/components/logo.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -13,80 +12,144 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Logo(),
+        automaticallyImplyLeading: false,
+        backgroundColor: Theme.of(context).primaryColor,
+        centerTitle: true,
+        title: const Text('Profile'),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: CircleAvatar(
+              backgroundColor: const Color.fromARGB(62, 158, 158, 158),
+              child: IconButton(
+                onPressed: () => Navigator.pushNamed(context, '/courseDetail'),
+                icon: const Icon(Icons.edit_outlined, color: Colors.white),
+              ),
+            ),
+          ),
+        ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              color: Theme.of(context).primaryColor,
-              width: double.infinity,
-              height: 300,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const ProfileHeader(),
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
               child: Column(
                 children: [
-                  Flexible(
-                    flex: 1,
-                    fit: FlexFit.loose,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: const [
-                        Padding(
-                          padding: EdgeInsets.all(16.0),
-                          child: Icon(Icons.edit, color: Colors.white),
-                        ),
-                      ],
-                    ),
+                  ListTile(
+                    tileColor: Colors.grey[200],
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(5))),
+                    leading: const Icon(Icons.book),
+                    title: const Text('My Course'),
+                    trailing: const Icon(Icons.chevron_right_outlined),
                   ),
-                  const Flexible(
-                    flex: 2,
-                    fit: FlexFit.tight,
-                    child: CircleAvatar(
-                      backgroundColor: Colors.white,
-                      radius: 50,
-                    ),
+                  const SizedBox(height: 16),
+                  ListTile(
+                    tileColor: Colors.grey[200],
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(5))),
+                    leading: const Icon(Icons.card_giftcard_outlined),
+                    title: const Text('Certificate'),
+                    trailing: const Icon(Icons.chevron_right_outlined),
                   ),
-                  const Flexible(
-                    fit: FlexFit.tight,
-                    flex: 1,
-                    child: Text(
-                      'Carl Johnson',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  )
+                  const SizedBox(height: 16),
+                  ListTile(
+                    tileColor: Colors.grey[200],
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(5))),
+                    leading: const Icon(Icons.request_page_outlined),
+                    title: const Text('Request'),
+                    trailing: const Icon(Icons.chevron_right_outlined),
+                  ),
+                  const SizedBox(height: 16),
+                  ListTile(
+                    tileColor: Colors.grey[200],
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(5))),
+                    leading: const Icon(Icons.info),
+                    title: const Text('FAQ'),
+                    trailing: const Icon(Icons.chevron_right_outlined),
+                  ),
+                  const SizedBox(height: 16),
+                  ListTile(
+                    tileColor: Colors.grey[200],
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(5))),
+                    leading: const Icon(Icons.mail),
+                    title: const Text('Email Support'),
+                    trailing: const Icon(Icons.chevron_right_outlined),
+                  ),
+                  const SizedBox(height: 16),
+                  ListTile(
+                    tileColor: Colors.grey[200],
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(5))),
+                    leading: const Icon(Icons.logout_outlined),
+                    title: const Text('Logout'),
+                  ),
                 ],
               ),
             ),
-            const ListTile(
-              leading: Icon(Icons.card_giftcard_outlined),
-              title: Text('Sertifikat Kamu'),
-              trailing: Icon(Icons.chevron_right_outlined),
-            ),
-            const ListTile(
-              leading: Icon(Icons.help_outline),
-              title: Text('FAQ'),
-              trailing: Icon(Icons.chevron_right_outlined),
-            ),
-            const ListTile(
-              leading: Icon(Icons.warning_amber),
-              title: Text('Syarat dan Ketentuan'),
-              trailing: Icon(Icons.chevron_right_outlined),
-            ),
-            Center(
-              child: TextButton.icon(
-                style: TextButton.styleFrom(primary: Colors.red),
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.logout_outlined,
-                ),
-                label: const Text('Keluar'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ProfileHeader extends StatelessWidget {
+  const ProfileHeader({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Theme.of(context).primaryColor,
+      width: double.infinity,
+      height: 200,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Flexible(
+            flex: 2,
+            fit: FlexFit.tight,
+            child: CircleAvatar(
+              backgroundColor: Colors.grey[400],
+              radius: 50,
+              child: const CircleAvatar(
+                radius: 45,
+                child: FlutterLogo(),
               ),
             ),
-          ],
-        ),
+          ),
+          const Flexible(
+            fit: FlexFit.loose,
+            flex: 1,
+            child: Text(
+              'Carl Johnson',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+          ),
+          const Flexible(
+            fit: FlexFit.tight,
+            flex: 1,
+            child: Text(
+              'UI/UX Designer',
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.white,
+              ),
+            ),
+          )
+        ],
       ),
     );
   }

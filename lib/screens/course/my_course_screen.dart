@@ -1,8 +1,6 @@
 import 'package:edutiv/screens/screen.dart';
 import 'package:flutter/material.dart';
 
-import '../../components/logo.dart';
-
 class MyCourseScreen extends StatefulWidget {
   const MyCourseScreen({Key? key}) : super(key: key);
 
@@ -17,11 +15,21 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: const Logo(),
+          iconTheme: const IconThemeData(color: Colors.black),
+          titleTextStyle: const TextStyle(color: Colors.black),
+          centerTitle: true,
+          title: const Text(
+            'Course Learning',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
           actions: [
             IconButton(
               onPressed: () => Navigator.pushNamed(context, '/courseDetail'),
               icon: const Icon(Icons.bookmark_outline, color: Colors.black),
+            ),
+            IconButton(
+              onPressed: () => Navigator.pushNamed(context, '/courseInfo'),
+              icon: const Icon(Icons.info_outline, color: Colors.black),
             ),
           ],
           bottom: const TabBar(

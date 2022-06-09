@@ -2,8 +2,6 @@ import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
-import '../../components/logo.dart';
-
 class CourseDetailScreen extends StatefulWidget {
   const CourseDetailScreen({Key? key}) : super(key: key);
 
@@ -32,10 +30,36 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.black),
-        title: const Logo(),
-        actions: const [],
+        leading: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 7),
+          child: CircleAvatar(
+            backgroundColor: const Color.fromARGB(62, 158, 158, 158),
+            child: IconButton(
+              onPressed: () => Navigator.of(context).pop(),
+              icon: const Icon(Icons.chevron_left_outlined,
+                  color: Color(0xFF126E64)),
+            ),
+          ),
+        ),
+        centerTitle: true,
+        title: const Text(
+          'Introduction to UI/UX Designer',
+          style: TextStyle(color: Colors.black, fontSize: 14),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: CircleAvatar(
+              backgroundColor: const Color.fromARGB(62, 158, 158, 158),
+              child: IconButton(
+                onPressed: () => Navigator.pushNamed(context, '/courseDetail'),
+                icon: const Icon(Icons.menu, color: Color(0xFF126E64)),
+              ),
+            ),
+          ),
+        ],
       ),
+      // endDrawer: ,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

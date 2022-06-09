@@ -13,7 +13,7 @@ class CarouselHero extends StatelessWidget {
       ),
       items: [
         GestureDetector(
-          onTap: () => Navigator.pushNamed(context, '/berita'),
+          onTap: () {},
           child: Card(
             child: Image.network(
               'https://picsum.photos/200/20',
@@ -22,7 +22,7 @@ class CarouselHero extends StatelessWidget {
           ),
         ),
         GestureDetector(
-          onTap: () => Scaffold.of(context).openDrawer(),
+          onTap: () {},
           child: Card(
             child: Image.network(
               'https://picsum.photos/200/20',
