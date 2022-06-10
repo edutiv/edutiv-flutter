@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../components/course_card.dart';
+import '../../model/course/course_viewmodel.dart';
 
 class WishlistScreen extends StatefulWidget {
   const WishlistScreen({Key? key}) : super(key: key);
@@ -12,6 +14,7 @@ class WishlistScreen extends StatefulWidget {
 class _WishlistScreenState extends State<WishlistScreen> {
   @override
   Widget build(BuildContext context) {
+    var course = Provider.of<CourseViewModel>(context);
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.black),
@@ -24,11 +27,18 @@ class _WishlistScreenState extends State<WishlistScreen> {
       ),
       body: ListView.builder(
         padding: const EdgeInsets.all(16),
-        itemCount: 3,
+        itemCount: course.allCourse.length,
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () => Navigator.pushNamed(context, '/detailCourse'),
-            child: const CourseCard(),
+            child: CourseCard(
+              courseImage: course.allCourse[index].courseImage,
+              courseName: course.allCourse[index].courseName,
+              mentorName: course.allCourse[index].mentorName,
+              rating: course.allCourse[index].rating,
+              totalTime: course.allCourse[index].totalTime,
+              totalVideo: course.allCourse[index].totalVideo.toString(),
+            ),
           );
         },
       ),

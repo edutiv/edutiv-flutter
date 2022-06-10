@@ -3,6 +3,8 @@ import 'package:edutiv/components/learning_menu_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
+import '../../components/tools_card.dart';
+
 class LearningCourseScreen extends StatefulWidget {
   const LearningCourseScreen({Key? key}) : super(key: key);
 
@@ -64,6 +66,7 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
         ],
       ),
       body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -71,6 +74,9 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
               alignment: Alignment.center,
               width: double.infinity,
               height: 200,
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(5)),
+              ),
               child: Chewie(
                 controller: ChewieController(
                   videoPlayerController: videoPlayerController,
@@ -79,76 +85,52 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 8),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
-                        'TITLE',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Text('Description'),
-                    ],
+            const SizedBox(height: 16),
+            Row(
+              children: const [
+                Text(
+                  'Video Title',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: () {},
+                    child: const Text('Previous'),
                   ),
-                  Column(
-                    children: [
-                      Row(
-                        children: [
-                          OutlinedButton(
-                            onPressed: () {},
-                            child: const Text('Previous'),
-                          ),
-                          const SizedBox(width: 16),
-                          ElevatedButton(
-                            onPressed: () =>
-                                Navigator.pushNamed(context, '/successCourse'),
-                            child: const Text('Next Video'),
-                          ),
-                        ],
-                      )
-                    ],
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () =>
+                        Navigator.pushNamed(context, '/successCourse'),
+                    child: const Text('Next Video'),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
             const SizedBox(height: 16),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8),
-              child: Text('Preparation'),
+            Row(
+              children: const [
+                Text(
+                  'Tools Course',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                ),
+              ],
             ),
-            const ListTile(
-              leading: Icon(Icons.download_outlined),
-              title: Text('Pengenalan Figma'),
-            ),
-            const SizedBox(height: 16),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8),
-              child: Text('Video Course'),
-            ),
-            //WILL REPLACED BY LISTVIEW.BUILDER LATER
-            CheckboxListTile(
-              value: false,
-              onChanged: (isChecked) {
-                setState(() {});
-              },
-              controlAffinity: ListTileControlAffinity.trailing,
-              title: const Text('Pengenalan Figma'),
-              secondary: const Icon(Icons.play_circle_fill_outlined),
-            ),
-            const SizedBox(height: 16),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8),
-              child: Text('Closing'),
-            ),
-            const ListTile(
-              leading: Icon(Icons.download_outlined),
-              title: Text('Quiz'),
-            ),
+            SizedBox(
+              width: double.infinity,
+              height: 210,
+              child: ListView.builder(
+                  itemBuilder: (context, index) => const ToolsCard(),
+                  itemCount: 2),
+            )
           ],
         ),
       ),

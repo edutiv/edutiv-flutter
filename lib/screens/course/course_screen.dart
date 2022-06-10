@@ -1,4 +1,6 @@
+import 'package:edutiv/model/course/course_viewmodel.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../components/course_card.dart';
 import '../../components/searchbar.dart';
@@ -13,6 +15,8 @@ class CourseScreen extends StatefulWidget {
 class _CourseScreenState extends State<CourseScreen> {
   @override
   Widget build(BuildContext context) {
+    var course = Provider.of<CourseViewModel>(context);
+
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.black),
@@ -33,12 +37,19 @@ class _CourseScreenState extends State<CourseScreen> {
               ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: 3,
+                itemCount: course.allCourse.length,
                 itemBuilder: (context, index) {
                   return GestureDetector(
-                      onTap: () =>
-                          Navigator.pushNamed(context, '/detailCourse'),
-                      child: const CourseCard());
+                    onTap: () => Navigator.pushNamed(context, '/detailCourse'),
+                    child: CourseCard(
+                      courseImage: course.allCourse[index].courseImage,
+                      courseName: course.allCourse[index].courseName,
+                      mentorName: course.allCourse[index].mentorName,
+                      rating: course.allCourse[index].rating,
+                      totalTime: course.allCourse[index].totalTime,
+                      totalVideo: course.allCourse[index].totalVideo.toString(),
+                    ),
+                  );
                 },
               ),
             ],

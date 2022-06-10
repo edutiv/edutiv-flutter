@@ -15,18 +15,20 @@ class CarouselHero extends StatelessWidget {
         GestureDetector(
           onTap: () {},
           child: Card(
+            elevation: 3,
             child: Image.network(
-              'https://picsum.photos/200/20',
-              fit: BoxFit.contain,
+              'https://picsum.photos/id/156/200/300',
+              fit: BoxFit.fill,
             ),
           ),
         ),
         GestureDetector(
           onTap: () {},
           child: Card(
+            elevation: 3,
             child: Image.network(
-              'https://picsum.photos/200/20',
-              fit: BoxFit.contain,
+              'https://picsum.photos/id/256/200/300',
+              fit: BoxFit.fill,
             ),
           ),
         ),

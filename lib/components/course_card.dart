@@ -1,7 +1,22 @@
 import 'package:flutter/material.dart';
 
 class CourseCard extends StatelessWidget {
-  const CourseCard({Key? key}) : super(key: key);
+  String courseImage;
+  String courseName;
+  String mentorName;
+  String totalVideo;
+  String totalTime;
+  int rating;
+
+  CourseCard(
+      {Key? key,
+      required this.courseImage,
+      required this.courseName,
+      required this.mentorName,
+      required this.rating,
+      required this.totalTime,
+      required this.totalVideo})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +45,7 @@ class CourseCard extends StatelessWidget {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(5),
                     child: Image.network(
-                      'https://picsum.photos/200/',
+                      courseImage,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -48,9 +63,10 @@ class CourseCard extends StatelessWidget {
                       child: FittedBox(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: const [
-                            Icon(Icons.star, color: Colors.amber, size: 16),
-                            Text('4.5'),
+                          children: [
+                            const Icon(Icons.star,
+                                color: Colors.amber, size: 16),
+                            Text('$rating'),
                           ],
                         ),
                       ),
@@ -71,29 +87,29 @@ class CourseCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Introduction to UI/UX Designer',
+                  Text(
+                    courseName,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 2,
                   ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: const [
-                      CircleAvatar(radius: 8),
-                      SizedBox(width: 8),
-                      Text('BESSIE COOPER'),
+                    children: [
+                      const CircleAvatar(radius: 8),
+                      const SizedBox(width: 8),
+                      Text(mentorName),
                     ],
                   ),
                   Row(
                     children: [
                       GreenChipWidget(
                         icon: Icons.timelapse,
-                        label: '1h 5m',
+                        label: totalTime,
                       ),
                       const SizedBox(width: 8),
                       GreenChipWidget(
                         icon: Icons.videocam,
-                        label: '24 Video',
+                        label: '$totalVideo Video',
                       ),
                     ],
                   ),

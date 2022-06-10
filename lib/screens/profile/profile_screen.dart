@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../model/profile/profile_viewmodel.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -10,6 +13,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
+    var user = Provider.of<ProfileViewModel>(context);
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -108,6 +112,7 @@ class ProfileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var user = Provider.of<ProfileViewModel>(context);
     return Container(
       color: Theme.of(context).primaryColor,
       width: double.infinity,
@@ -121,30 +126,30 @@ class ProfileHeader extends StatelessWidget {
             child: CircleAvatar(
               backgroundColor: Colors.grey[400],
               radius: 50,
-              child: const CircleAvatar(
+              child: CircleAvatar(
                 radius: 45,
-                child: FlutterLogo(),
+                backgroundImage: NetworkImage(user.user.avatar),
               ),
             ),
           ),
-          const Flexible(
+          Flexible(
             fit: FlexFit.loose,
             flex: 1,
             child: Text(
-              'Carl Johnson',
-              style: TextStyle(
+              user.user.firstName + ' ' + user.user.lastName,
+              style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
             ),
           ),
-          const Flexible(
+          Flexible(
             fit: FlexFit.tight,
             flex: 1,
             child: Text(
-              'UI/UX Designer',
-              style: TextStyle(
+              user.user.specialization,
+              style: const TextStyle(
                 fontSize: 12,
                 color: Colors.white,
               ),

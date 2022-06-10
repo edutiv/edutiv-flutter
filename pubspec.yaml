@@ -41,6 +41,7 @@ dependencies:
   video_player: ^2.4.4
   chewie: ^1.3.3
   flutter_rating_bar: ^4.0.1
+  provider: ^6.0.3
 
 
 dev_dependencies:

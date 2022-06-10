@@ -3,8 +3,10 @@ import 'package:edutiv/components/course_card.dart';
 import 'package:edutiv/components/logo.dart';
 import 'package:edutiv/components/teks_banner.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../components/category_card.dart';
+import '../../model/course/course_viewmodel.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -14,29 +16,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final List<String> ilust = [
-    'assets/backend_ilust.jpg',
-    'assets/mobile_ilust.jpg',
-    'assets/uiux_ilust.jpg',
-    'assets/frontend_ilust.jpg',
-  ];
-
-  final List<String> judul = [
-    'Backend Engineer',
-    'Mobile Engineer',
-    'UI/UX Designer',
-    'Frontend Engineer',
-  ];
-
-  final List<String> subjudul = [
-    'Web Developer',
-    'Mobile Developer',
-    'Product Designer',
-    'Web Designer',
-  ];
-
   @override
   Widget build(BuildContext context) {
+    var course = Provider.of<CourseViewModel>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Logo(),
@@ -60,16 +43,16 @@ class _HomeScreenState extends State<HomeScreen> {
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
             GridView.builder(
-              itemCount: 4,
+              itemCount: course.category.length,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2),
               itemBuilder: (context, index) {
                 return CategoryCard(
-                  img: ilust[index],
-                  title: judul[index],
-                  desc: subjudul[index],
+                  img: course.category[index].categoryIcon.toString(),
+                  title: course.category[index].category,
+                  desc: course.category[index].description!,
                 );
               },
             ),
@@ -83,7 +66,14 @@ class _HomeScreenState extends State<HomeScreen> {
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () => Navigator.pushNamed(context, '/detailCourse'),
-                  child: const CourseCard(),
+                  child: CourseCard(
+                    courseImage: course.allCourse[index].courseImage,
+                    courseName: course.allCourse[index].courseName,
+                    mentorName: course.allCourse[index].mentorName,
+                    rating: course.allCourse[index].rating,
+                    totalTime: course.allCourse[index].totalTime,
+                    totalVideo: course.allCourse[index].totalVideo.toString(),
+                  ),
                 );
               },
             ),
