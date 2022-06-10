@@ -49,47 +49,45 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const CarouselHero(),
-              const SizedBox(height: 8),
-              const Text(
-                'Explore Categories',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-              ),
-              GridView.builder(
-                itemCount: 4,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2),
-                itemBuilder: (context, index) {
-                  return CategoryCard(
-                    img: ilust[index],
-                    title: judul[index],
-                    desc: subjudul[index],
-                  );
-                },
-              ),
-              TeksBanner(
-                title: 'Top Course',
-              ),
-              ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: 3,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () => Navigator.pushNamed(context, '/courseInfo'),
-                    child: const CourseCard(),
-                  );
-                },
-              ),
-            ],
-          ),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const CarouselHero(),
+            const SizedBox(height: 8),
+            const Text(
+              'Explore Categories',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            ),
+            GridView.builder(
+              itemCount: 4,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2),
+              itemBuilder: (context, index) {
+                return CategoryCard(
+                  img: ilust[index],
+                  title: judul[index],
+                  desc: subjudul[index],
+                );
+              },
+            ),
+            TeksBanner(
+              title: 'Top Course',
+            ),
+            ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: 3,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () => Navigator.pushNamed(context, '/detailCourse'),
+                  child: const CourseCard(),
+                );
+              },
+            ),
+          ],
         ),
       ),
     );

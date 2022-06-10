@@ -36,7 +36,8 @@ class _CourseScreenState extends State<CourseScreen> {
                 itemCount: 3,
                 itemBuilder: (context, index) {
                   return GestureDetector(
-                      onTap: () => Navigator.pushNamed(context, '/courseInfo'),
+                      onTap: () =>
+                          Navigator.pushNamed(context, '/detailCourse'),
                       child: const CourseCard());
                 },
               ),

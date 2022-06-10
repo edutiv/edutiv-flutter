@@ -72,7 +72,7 @@ class CourseCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'Introduction to Backend Engineer with Golang',
+                    'Introduction to UI/UX Designer',
                     overflow: TextOverflow.ellipsis,
                     maxLines: 2,
                   ),

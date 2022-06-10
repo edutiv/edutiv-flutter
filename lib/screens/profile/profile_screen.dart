@@ -39,6 +39,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Column(
                 children: [
                   ListTile(
+                    onTap: () => Navigator.pushNamed(context, '/myCourse'),
                     tileColor: Colors.grey[200],
                     shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(5))),

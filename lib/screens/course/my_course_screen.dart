@@ -15,21 +15,35 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          iconTheme: const IconThemeData(color: Colors.black),
+          leading: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 7),
+            child: CircleAvatar(
+              backgroundColor: const Color.fromARGB(62, 158, 158, 158),
+              child: IconButton(
+                onPressed: () => Navigator.of(context).pop(),
+                icon: const Icon(Icons.chevron_left_outlined,
+                    color: Color(0xFF126E64)),
+              ),
+            ),
+          ),
+          iconTheme: const IconThemeData(color: Color(0xFF126E64)),
           titleTextStyle: const TextStyle(color: Colors.black),
           centerTitle: true,
           title: const Text(
-            'Course Learning',
+            'My Course',
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           actions: [
-            IconButton(
-              onPressed: () => Navigator.pushNamed(context, '/courseDetail'),
-              icon: const Icon(Icons.bookmark_outline, color: Colors.black),
-            ),
-            IconButton(
-              onPressed: () => Navigator.pushNamed(context, '/courseInfo'),
-              icon: const Icon(Icons.info_outline, color: Colors.black),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: CircleAvatar(
+                backgroundColor: const Color.fromARGB(62, 158, 158, 158),
+                child: IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.bookmark_outline,
+                      color: Color(0xFF126E64)),
+                ),
+              ),
             ),
           ],
           bottom: const TabBar(
@@ -37,14 +51,14 @@ class _MyCourseScreenState extends State<MyCourseScreen> {
             labelColor: Colors.black,
             tabs: [
               Tab(text: 'Active'),
-              Tab(text: 'History'),
+              Tab(text: 'Progress'),
             ],
           ),
         ),
         body: const TabBarView(
           children: [
             ActiveCourseScreen(),
-            HistoryCourseScreen(),
+            ProgressCourseScreen(),
           ],
         ),
       ),

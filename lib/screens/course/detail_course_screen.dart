@@ -1,153 +1,272 @@
-import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
-import 'package:video_player/video_player.dart';
 
-class CourseDetailScreen extends StatefulWidget {
-  const CourseDetailScreen({Key? key}) : super(key: key);
+import '../../components/enroll_bottom_bar.dart';
+import '../../components/review_card.dart';
+import '../../components/tools_card.dart';
+
+class DetailCourseScreen extends StatefulWidget {
+  const DetailCourseScreen({Key? key}) : super(key: key);
 
   @override
-  State<CourseDetailScreen> createState() => _CourseDetailScreenState();
+  State<DetailCourseScreen> createState() => _DetailCourseScreenState();
 }
 
-class _CourseDetailScreenState extends State<CourseDetailScreen> {
-  final videoPlayerController = VideoPlayerController.network(
-    'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4',
-  );
-
-  @override
-  void initState() {
-    videoPlayerController.initialize();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    videoPlayerController.dispose();
-    super.dispose();
-  }
-
+class _DetailCourseScreenState extends State<DetailCourseScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 7),
-          child: CircleAvatar(
-            backgroundColor: const Color.fromARGB(62, 158, 158, 158),
-            child: IconButton(
-              onPressed: () => Navigator.of(context).pop(),
-              icon: const Icon(Icons.chevron_left_outlined,
-                  color: Color(0xFF126E64)),
-            ),
-          ),
-        ),
-        centerTitle: true,
-        title: const Text(
-          'Introduction to UI/UX Designer',
-          style: TextStyle(color: Colors.black, fontSize: 14),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: CircleAvatar(
-              backgroundColor: const Color.fromARGB(62, 158, 158, 158),
-              child: IconButton(
-                onPressed: () => Navigator.pushNamed(context, '/courseDetail'),
-                icon: const Icon(Icons.menu, color: Color(0xFF126E64)),
-              ),
-            ),
-          ),
-        ],
-      ),
-      // endDrawer: ,
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              alignment: Alignment.center,
-              width: double.infinity,
-              height: 200,
-              child: Chewie(
-                controller: ChewieController(
-                  videoPlayerController: videoPlayerController,
-                  autoPlay: true,
-                  allowFullScreen: true,
+    return DefaultTabController(
+      length: 4,
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(250),
+          child: AppBar(
+            leading: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 7),
+              child: CircleAvatar(
+                backgroundColor: const Color.fromARGB(62, 158, 158, 158),
+                child: IconButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  icon: const Icon(Icons.chevron_left_outlined,
+                      color: Colors.white),
                 ),
               ),
             ),
-            const SizedBox(height: 8),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
-                        'TITLE',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+            iconTheme: const IconThemeData(color: Colors.white),
+            titleTextStyle: const TextStyle(color: Colors.white),
+            centerTitle: true,
+            flexibleSpace: Container(
+              height: 220,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: const AssetImage('assets/uiux_deco.jpeg'),
+                  fit: BoxFit.cover,
+                  colorFilter: ColorFilter.mode(
+                      const Color(0xFF126E64).withOpacity(1), BlendMode.darken),
+                ),
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(15),
+                  bottomRight: Radius.circular(15),
+                ),
+                color: const Color(0xFF258b80),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 50),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // const SizedBox(height: 50),
+                    const Text(
+                      'Introduction to UI/UX Designer',
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    TextButton.icon(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.play_circle_outline_outlined,
+                        color: Colors.white,
                       ),
-                      Text('Description'),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Row(
-                        children: [
-                          OutlinedButton(
-                            onPressed: () {},
-                            child: const Text('Previous'),
-                          ),
-                          const SizedBox(width: 16),
-                          ElevatedButton(
-                            onPressed: () {},
-                            child: const Text('Next Video'),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                ],
+                      label: const Text(
+                        'Preview Course',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-            const SizedBox(height: 16),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8),
-              child: Text('Preparation'),
+            title: const Text(
+              'Details Course',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            const ListTile(
-              leading: Icon(Icons.download_outlined),
-              title: Text('Pengenalan Bootstrap'),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: CircleAvatar(
+                  backgroundColor: const Color.fromARGB(62, 158, 158, 158),
+                  child: IconButton(
+                    onPressed: () {},
+                    icon:
+                        const Icon(Icons.bookmark_outline, color: Colors.white),
+                  ),
+                ),
+              ),
+            ],
+            bottom: const TabBar(
+              indicatorSize: TabBarIndicatorSize.label,
+              indicatorColor: Color(0xFF126E64),
+              labelColor: Colors.black,
+              tabs: [
+                Tab(text: 'About'),
+                Tab(text: 'Lesson'),
+                Tab(text: 'Tools'),
+                Tab(text: 'Reviews'),
+              ],
             ),
-            const SizedBox(height: 16),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8),
-              child: Text('Video Course'),
-            ),
-            //WILL REPLACED BY LISTVIEW.BUILDER LATER
-            CheckboxListTile(
-              value: false,
-              onChanged: (isChecked) {
-                setState(() {});
-              },
-              controlAffinity: ListTileControlAffinity.trailing,
-              title: const Text('Pengenalan Bootstrap'),
-              secondary: const Icon(Icons.play_circle_fill_outlined),
-            ),
-            const SizedBox(height: 16),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8),
-              child: Text('Closing'),
-            ),
-            const ListTile(
-              leading: Icon(Icons.download_outlined),
-              title: Text('Quiz'),
-            ),
+          ),
+        ),
+        body: const TabBarView(
+          children: [
+            AboutTabSection(),
+            LessonTabSection(),
+            ToolsTabSection(),
+            ReviewsTabSection(),
           ],
         ),
       ),
+    );
+  }
+}
+
+class ReviewsTabSection extends StatelessWidget {
+  const ReviewsTabSection({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final List<String> ilust = [
+      'assets/backend_ilust.jpg',
+      'assets/mobile_ilust.jpg',
+      'assets/uiux_ilust.jpg',
+      'assets/frontend_ilust.jpg',
+    ];
+
+    final List<String> judul = [
+      'Backend Engineer',
+      'Mobile Engineer',
+      'UI/UX Designer',
+      'Frontend Engineer',
+    ];
+
+    final List<String> subjudul = [
+      'Web Developer',
+      'Mobile Developer',
+      'Product Designer',
+      'Web Designer',
+    ];
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: GridView.builder(
+            padding: const EdgeInsets.all(16),
+            itemCount: 4,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2),
+            itemBuilder: (context, index) {
+              return ReviewCard(
+                img: ilust[index],
+                title: judul[index],
+                desc: subjudul[index],
+              );
+            },
+          ),
+        ),
+        const EnrollBottomBar()
+      ],
+    );
+  }
+}
+
+class ToolsTabSection extends StatelessWidget {
+  const ToolsTabSection({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              children: const [
+                ToolsCard(),
+                ToolsCard(),
+                ToolsCard(),
+              ],
+            ),
+          ),
+        ),
+        const EnrollBottomBar(),
+      ],
+    );
+  }
+}
+
+class LessonTabSection extends StatefulWidget {
+  const LessonTabSection({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<LessonTabSection> createState() => _LessonTabSectionState();
+}
+
+class _LessonTabSectionState extends State<LessonTabSection> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: ListView.separated(
+            padding: const EdgeInsets.all(16),
+            itemCount: 5,
+            separatorBuilder: (context, index) {
+              return const SizedBox(height: 8);
+            },
+            itemBuilder: ((context, index) {
+              return ListTile(
+                tileColor: Colors.grey[200],
+                shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(5))),
+                leading: const Icon(Icons.play_circle_fill_outlined),
+                title: const Text('Pengenalan Figma'),
+              );
+            }),
+          ),
+        ),
+        const EnrollBottomBar(),
+      ],
+    );
+  }
+}
+
+class AboutTabSection extends StatelessWidget {
+  const AboutTabSection({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              children: const [
+                Padding(
+                  padding: EdgeInsets.all(24),
+                  child: Text(
+                    'The development of the current era of technology and the emergence of many opportunities introduces us to some new job names. Especially in the design industry, called User Interface (UI) and User Experience (UX) designers. This type of work is closely related to product design on Digital Platforms (Websites / Tablets / Apps) in the form of Digital Products, where UI/UX Design learning will be implemented with a product design process which of course requires research to create functional design results without compromising on beauty. a website/tablet/apps.',
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        const EnrollBottomBar(),
+      ],
     );
   }
 }

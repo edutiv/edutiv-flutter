@@ -17,10 +17,11 @@ export './wishlist/wishlist.dart';
 //MyCourse
 export 'course/course_screen.dart';
 export 'course/my_course_screen.dart';
-export 'course/info_course_screen.dart';
 export 'course/detail_course_screen.dart';
+export 'course/learning_course_screen.dart';
 export 'course/active_course_screen.dart';
-export 'course/history_course_screen.dart';
+export 'course/progress_course_screen.dart';
+export 'course/success_course_screen.dart';
 
 //Profile
 export './profile/profile_screen.dart';
