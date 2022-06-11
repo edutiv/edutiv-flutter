@@ -15,14 +15,14 @@ class SearchBar extends StatelessWidget {
           width: double.infinity,
           height: 50,
           decoration: BoxDecoration(
-            color: Colors.grey[300],
+            border: Border.all(color: Colors.grey),
             borderRadius: BorderRadius.circular(15),
           ),
           child: Row(
             children: const [
               Icon(Icons.search),
               SizedBox(width: 8),
-              Text('Search'),
+              Text('Search course...'),
             ],
           ),
         ),

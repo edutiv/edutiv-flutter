@@ -2,6 +2,7 @@ import 'package:edutiv/model/course/course_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../components/choice_chip_row.dart';
 import '../../components/course_card.dart';
 import '../../components/searchbar.dart';
 
@@ -34,6 +35,7 @@ class _CourseScreenState extends State<CourseScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SearchBar(),
+              const ChoiceChipRow(),
               ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
@@ -42,11 +44,11 @@ class _CourseScreenState extends State<CourseScreen> {
                   return GestureDetector(
                     onTap: () => Navigator.pushNamed(context, '/detailCourse'),
                     child: CourseCard(
-                      courseImage: course.allCourse[index].courseImage,
-                      courseName: course.allCourse[index].courseName,
-                      mentorName: course.allCourse[index].mentorName,
-                      rating: course.allCourse[index].rating,
-                      totalTime: course.allCourse[index].totalTime,
+                      courseImage: course.allCourse[index].courseImage!,
+                      courseName: course.allCourse[index].courseName!,
+                      mentorName: course.allCourse[index].mentorName!,
+                      rating: course.allCourse[index].rating!,
+                      totalTime: course.allCourse[index].totalTime!,
                       totalVideo: course.allCourse[index].totalVideo.toString(),
                     ),
                   );

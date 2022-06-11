@@ -15,20 +15,39 @@ class CarouselHero extends StatelessWidget {
         GestureDetector(
           onTap: () {},
           child: Card(
-            elevation: 3,
-            child: Image.network(
-              'https://picsum.photos/id/156/200/300',
-              fit: BoxFit.fill,
+            elevation: 2,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(5),
+              child: Image.asset(
+                'assets/banner/edutiv_go.png',
+                fit: BoxFit.fill,
+              ),
             ),
           ),
         ),
         GestureDetector(
           onTap: () {},
           child: Card(
-            elevation: 3,
-            child: Image.network(
-              'https://picsum.photos/id/256/200/300',
-              fit: BoxFit.fill,
+            elevation: 2,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(5),
+              child: Image.asset(
+                'assets/banner/edutiv_bootcamp.png',
+                fit: BoxFit.fill,
+              ),
+            ),
+          ),
+        ),
+        GestureDetector(
+          onTap: () {},
+          child: Card(
+            elevation: 2,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(5),
+              child: Image.asset(
+                'assets/banner/edutiv_insight.png',
+                fit: BoxFit.fill,
+              ),
             ),
           ),
         ),

@@ -12,6 +12,7 @@ class UserModel {
   String password;
   List<WishlistModel>? wishlist;
   List<CourseModel>? enrolledCourse;
+  List<Review>? reviews;
   String? role;
 
   UserModel({
@@ -25,5 +26,6 @@ class UserModel {
     this.role,
     this.wishlist,
     this.enrolledCourse,
+    this.reviews,
   });
 }

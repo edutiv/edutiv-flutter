@@ -32,11 +32,11 @@ class _WishlistScreenState extends State<WishlistScreen> {
           return GestureDetector(
             onTap: () => Navigator.pushNamed(context, '/detailCourse'),
             child: CourseCard(
-              courseImage: course.allCourse[index].courseImage,
-              courseName: course.allCourse[index].courseName,
-              mentorName: course.allCourse[index].mentorName,
-              rating: course.allCourse[index].rating,
-              totalTime: course.allCourse[index].totalTime,
+              courseImage: course.allCourse[index].courseImage!,
+              courseName: course.allCourse[index].courseName!,
+              mentorName: course.allCourse[index].mentorName!,
+              rating: course.allCourse[index].rating!,
+              totalTime: course.allCourse[index].totalTime!,
               totalVideo: course.allCourse[index].totalVideo.toString(),
             ),
           );
