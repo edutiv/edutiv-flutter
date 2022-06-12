@@ -3,6 +3,6 @@ import 'package:flutter/material.dart';
 
 class WishlistViewModel extends ChangeNotifier {
   final List<CourseModel> _wishlishedCourse = [];
-  
+
   List<CourseModel> get wishlishedCourse => _wishlishedCourse;
 }

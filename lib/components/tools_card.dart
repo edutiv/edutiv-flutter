@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class ToolsCard extends StatelessWidget {
-  const ToolsCard({
-    Key? key,
-  }) : super(key: key);
+  String? toolsName;
+  String? imgUrl;
+  ToolsCard({Key? key, this.toolsName, this.imgUrl}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +20,12 @@ class ToolsCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     const SizedBox(height: 8),
-                    const FlutterLogo(),
+                    CircleAvatar(
+                      backgroundColor: Colors.transparent,
+                      backgroundImage: NetworkImage(imgUrl!),
+                    ),
                     const SizedBox(height: 8),
-                    const Text('Figma'),
+                    Text(toolsName!),
                     TextButton.icon(
                       onPressed: () {},
                       icon: const Icon(

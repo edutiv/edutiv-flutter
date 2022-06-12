@@ -1,8 +1,11 @@
+import 'package:edutiv/model/course/course_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../components/enroll_bottom_bar.dart';
 import '../../components/review_card.dart';
 import '../../components/tools_card.dart';
+import '../../model/wishlist/wishlist_viewmodel.dart';
 
 class DetailCourseScreen extends StatefulWidget {
   const DetailCourseScreen({Key? key}) : super(key: key);
@@ -14,6 +17,9 @@ class DetailCourseScreen extends StatefulWidget {
 class _DetailCourseScreenState extends State<DetailCourseScreen> {
   @override
   Widget build(BuildContext context) {
+    final courseDetail =
+        ModalRoute.of(context)!.settings.arguments as CourseModel;
+    var wishlist = Provider.of<WishlistViewModel>(context);
     return DefaultTabController(
       length: 4,
       child: Scaffold(
@@ -38,7 +44,7 @@ class _DetailCourseScreenState extends State<DetailCourseScreen> {
               height: 220,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: const AssetImage('assets/uiux_deco.jpeg'),
+                  image: NetworkImage(courseDetail.courseImage!),
                   fit: BoxFit.cover,
                   colorFilter: ColorFilter.mode(
                       const Color(0xFF126E64).withOpacity(1), BlendMode.darken),
@@ -47,17 +53,16 @@ class _DetailCourseScreenState extends State<DetailCourseScreen> {
                   bottomLeft: Radius.circular(15),
                   bottomRight: Radius.circular(15),
                 ),
-                color: const Color(0xFF258b80),
+                // color: const Color(0xFF258b80),
               ),
               child: Padding(
                 padding: const EdgeInsets.only(top: 50),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // const SizedBox(height: 50),
-                    const Text(
-                      'Introduction to UI/UX Designer',
-                      style: TextStyle(
+                    Text(
+                      courseDetail.courseName!,
+                      style: const TextStyle(
                           fontSize: 18,
                           color: Colors.white,
                           fontWeight: FontWeight.bold),
@@ -90,7 +95,13 @@ class _DetailCourseScreenState extends State<DetailCourseScreen> {
                 child: CircleAvatar(
                   backgroundColor: const Color.fromARGB(62, 158, 158, 158),
                   child: IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      wishlist.wishlishedCourse.add(courseDetail);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Added to Wishlist!')),
+                      );
+                      print(wishlist.wishlishedCourse);
+                    },
                     icon:
                         const Icon(Icons.bookmark_outline, color: Colors.white),
                   ),
@@ -182,18 +193,20 @@ class ToolsTabSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final courseDetail =
+        ModalRoute.of(context)!.settings.arguments as CourseModel;
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
-          child: SingleChildScrollView(
-            child: Column(
-              children: const [
-                ToolsCard(),
-                ToolsCard(),
-                ToolsCard(),
-              ],
-            ),
+          child: ListView.builder(
+            itemCount: courseDetail.tools?.length,
+            itemBuilder: (context, index) {
+              return ToolsCard(
+                toolsName: courseDetail.tools![index].toolsName!,
+                imgUrl: courseDetail.tools?[index].toolsIcon,
+              );
+            },
           ),
         ),
         const EnrollBottomBar(),
@@ -248,17 +261,19 @@ class AboutTabSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final courseDetail =
+        ModalRoute.of(context)!.settings.arguments as CourseModel;
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
           child: SingleChildScrollView(
             child: Column(
-              children: const [
+              children: [
                 Padding(
-                  padding: EdgeInsets.all(24),
+                  padding: const EdgeInsets.all(24),
                   child: Text(
-                    'The development of the current era of technology and the emergence of many opportunities introduces us to some new job names. Especially in the design industry, called User Interface (UI) and User Experience (UX) designers. This type of work is closely related to product design on Digital Platforms (Websites / Tablets / Apps) in the form of Digital Products, where UI/UX Design learning will be implemented with a product design process which of course requires research to create functional design results without compromising on beauty. a website/tablet/apps.',
+                    courseDetail.description!,
                   ),
                 ),
               ],

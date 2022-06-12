@@ -65,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
               itemCount: 3,
               itemBuilder: (context, index) {
                 return GestureDetector(
-                  onTap: () => Navigator.pushNamed(context, '/detailCourse'),
+                  onTap: () => Navigator.pushNamed(context, '/detailCourse', arguments: course.allCourse[index]),
                   child: CourseCard(
                     courseImage: course.allCourse[index].courseImage!,
                     courseName: course.allCourse[index].courseName!,

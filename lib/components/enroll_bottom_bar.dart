@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../model/course/course_model.dart';
+
 class EnrollBottomBar extends StatelessWidget {
   const EnrollBottomBar({
     Key? key,
@@ -7,6 +9,8 @@ class EnrollBottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final courseDetail =
+        ModalRoute.of(context)!.settings.arguments as CourseModel;
     return Container(
       width: double.infinity,
       height: 70,
@@ -22,7 +26,8 @@ class EnrollBottomBar extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: ElevatedButton(
-          onPressed: () => Navigator.pushNamed(context, '/learningCourse'),
+          onPressed: () => Navigator.pushNamed(context, '/learningCourse',
+              arguments: courseDetail),
           child: const Text('ENROLL COURSE'),
         ),
       ),

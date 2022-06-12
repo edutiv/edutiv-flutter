@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../components/tools_card.dart';
+import '../../model/course/course_model.dart';
 
 class LearningCourseScreen extends StatefulWidget {
   const LearningCourseScreen({Key? key}) : super(key: key);
@@ -13,15 +14,15 @@ class LearningCourseScreen extends StatefulWidget {
 }
 
 class _LearningCourseScreenState extends State<LearningCourseScreen> {
-  final videoPlayerController = VideoPlayerController.network(
-    'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4',
-  );
-
   @override
   void initState() {
     videoPlayerController.initialize();
     super.initState();
   }
+
+  final videoPlayerController = VideoPlayerController.network(
+    'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4',
+  );
 
   @override
   void dispose() {
@@ -31,6 +32,7 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final material = ModalRoute.of(context)!.settings.arguments as CourseModel;
     return Scaffold(
       endDrawer: const LearningMenuDrawer(),
       appBar: AppBar(
@@ -46,9 +48,9 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
           ),
         ),
         centerTitle: true,
-        title: const Text(
-          'Introduction to UI/UX Designer',
-          style: TextStyle(color: Colors.black, fontSize: 14),
+        title: Text(
+          material.courseName!,
+          style: const TextStyle(color: Colors.black, fontSize: 14),
         ),
         actions: [
           Padding(
@@ -126,10 +128,16 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
             ),
             SizedBox(
               width: double.infinity,
-              height: 210,
+              height: 290,
               child: ListView.builder(
-                  itemBuilder: (context, index) => const ToolsCard(),
-                  itemCount: 2),
+                itemCount: material.tools?.length,
+                itemBuilder: (context, index) {
+                  return ToolsCard(
+                    toolsName: material.tools![index].toolsName!,
+                    imgUrl: material.tools?[index].toolsIcon,
+                  );
+                },
+              ),
             )
           ],
         ),

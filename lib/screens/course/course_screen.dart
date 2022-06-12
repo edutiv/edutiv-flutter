@@ -17,7 +17,6 @@ class _CourseScreenState extends State<CourseScreen> {
   @override
   Widget build(BuildContext context) {
     var course = Provider.of<CourseViewModel>(context);
-
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.black),
@@ -28,21 +27,25 @@ class _CourseScreenState extends State<CourseScreen> {
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SearchBar(),
-              const ChoiceChipRow(),
-              ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SearchBar(),
+            const ChoiceChipRow(),
+            Expanded(
+              child: ListView.builder(
+                physics: const BouncingScrollPhysics(),
+                // shrinkWrap: true,
                 itemCount: course.allCourse.length,
                 itemBuilder: (context, index) {
                   return GestureDetector(
-                    onTap: () => Navigator.pushNamed(context, '/detailCourse'),
+                    onTap: () => Navigator.pushNamed(
+                      context,
+                      '/detailCourse',
+                      arguments: course.allCourse[index],
+                    ),
                     child: CourseCard(
                       courseImage: course.allCourse[index].courseImage!,
                       courseName: course.allCourse[index].courseName!,
@@ -54,8 +57,8 @@ class _CourseScreenState extends State<CourseScreen> {
                   );
                 },
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
