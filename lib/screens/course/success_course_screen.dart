@@ -18,7 +18,11 @@ class _SuccessCourseScreenState extends State<SuccessCourseScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const CircleAvatar(),
+              const CircleAvatar(
+                backgroundColor: Colors.transparent,
+                backgroundImage: AssetImage('assets/success.png'),
+                radius: 150,
+              ),
               const SizedBox(height: 16),
               const Text('What a Day!'),
               const SizedBox(height: 8),

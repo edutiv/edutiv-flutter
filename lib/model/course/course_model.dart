@@ -47,7 +47,7 @@ class Tools {
 class Section {
   int id;
   String? sectionName;
-  List<Material>? material;
+  List<Materials>? material;
 
   Section({
     required this.id,
@@ -56,17 +56,19 @@ class Section {
   });
 }
 
-class Material {
+class Materials {
   int id;
   int lessonId;
   String? materialType;
+  String? materialName;
   String? url;
   bool? isCompleted;
 
-  Material({
+  Materials({
     required this.id,
     required this.lessonId,
     this.materialType,
+    this.materialName,
     this.url,
     this.isCompleted,
   });

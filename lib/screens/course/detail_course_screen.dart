@@ -227,23 +227,42 @@ class LessonTabSection extends StatefulWidget {
 class _LessonTabSectionState extends State<LessonTabSection> {
   @override
   Widget build(BuildContext context) {
+    final courseDetail =
+        ModalRoute.of(context)!.settings.arguments as CourseModel;
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
           child: ListView.separated(
             padding: const EdgeInsets.all(16),
-            itemCount: 5,
+            itemCount: courseDetail.section!.length,
             separatorBuilder: (context, index) {
               return const SizedBox(height: 8);
             },
             itemBuilder: ((context, index) {
-              return ListTile(
-                tileColor: Colors.grey[200],
-                shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(5))),
-                leading: const Icon(Icons.play_circle_fill_outlined),
-                title: const Text('Pengenalan Figma'),
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(courseDetail.section![index].sectionName!),
+                  const SizedBox(height: 8),
+                  ListView.separated(
+                    shrinkWrap: true,
+                    itemCount: courseDetail.section![index].material!.length,
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(height: 8),
+                    itemBuilder: (context, subIndex) {
+                      return ListTile(
+                        tileColor: Colors.grey[200],
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                        ),
+                        leading: const Icon(Icons.play_circle_fill_outlined),
+                        title: Text(courseDetail
+                            .section![index].material![subIndex].materialName!),
+                      );
+                    },
+                  )
+                ],
               );
             }),
           ),

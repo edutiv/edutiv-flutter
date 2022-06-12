@@ -5,36 +5,69 @@ import 'package:flutter/material.dart';
 class CourseViewModel extends ChangeNotifier {
   final List<CourseModel> _allCourse = [
     CourseModel(
-      id: 1,
-      courseImage: 'https://picsum.photos/id/225/200/300',
-      courseName: 'Introduction to UI/UX Designer',
-      mentorName: 'Bessie Cooper',
-      totalTime: '3h2m',
-      totalVideo: 25,
-      rating: 4,
-      description:
-          'The development of the current era of technology and the emergence of many opportunities introduces us to some new job names. Especially in the design industry, called User Interface (UI) and User Experience (UX) designers. This type of work is closely related to product design on Digital Platforms (Websites / Tablets / Apps) in the form of Digital Products, where UI/UX Design learning will be implemented with a product design process which of course requires research to create functional design results without compromising on beauty. a website/tablet/apps.',
-      tools: [
-        Tools(
+        id: 1,
+        courseImage: 'https://picsum.photos/id/225/200/300',
+        courseName: 'Introduction to UI/UX Designer',
+        mentorName: 'Bessie Cooper',
+        totalTime: '3h2m',
+        totalVideo: 25,
+        rating: 4,
+        description:
+            'The development of the current era of technology and the emergence of many opportunities introduces us to some new job names. Especially in the design industry, called User Interface (UI) and User Experience (UX) designers. This type of work is closely related to product design on Digital Platforms (Websites / Tablets / Apps) in the form of Digital Products, where UI/UX Design learning will be implemented with a product design process which of course requires research to create functional design results without compromising on beauty. a website/tablet/apps.',
+        tools: [
+          Tools(
+              id: 1,
+              courseId: 1,
+              toolsName: 'Figma',
+              toolsIcon:
+                  'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn-images-1.medium.com%2Fmax%2F1600%2F1*6XgfDCVn81AYX68Xvd2I-g%402x.png'),
+          Tools(
+              id: 1,
+              courseId: 1,
+              toolsName: 'Whimsical',
+              toolsIcon:
+                  'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.freelogovectors.net%2Fwp-content%2Fuploads%2F2021%2F07%2Fwhimsical_logo-freelogovectors.net_-768x159.png'),
+          Tools(
+              id: 1,
+              courseId: 1,
+              toolsName: 'Maze',
+              toolsIcon:
+                  'https://external-content.duckduckgo.com/ip3/maze.co.ico'),
+        ],
+        section: [
+          Section(
             id: 1,
-            courseId: 1,
-            toolsName: 'Figma',
-            toolsIcon:
-                'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn-images-1.medium.com%2Fmax%2F1600%2F1*6XgfDCVn81AYX68Xvd2I-g%402x.png'),
-        Tools(
-            id: 1,
-            courseId: 1,
-            toolsName: 'Whimsical',
-            toolsIcon:
-                'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.freelogovectors.net%2Fwp-content%2Fuploads%2F2021%2F07%2Fwhimsical_logo-freelogovectors.net_-768x159.png'),
-        Tools(
-            id: 1,
-            courseId: 1,
-            toolsName: 'Maze',
-            toolsIcon:
-                'https://external-content.duckduckgo.com/ip3/maze.co.ico'),
-      ],
-    ),
+            sectionName: 'Preparation',
+            material: [
+              Materials(
+                  id: 1,
+                  lessonId: 1,
+                  materialName: 'Installing Figma Desktop',
+                  materialType: 'Video'),
+              Materials(
+                  id: 2,
+                  lessonId: 1,
+                  materialName: 'Learn Figma Project and Figjam',
+                  materialType: 'Video'),
+            ],
+          ),
+          Section(
+            id: 2,
+            sectionName: 'Designing an App Flow',
+            material: [
+              Materials(
+                  id: 1,
+                  lessonId: 1,
+                  materialName: 'Intro to Whimsical',
+                  materialType: 'Video'),
+              Materials(
+                  id: 2,
+                  lessonId: 1,
+                  materialName: 'Userflow Explained',
+                  materialType: 'Video'),
+            ],
+          ),
+        ]),
     CourseModel(
       id: 2,
       courseImage: 'https://picsum.photos/id/212/200/300',
