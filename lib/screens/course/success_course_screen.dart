@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:lottie/lottie.dart';
 
 class SuccessCourseScreen extends StatefulWidget {
   const SuccessCourseScreen({Key? key}) : super(key: key);
@@ -18,9 +19,11 @@ class _SuccessCourseScreenState extends State<SuccessCourseScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const CircleAvatar(
+              CircleAvatar(
+                child: Lottie.network(
+                    'https://assets9.lottiefiles.com/packages/lf20_zwunsszo.json'),
                 backgroundColor: Colors.transparent,
-                backgroundImage: AssetImage('assets/success.png'),
+                // backgroundImage: AssetImage('assets/success.png'),
                 radius: 150,
               ),
               const SizedBox(height: 16),
