@@ -3,23 +3,24 @@ import 'package:flutter/material.dart';
 class CourseCard extends StatelessWidget {
   String courseImage;
   String courseName;
-  String mentorName;
+  String? mentorName;
   String totalVideo;
   String totalTime;
-  int rating;
+  int? rating;
 
   CourseCard(
       {Key? key,
       required this.courseImage,
       required this.courseName,
-      required this.mentorName,
-      required this.rating,
+      this.mentorName,
+      this.rating,
       required this.totalTime,
       required this.totalVideo})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    bool isAvailable = true;
     return Container(
       height: 116,
       margin: const EdgeInsets.symmetric(vertical: 8),
@@ -94,10 +95,11 @@ class CourseCard extends StatelessWidget {
                   ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const CircleAvatar(radius: 8),
-                      const SizedBox(width: 8),
-                      Text(mentorName),
+                    children: const [
+                      CircleAvatar(radius: 8),
+                      SizedBox(width: 8),
+                      Text(''),
+                      // isAvailable ? mentorName! : '',
                     ],
                   ),
                   Row(

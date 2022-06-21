@@ -16,7 +16,8 @@ class LearningMenuDrawer extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ListView.separated(
-              itemCount: courseDetail.section!.length,
+              itemCount: 2,
+              // courseDetail.section!.length,
               shrinkWrap: true,
               separatorBuilder: (context, index) {
                 return const SizedBox(height: 16);
@@ -25,23 +26,24 @@ class LearningMenuDrawer extends StatelessWidget {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(courseDetail.section![index].sectionName!),
+                    // Text(courseDetail.section![index].sectionName!),
                     const SizedBox(height: 8),
                     ListView.separated(
                       shrinkWrap: true,
                       separatorBuilder: (context, index) =>
                           const SizedBox(height: 8),
-                      itemCount: courseDetail.section![index].material!.length,
+                      itemCount: 2,
+                      // courseDetail.section![index].material!.length,
                       itemBuilder: (context, subIndex) {
                         return CheckboxListTile(
                           tileColor: Colors.grey[200],
                           value: false,
-                          onChanged: (isChecked) {
+                          onChanged: (isCompleted) {
                             // setState(() {});
                           },
                           controlAffinity: ListTileControlAffinity.trailing,
-                          title: Text(courseDetail.section![index]
-                              .material![subIndex].materialName!),
+                          title: const Text(''),
+                          // courseDetail.section![index].material![subIndex].materialName!
                           secondary:
                               const Icon(Icons.play_circle_fill_outlined),
                         );

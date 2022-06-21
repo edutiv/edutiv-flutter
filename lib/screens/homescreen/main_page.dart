@@ -32,13 +32,13 @@ class _MainPageState extends State<MainPage> {
         selectedItemColor: Theme.of(context).primaryColor,
         items: const [
           BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined), label: 'Home'),
+              icon: Icon(Icons.home_rounded), label: 'Home'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.school_outlined), label: 'Course'),
+              icon: Icon(Icons.menu_book_rounded), label: 'Course'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.bookmark_outline), label: 'Wishlist'),
+              icon: Icon(Icons.bookmark_rounded), label: 'Wishlist'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.person_outlined), label: 'Profile'),
+              icon: Icon(Icons.account_circle_rounded), label: 'Profile'),
         ],
       ),
     );

@@ -20,6 +20,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
         iconTheme: const IconThemeData(color: Colors.black),
         titleTextStyle: const TextStyle(color: Colors.black),
         centerTitle: true,
+        automaticallyImplyLeading: false,
         title: const Text(
           'Wishlist Course',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -49,9 +50,6 @@ class _WishlistScreenState extends State<WishlistScreen> {
                       wishlishedCourse.wishlishedCourse[index].courseImage!,
                   courseName:
                       wishlishedCourse.wishlishedCourse[index].courseName!,
-                  mentorName:
-                      wishlishedCourse.wishlishedCourse[index].mentorName!,
-                  rating: wishlishedCourse.wishlishedCourse[index].rating!,
                   totalTime:
                       wishlishedCourse.wishlishedCourse[index].totalTime!,
                   totalVideo: wishlishedCourse

@@ -1,31 +1,34 @@
 import 'package:edutiv/model/course/course_model.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 import '../wishlist/wishlist_model.dart';
+part 'user_model.g.dart';
 
+@JsonSerializable()
 class UserModel {
   int id;
-  String firstName;
-  String lastName;
-  String avatar;
-  String specialization;
-  String email;
-  String password;
-  List<WishlistModel>? wishlist;
-  List<CourseModel>? enrolledCourse;
-  List<Review>? reviews;
+  String? avatar;
+  String? firstname;
+  String? lastname;
+  String? email;
+  String? password;
   String? role;
+  String? specialization;
+  // List<WishlistModel>? wishlist;
+  // List<CourseModel>? enrolledCourse;
+  // List<Review>? reviews;
 
   UserModel({
     required this.id,
-    required this.firstName,
-    required this.lastName,
-    required this.avatar,
-    required this.specialization,
-    required this.email,
-    required this.password,
+    this.avatar,
+    this.firstname,
+    this.lastname,
+    this.email,
+    this.password,
     this.role,
-    this.wishlist,
-    this.enrolledCourse,
-    this.reviews,
+    this.specialization,
   });
+
+  factory UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
+  Map<String, dynamic> toJson() => _$UserModelToJson(this);
 }

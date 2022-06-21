@@ -26,7 +26,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: CircleAvatar(
               backgroundColor: const Color.fromARGB(62, 158, 158, 158),
               child: IconButton(
-                onPressed: () => Navigator.pushNamed(context, '/courseDetail'),
+                onPressed: () {},
                 icon: const Icon(Icons.edit_outlined, color: Colors.white),
               ),
             ),
@@ -53,15 +53,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   const SizedBox(height: 16),
                   ListTile(
+                    onTap: () => Navigator.pushNamed(context, '/certificate'),
                     tileColor: Colors.grey[200],
                     shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(5))),
-                    leading: const Icon(Icons.card_giftcard_outlined),
+                    leading: const Icon(Icons.school_rounded),
                     title: const Text('Certificate'),
                     trailing: const Icon(Icons.chevron_right_outlined),
                   ),
                   const SizedBox(height: 16),
                   ListTile(
+                    onTap: () => Navigator.pushNamed(context, '/formRequest'),
                     tileColor: Colors.grey[200],
                     shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(5))),
@@ -71,6 +73,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   const SizedBox(height: 16),
                   ListTile(
+                    onTap: () => Navigator.pushNamed(context, '/faq'),
                     tileColor: Colors.grey[200],
                     shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(5))),
@@ -126,30 +129,32 @@ class ProfileHeader extends StatelessWidget {
             child: CircleAvatar(
               backgroundColor: Colors.grey[400],
               radius: 50,
-              child: CircleAvatar(
+              child: const CircleAvatar(
                 radius: 45,
-                backgroundImage: NetworkImage(user.user.avatar),
+                backgroundImage: NetworkImage('user.user.avatar'),
               ),
             ),
           ),
-          Flexible(
+          const Flexible(
             fit: FlexFit.loose,
             flex: 1,
             child: Text(
-              user.user.firstName + ' ' + user.user.lastName,
-              style: const TextStyle(
+              'Carl Johnson',
+              textAlign: TextAlign.center,
+              style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
             ),
           ),
-          Flexible(
+          const Flexible(
             fit: FlexFit.tight,
             flex: 1,
             child: Text(
-              user.user.specialization,
-              style: const TextStyle(
+              'user.user.specialization',
+              textAlign: TextAlign.center,
+              style: TextStyle(
                 fontSize: 12,
                 color: Colors.white,
               ),

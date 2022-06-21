@@ -20,8 +20,7 @@ class _SuccessCourseScreenState extends State<SuccessCourseScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CircleAvatar(
-                child: Lottie.network(
-                    'https://assets9.lottiefiles.com/packages/lf20_zwunsszo.json'),
+                child: Lottie.asset('assets/success.json'),
                 backgroundColor: Colors.transparent,
                 // backgroundImage: AssetImage('assets/success.png'),
                 radius: 150,
@@ -103,7 +102,9 @@ class _SuccessCourseScreenState extends State<SuccessCourseScreen> {
                                     maxLines: null,
                                   ),
                                   ElevatedButton(
-                                      onPressed: () {},
+                                      onPressed: () =>
+                                          Navigator.pushReplacementNamed(
+                                              context, '/mainpage'),
                                       child: const Text('SUBMIT'))
                                 ],
                               );

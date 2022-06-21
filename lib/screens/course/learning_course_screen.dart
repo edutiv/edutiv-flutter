@@ -14,25 +14,59 @@ class LearningCourseScreen extends StatefulWidget {
 }
 
 class _LearningCourseScreenState extends State<LearningCourseScreen> {
-  @override
-  void initState() {
-    videoPlayerController.initialize();
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   videoPlayerController.initialize();
+  //   super.initState();
+  // }
 
-  final videoPlayerController = VideoPlayerController.network(
-    'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4',
-  );
+  // final videoPlayerController = VideoPlayerController.network(
+  //   'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4',
+  // );
 
-  @override
-  void dispose() {
-    videoPlayerController.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   videoPlayerController.dispose();
+  //   super.dispose();
+  // }
+  int sectionIndex = 0;
+  int materialIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     final material = ModalRoute.of(context)!.settings.arguments as CourseModel;
+    // var videoUrl = material.section?[sectionIndex].material?[materialIndex].url;
+    // var videoTitle = material.section?[sectionIndex].material?[materialIndex].materialName;
+    // var materialLength = material.section?[sectionIndex].material?.length;
+    // var sectionLength = material.section?.length;
+    bool isDisabled = false;
+
+    // void nextVideo() {
+    //   print(materialIndex);
+    //   print(materialLength);
+    //   if (materialIndex == materialLength! - 1) {
+    //     setState(() {
+    //       sectionIndex++;
+    //       materialIndex = 0;
+    //     });
+    //   } else if (sectionIndex == sectionLength! - 1 &&
+    //       materialIndex == materialLength - 1) {
+    //     setState(() {
+    //       isDisabled = true;
+    //     });
+    //   } else {
+    //     setState(() {
+    //       materialIndex++;
+    //     });
+    //   }
+    // }
+
+    // void prevVideo() {
+    //   setState(() {
+    //     materialIndex--;
+    //   });
+    // }
+
     return Scaffold(
       endDrawer: const LearningMenuDrawer(),
       appBar: AppBar(
@@ -81,7 +115,8 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
               ),
               child: Chewie(
                 controller: ChewieController(
-                  videoPlayerController: videoPlayerController,
+                  videoPlayerController:
+                      VideoPlayerController.network('videoUrl!'),
                   autoPlay: true,
                   allowFullScreen: true,
                 ),
@@ -89,10 +124,11 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
             ),
             const SizedBox(height: 16),
             Row(
-              children: const [
+              children: [
                 Text(
-                  'Video Title',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  'videoTitle!',
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 16),
                 ),
               ],
             ),
@@ -100,7 +136,10 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
               children: [
                 Expanded(
                   child: OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      // prevVideo();
+                      // Navigator.pushNamed(context, '/successCourse');
+                    },
                     child: const Text('Previous'),
                   ),
                 ),
@@ -110,8 +149,8 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
               children: [
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () =>
-                        Navigator.pushNamed(context, '/successCourse'),
+                    onPressed: (){},
+                    // isDisabled ? null : nextVideo,
                     child: const Text('Next Video'),
                   ),
                 ),
@@ -130,11 +169,14 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
               width: double.infinity,
               height: 290,
               child: ListView.builder(
-                itemCount: material.tools?.length,
+                itemCount: 2,
+                // material.tools?.length,
                 itemBuilder: (context, index) {
                   return ToolsCard(
-                    toolsName: material.tools![index].toolsName!,
-                    imgUrl: material.tools?[index].toolsIcon,
+                    toolsName: '',
+                    // material.tools![index].toolsName!,
+                    imgUrl: '',
+                    // material.tools?[index].toolsIcon,
                   );
                 },
               ),

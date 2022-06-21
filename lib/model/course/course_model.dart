@@ -1,91 +1,36 @@
+import 'package:edutiv/model/course/category_model.dart';
+import 'package:json_annotation/json_annotation.dart';
+part 'course_model.g.dart';
+
+@JsonSerializable()
 class CourseModel {
   int id;
-  int? categoryId;
+  @JsonKey(name: 'course_name')
   String? courseName;
+  @JsonKey(name: 'course_image')
   String? courseImage;
-  String? mentorName;
+  CategoryModel? category;
   String? description;
-  String? totalTime;
+  @JsonKey(name: 'total_video')
   int? totalVideo;
-  int? rating;
-  List<Section>? section;
-  List<Tools>? tools;
-  List<Review>? reviews;
+  @JsonKey(name: 'total_times')
+  String? totalTime;
+  // int? rating;
+  // String? mentorName;
+  // List<Section>? section;
+  // List<Tools>? tools;
+  // List<Review>? reviews;
 
   CourseModel({
     required this.id,
-    this.categoryId,
     this.courseName,
     this.courseImage,
-    this.mentorName,
+    this.category,
     this.description,
-    this.rating,
     this.totalVideo,
     this.totalTime,
-    this.section,
-    this.tools,
-    this.reviews,
   });
-}
 
-class Tools {
-  int id;
-  int courseId;
-  String? toolsName;
-  String? toolsIcon;
-  String? url;
-
-  Tools({
-    required this.id,
-    required this.courseId,
-    this.toolsName,
-    this.toolsIcon,
-    this.url,
-  });
-}
-
-class Section {
-  int id;
-  String? sectionName;
-  List<Materials>? material;
-
-  Section({
-    required this.id,
-    this.sectionName,
-    this.material,
-  });
-}
-
-class Materials {
-  int id;
-  int lessonId;
-  String? materialType;
-  String? materialName;
-  String? url;
-  bool? isCompleted;
-
-  Materials({
-    required this.id,
-    required this.lessonId,
-    this.materialType,
-    this.materialName,
-    this.url,
-    this.isCompleted,
-  });
-}
-
-class Review {
-  int id;
-  int userId;
-  int courseId;
-  int? rating;
-  String? review;
-
-  Review({
-    required this.id,
-    required this.userId,
-    required this.courseId,
-    this.rating,
-    this.review,
-  });
+  factory CourseModel.fromJson(Map<String, dynamic> json) => _$CourseModelFromJson(json);
+  Map<String, dynamic> toJson() => _$CourseModelToJson(this);
 }

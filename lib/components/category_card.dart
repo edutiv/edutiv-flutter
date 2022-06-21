@@ -18,7 +18,7 @@ class CategoryCard extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 30,
-            backgroundImage: AssetImage(
+            backgroundImage: NetworkImage(
               img,
             ),
           ),
@@ -34,6 +34,7 @@ class CategoryCard extends StatelessWidget {
               fontSize: 11,
               color: Colors.grey[800],
             ),
+            textAlign: TextAlign.center,
           ),
         ],
       ),

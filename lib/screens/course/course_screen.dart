@@ -15,6 +15,13 @@ class CourseScreen extends StatefulWidget {
 
 class _CourseScreenState extends State<CourseScreen> {
   @override
+  void initState() {
+    Provider.of<CourseViewModel>(context, listen: false).getAllCourse();
+    // CourseAPI().fetchAllCourse();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var course = Provider.of<CourseViewModel>(context);
     return Scaffold(
@@ -22,6 +29,7 @@ class _CourseScreenState extends State<CourseScreen> {
         iconTheme: const IconThemeData(color: Colors.black),
         titleTextStyle: const TextStyle(color: Colors.black),
         centerTitle: true,
+        automaticallyImplyLeading: false,
         title: const Text(
           'Course Learning',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -49,8 +57,8 @@ class _CourseScreenState extends State<CourseScreen> {
                     child: CourseCard(
                       courseImage: course.allCourse[index].courseImage!,
                       courseName: course.allCourse[index].courseName!,
-                      mentorName: course.allCourse[index].mentorName!,
-                      rating: course.allCourse[index].rating!,
+                      // mentorName: course.allCourse[index].mentorName!,
+                      // rating: course.allCourse[index].rating!,
                       totalTime: course.allCourse[index].totalTime!,
                       totalVideo: course.allCourse[index].totalVideo.toString(),
                     ),

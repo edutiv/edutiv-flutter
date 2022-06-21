@@ -1,15 +1,22 @@
+import 'package:json_annotation/json_annotation.dart';
+part 'category_model.g.dart';
+
+@JsonSerializable()
 class CategoryModel {
-  List<int>? courseId;
-  int categoryId;
-  String category;
-  String? categoryIcon;
+  int id;
+  @JsonKey(name: 'category_name')
+  String? categoryName;
+  @JsonKey(name: 'category_image')
+  String? categoryImage;
   String? description;
 
   CategoryModel({
-    this.courseId,
-    required this.categoryId,
-    this.categoryIcon,
-    required this.category,
+    required this.id,
+    this.categoryName,
+    this.categoryImage,
     this.description,
   });
+
+  factory CategoryModel.fromJson(Map<String, dynamic> json) => _$CategoryModelFromJson(json);
+  Map<String, dynamic> toJson() => _$CategoryModelToJson(this);
 }

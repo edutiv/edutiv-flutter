@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../../components/enroll_bottom_bar.dart';
 import '../../components/review_card.dart';
 import '../../components/tools_card.dart';
+import '../../model/course/course_viewmodel.dart';
 import '../../model/wishlist/wishlist_viewmodel.dart';
 
 class DetailCourseScreen extends StatefulWidget {
@@ -15,6 +16,11 @@ class DetailCourseScreen extends StatefulWidget {
 }
 
 class _DetailCourseScreenState extends State<DetailCourseScreen> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final courseDetail =
@@ -193,18 +199,20 @@ class ToolsTabSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final courseDetail =
-        ModalRoute.of(context)!.settings.arguments as CourseModel;
+    final courseDetail = ModalRoute.of(context)!.settings.arguments as CourseModel;
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
           child: ListView.builder(
-            itemCount: courseDetail.tools?.length,
+            itemCount: 2,
+            // courseDetail.tools?.length,
             itemBuilder: (context, index) {
               return ToolsCard(
-                toolsName: courseDetail.tools![index].toolsName!,
-                imgUrl: courseDetail.tools?[index].toolsIcon,
+                toolsName: '',
+                // courseDetail.tools![index].toolsName!,
+                imgUrl: '',
+                // courseDetail.tools?[index].toolsIcon,
               );
             },
           ),
@@ -227,48 +235,61 @@ class LessonTabSection extends StatefulWidget {
 class _LessonTabSectionState extends State<LessonTabSection> {
   @override
   Widget build(BuildContext context) {
-    final courseDetail =
-        ModalRoute.of(context)!.settings.arguments as CourseModel;
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          child: ListView.separated(
-            padding: const EdgeInsets.all(16),
-            itemCount: courseDetail.section!.length,
-            separatorBuilder: (context, index) {
-              return const SizedBox(height: 8);
-            },
-            itemBuilder: ((context, index) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(courseDetail.section![index].sectionName!),
-                  const SizedBox(height: 8),
-                  ListView.separated(
-                    shrinkWrap: true,
-                    itemCount: courseDetail.section![index].material!.length,
-                    separatorBuilder: (context, index) =>
-                        const SizedBox(height: 8),
-                    itemBuilder: (context, subIndex) {
-                      return ListTile(
-                        tileColor: Colors.grey[200],
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(5)),
-                        ),
-                        leading: const Icon(Icons.play_circle_fill_outlined),
-                        title: Text(courseDetail
-                            .section![index].material![subIndex].materialName!),
-                      );
-                    },
-                  )
-                ],
-              );
-            }),
-          ),
-        ),
-        const EnrollBottomBar(),
-      ],
+    final courseDetail = ModalRoute.of(context)!.settings.arguments as CourseModel;
+    var section = Provider.of<CourseViewModel>(context, listen: false);
+    return FutureBuilder(
+      future: section.getAllSectionFromCourseId(courseDetail.id),
+      builder: (context, snapshot) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: ListView.separated(
+                padding: const EdgeInsets.all(16),
+                itemCount: section.allSection.length,
+                separatorBuilder: (context, index) {
+                  return const SizedBox(height: 8);
+                },
+                itemBuilder: ((context, index) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(section.allSection[index].sectionName!),
+                      const SizedBox(height: 8),
+                      FutureBuilder(
+                        future: section.getAllMaterialsFromSectionId(
+                            courseDetail.id, section.allSection[index].id),
+                        builder: (context, snapshot) {
+                          return ListView.separated(
+                            shrinkWrap: true,
+                            itemCount: section.allMaterials.length,
+                            separatorBuilder: (context, index) =>
+                                const SizedBox(height: 8),
+                            itemBuilder: (context, subIndex) {
+                              return ListTile(
+                                tileColor: Colors.grey[200],
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5)),
+                                ),
+                                leading:
+                                    const Icon(Icons.play_circle_fill_outlined),
+                                title: Text(section
+                                    .allMaterials[subIndex].materialName!),
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    ],
+                  );
+                }),
+              ),
+            ),
+            const EnrollBottomBar(),
+          ],
+        );
+      },
     );
   }
 }
@@ -280,8 +301,7 @@ class AboutTabSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final courseDetail =
-        ModalRoute.of(context)!.settings.arguments as CourseModel;
+    final courseDetail = ModalRoute.of(context)!.settings.arguments as CourseModel;
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
