@@ -17,7 +17,6 @@ class _CourseScreenState extends State<CourseScreen> {
   @override
   void initState() {
     Provider.of<CourseViewModel>(context, listen: false).getAllCourse();
-    // CourseAPI().fetchAllCourse();
     super.initState();
   }
 
@@ -57,8 +56,6 @@ class _CourseScreenState extends State<CourseScreen> {
                     child: CourseCard(
                       courseImage: course.allCourse[index].courseImage!,
                       courseName: course.allCourse[index].courseName!,
-                      // mentorName: course.allCourse[index].mentorName!,
-                      // rating: course.allCourse[index].rating!,
                       totalTime: course.allCourse[index].totalTime!,
                       totalVideo: course.allCourse[index].totalVideo.toString(),
                     ),

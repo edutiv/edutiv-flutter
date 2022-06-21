@@ -176,7 +176,8 @@ class ReviewsTabSection extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             itemCount: 4,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2),
+              crossAxisCount: 2,
+            ),
             itemBuilder: (context, index) {
               return ReviewCard(
                 img: ilust[index],
@@ -186,7 +187,7 @@ class ReviewsTabSection extends StatelessWidget {
             },
           ),
         ),
-        const EnrollBottomBar()
+        const EnrollBottomBar(),
       ],
     );
   }
@@ -199,7 +200,8 @@ class ToolsTabSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final courseDetail = ModalRoute.of(context)!.settings.arguments as CourseModel;
+    final courseDetail =
+        ModalRoute.of(context)!.settings.arguments as CourseModel;
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -235,7 +237,8 @@ class LessonTabSection extends StatefulWidget {
 class _LessonTabSectionState extends State<LessonTabSection> {
   @override
   Widget build(BuildContext context) {
-    final courseDetail = ModalRoute.of(context)!.settings.arguments as CourseModel;
+    final courseDetail =
+        ModalRoute.of(context)!.settings.arguments as CourseModel;
     var section = Provider.of<CourseViewModel>(context, listen: false);
     return FutureBuilder(
       future: section.getAllSectionFromCourseId(courseDetail.id),
@@ -250,7 +253,7 @@ class _LessonTabSectionState extends State<LessonTabSection> {
                 separatorBuilder: (context, index) {
                   return const SizedBox(height: 8);
                 },
-                itemBuilder: ((context, index) {
+                itemBuilder: (context, index) {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -258,7 +261,9 @@ class _LessonTabSectionState extends State<LessonTabSection> {
                       const SizedBox(height: 8),
                       FutureBuilder(
                         future: section.getAllMaterialsFromSectionId(
-                            courseDetail.id, section.allSection[index].id),
+                          courseDetail.id,
+                          section.allSection[index].id,
+                        ),
                         builder: (context, snapshot) {
                           return ListView.separated(
                             shrinkWrap: true,
@@ -274,8 +279,9 @@ class _LessonTabSectionState extends State<LessonTabSection> {
                                 ),
                                 leading:
                                     const Icon(Icons.play_circle_fill_outlined),
-                                title: Text(section
-                                    .allMaterials[subIndex].materialName!),
+                                title: Text(
+                                  section.allMaterials[subIndex].materialName!,
+                                ),
                               );
                             },
                           );
@@ -283,7 +289,7 @@ class _LessonTabSectionState extends State<LessonTabSection> {
                       ),
                     ],
                   );
-                }),
+                },
               ),
             ),
             const EnrollBottomBar(),
@@ -301,7 +307,8 @@ class AboutTabSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final courseDetail = ModalRoute.of(context)!.settings.arguments as CourseModel;
+    final courseDetail =
+        ModalRoute.of(context)!.settings.arguments as CourseModel;
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
