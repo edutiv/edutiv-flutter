@@ -115,8 +115,8 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
               ),
               child: Chewie(
                 controller: ChewieController(
-                  videoPlayerController:
-                      VideoPlayerController.network('videoUrl!'),
+                  videoPlayerController: VideoPlayerController.network(
+                      'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4'),
                   autoPlay: true,
                   allowFullScreen: true,
                 ),
@@ -124,11 +124,10 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
             ),
             const SizedBox(height: 16),
             Row(
-              children: [
+              children: const [
                 Text(
                   'videoTitle!',
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 16),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
               ],
             ),
@@ -149,7 +148,9 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
               children: [
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: (){},
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/successCourse');
+                    },
                     // isDisabled ? null : nextVideo,
                     child: const Text('Next Video'),
                   ),
