@@ -3,9 +3,11 @@ import 'package:edutiv/model/course/category_model.dart';
 import 'package:edutiv/model/course/course_model.dart';
 import 'package:edutiv/model/course/materials_model.dart';
 import 'package:edutiv/model/course/section_model.dart';
+import 'package:edutiv/model/course/tools_model.dart';
 import 'package:flutter/material.dart';
 
 import '../../api/course_api.dart';
+import 'review_model.dart';
 
 class CourseViewModel extends ChangeNotifier {
   List<CategoryModel> _allCategory = [];
@@ -19,6 +21,12 @@ class CourseViewModel extends ChangeNotifier {
 
   List<Materials> _allMaterials = [];
   List<Materials> get allMaterials => _allMaterials;
+
+  List<Tools> _allTools = [];
+  List<Tools> get allTools => _allTools;
+
+  List<Review> _allReview = [];
+  List<Review> get allReview => _allReview;
 
   Future<List<CategoryModel>> getAllCategory() async {
     final categoryData = await CategoryAPI().fetchAllCategory();
@@ -48,5 +56,19 @@ class CourseViewModel extends ChangeNotifier {
     _allMaterials = materialsData;
     notifyListeners();
     return allMaterials;
+  }
+
+  Future<List<Tools>> getAllToolsFromCourseId(int courseId) async {
+    final toolsData = await CourseAPI().getAllToolsFromCourseId(courseId);
+    _allTools = toolsData;
+    notifyListeners();
+    return allTools;
+  }
+
+  Future<List<Review>> getAllReviewFromCourseId(int courseId) async {
+    final reviewData = await CourseAPI().getAllReviewFromCourseId(courseId);
+    _allReview = reviewData;
+    notifyListeners();
+    return allReview;
   }
 }

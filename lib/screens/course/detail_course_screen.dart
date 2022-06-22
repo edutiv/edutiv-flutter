@@ -1,4 +1,6 @@
 import 'package:edutiv/model/course/course_model.dart';
+import 'package:edutiv/model/course/materials_model.dart';
+import 'package:edutiv/model/course/section_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -68,6 +70,7 @@ class _DetailCourseScreenState extends State<DetailCourseScreen> {
                   children: [
                     Text(
                       courseDetail.courseName!,
+                      textAlign: TextAlign.center,
                       style: const TextStyle(
                           fontSize: 18,
                           color: Colors.white,
@@ -147,48 +150,36 @@ class ReviewsTabSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> ilust = [
-      'assets/backend_ilust.jpg',
-      'assets/mobile_ilust.jpg',
-      'assets/uiux_ilust.jpg',
-      'assets/frontend_ilust.jpg',
-    ];
-
-    final List<String> judul = [
-      'Backend Engineer',
-      'Mobile Engineer',
-      'UI/UX Designer',
-      'Frontend Engineer',
-    ];
-
-    final List<String> subjudul = [
-      'Web Developer',
-      'Mobile Developer',
-      'Product Designer',
-      'Web Designer',
-    ];
-
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          child: GridView.builder(
-            padding: const EdgeInsets.all(16),
-            itemCount: 4,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
+    final courseDetail =
+        ModalRoute.of(context)!.settings.arguments as CourseModel;
+    var review = Provider.of<CourseViewModel>(context, listen: false);
+    return FutureBuilder(
+      future: review.getAllReviewFromCourseId(courseDetail.id),
+      builder: (context, snapshot) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: GridView.builder(
+                padding: const EdgeInsets.all(16),
+                itemCount: review.allReview.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                ),
+                itemBuilder: (context, index) {
+                  return ReviewCard(
+                    img: review.allReview[index].user!.role!,
+                    title: review.allReview[index].user!.firstname!,
+                    rating: review.allReview[index].rating!.toDouble(),
+                    desc: review.allReview[index].review!,
+                  );
+                },
+              ),
             ),
-            itemBuilder: (context, index) {
-              return ReviewCard(
-                img: ilust[index],
-                title: judul[index],
-                desc: subjudul[index],
-              );
-            },
-          ),
-        ),
-        const EnrollBottomBar(),
-      ],
+            const EnrollBottomBar(),
+          ],
+        );
+      },
     );
   }
 }
@@ -202,25 +193,28 @@ class ToolsTabSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final courseDetail =
         ModalRoute.of(context)!.settings.arguments as CourseModel;
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          child: ListView.builder(
-            itemCount: 2,
-            // courseDetail.tools?.length,
-            itemBuilder: (context, index) {
-              return ToolsCard(
-                toolsName: '',
-                // courseDetail.tools![index].toolsName!,
-                imgUrl: '',
-                // courseDetail.tools?[index].toolsIcon,
-              );
-            },
-          ),
-        ),
-        const EnrollBottomBar(),
-      ],
+    var tools = Provider.of<CourseViewModel>(context, listen: false);
+    return FutureBuilder(
+      future: tools.getAllToolsFromCourseId(courseDetail.id),
+      builder: (context, snapshot) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: ListView.builder(
+                itemCount: tools.allTools.length,
+                itemBuilder: (context, index) {
+                  return ToolsCard(
+                    toolsName: tools.allTools[index].toolsName,
+                    imgUrl: tools.allTools[index].toolsIcon,
+                  );
+                },
+              ),
+            ),
+            const EnrollBottomBar(),
+          ],
+        );
+      },
     );
   }
 }
@@ -240,62 +234,82 @@ class _LessonTabSectionState extends State<LessonTabSection> {
     final courseDetail =
         ModalRoute.of(context)!.settings.arguments as CourseModel;
     var section = Provider.of<CourseViewModel>(context, listen: false);
-    return FutureBuilder(
-      future: section.getAllSectionFromCourseId(courseDetail.id),
-      builder: (context, snapshot) {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: ListView.separated(
-                padding: const EdgeInsets.all(16),
-                itemCount: section.allSection.length,
-                separatorBuilder: (context, index) {
-                  return const SizedBox(height: 8);
-                },
-                itemBuilder: (context, index) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(section.allSection[index].sectionName!),
-                      const SizedBox(height: 8),
-                      FutureBuilder(
-                        future: section.getAllMaterialsFromSectionId(
-                          courseDetail.id,
-                          section.allSection[index].id,
-                        ),
-                        builder: (context, snapshot) {
-                          return ListView.separated(
-                            shrinkWrap: true,
-                            itemCount: section.allMaterials.length,
-                            separatorBuilder: (context, index) =>
-                                const SizedBox(height: 8),
-                            itemBuilder: (context, subIndex) {
-                              return ListTile(
-                                tileColor: Colors.grey[200],
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(5)),
-                                ),
-                                leading:
-                                    const Icon(Icons.play_circle_fill_outlined),
-                                title: Text(
-                                  section.allMaterials[subIndex].materialName!,
-                                ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: FutureBuilder<List<Section>>(
+            future: section.getAllSectionFromCourseId(courseDetail.id),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.connectionState == ConnectionState.done &&
+                  snapshot.hasData) {
+                return ListView.separated(
+                  padding: const EdgeInsets.all(16),
+                  itemCount: snapshot.data!.length,
+                  separatorBuilder: (context, index) {
+                    return const SizedBox(height: 8);
+                  },
+                  itemBuilder: (context, index) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(snapshot.data![index].sectionName!),
+                        const SizedBox(height: 8),
+                        FutureBuilder<List<Materials>>(
+                          future: section.getAllMaterialsFromSectionId(
+                            courseDetail.id,
+                            section.allSection[index].id,
+                          ),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            } else if (snapshot.connectionState ==
+                                    ConnectionState.done &&
+                                snapshot.hasData) {
+                              return ListView.separated(
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: snapshot.data!.length,
+                                separatorBuilder: (context, index) =>
+                                    const SizedBox(height: 8),
+                                itemBuilder: (context, subIndex) {
+                                  return ListTile(
+                                    tileColor: Colors.grey[200],
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(5)),
+                                    ),
+                                    leading: const Icon(
+                                        Icons.play_circle_fill_outlined),
+                                    title: Text(
+                                      snapshot.data![subIndex].materialName!,
+                                    ),
+                                  );
+                                },
                               );
-                            },
-                          );
-                        },
-                      ),
-                    ],
-                  );
-                },
-              ),
-            ),
-            const EnrollBottomBar(),
-          ],
-        );
-      },
+                            } else {
+                              return const Center(
+                                child: Icon(Icons.error_rounded),
+                              );
+                            }
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              } else {
+                return const Center(child: Icon(Icons.error_rounded));
+              }
+            },
+          ),
+        ),
+        const EnrollBottomBar(),
+      ],
     );
   }
 }

@@ -5,14 +5,15 @@ part 'tools_model.g.dart';
 @JsonSerializable()
 class Tools {
   int id;
-  CourseModel courseId;
+  @JsonKey(name: 'tool_name')
   String? toolsName;
+  @JsonKey(name: 'tool_icon')
   String? toolsIcon;
+  @JsonKey(name: 'tool_url')
   String? url;
 
   Tools({
     required this.id,
-    required this.courseId,
     this.toolsName,
     this.toolsIcon,
     this.url,

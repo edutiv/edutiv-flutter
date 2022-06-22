@@ -5,10 +5,15 @@ class ReviewCard extends StatelessWidget {
   String img;
   String title;
   String desc;
+  double rating;
 
-  ReviewCard(
-      {Key? key, required this.img, required this.title, required this.desc})
-      : super(key: key);
+  ReviewCard({
+    Key? key,
+    required this.img,
+    required this.title,
+    required this.desc,
+    required this.rating,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +24,7 @@ class ReviewCard extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 30,
-            backgroundImage: AssetImage(
+            backgroundImage: NetworkImage(
               img,
             ),
           ),
@@ -30,7 +35,7 @@ class ReviewCard extends StatelessWidget {
             ),
           ),
           RatingBarIndicator(
-            rating: 2.75,
+            rating: rating,
             itemBuilder: (context, index) => const Icon(
               Icons.star,
               color: Colors.amber,
@@ -40,6 +45,7 @@ class ReviewCard extends StatelessWidget {
           ),
           Text(
             desc,
+            textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 11,
               color: Colors.grey[800],

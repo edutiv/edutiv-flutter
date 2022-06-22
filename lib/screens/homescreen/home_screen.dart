@@ -31,13 +31,6 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: const Logo(),
-        actions: [
-          IconButton(
-            color: Colors.grey[800],
-            onPressed: () {},
-            icon: const Icon(Icons.settings),
-          )
-        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),

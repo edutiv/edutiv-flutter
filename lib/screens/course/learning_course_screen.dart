@@ -1,10 +1,12 @@
-import 'package:chewie/chewie.dart';
 import 'package:edutiv/components/learning_menu_drawer.dart';
+import 'package:edutiv/model/course/tools_model.dart';
 import 'package:flutter/material.dart';
-import 'package:video_player/video_player.dart';
+import 'package:provider/provider.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../../components/tools_card.dart';
 import '../../model/course/course_model.dart';
+import '../../model/course/course_viewmodel.dart';
 
 class LearningCourseScreen extends StatefulWidget {
   const LearningCourseScreen({Key? key}) : super(key: key);
@@ -16,8 +18,19 @@ class LearningCourseScreen extends StatefulWidget {
 class _LearningCourseScreenState extends State<LearningCourseScreen> {
   // @override
   // void initState() {
-  //   videoPlayerController.initialize();
+  //   // videoPlayerController.initialize();
+  //   final material = ModalRoute.of(context)!.settings.arguments as CourseModel;
+  //   Provider.of<CourseViewModel>(context, listen: false)
+  //       .getAllToolsFromCourseId(material.id);
   //   super.initState();
+  // }
+
+  // @override
+  // void didChangeDependencies() {
+  //   final material = ModalRoute.of(context)!.settings.arguments as CourseModel;
+  //   Provider.of<CourseViewModel>(context, listen: false)
+  //       .getAllToolsFromCourseId(material.id);
+  //   super.didChangeDependencies();
   // }
 
   // final videoPlayerController = VideoPlayerController.network(
@@ -34,12 +47,16 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final material = ModalRoute.of(context)!.settings.arguments as CourseModel;
+    final courseDetail =
+        ModalRoute.of(context)!.settings.arguments as CourseModel;
+    var courseData = Provider.of<CourseViewModel>(context, listen: false);
+    // bool isDisabled = false;
+    var sectionLength = courseData.allSection.length;
+    var materialLength = courseData.allMaterials.length;
+
     // var videoUrl = material.section?[sectionIndex].material?[materialIndex].url;
     // var videoTitle = material.section?[sectionIndex].material?[materialIndex].materialName;
-    // var materialLength = material.section?[sectionIndex].material?.length;
-    // var sectionLength = material.section?.length;
-    bool isDisabled = false;
+    var vTitle = courseData.allSection[sectionIndex];
 
     // void nextVideo() {
     //   print(materialIndex);
@@ -83,7 +100,7 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
         ),
         centerTitle: true,
         title: Text(
-          material.courseName!,
+          courseDetail.courseName!,
           style: const TextStyle(color: Colors.black, fontSize: 14),
         ),
         actions: [
@@ -113,21 +130,38 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(5)),
               ),
-              child: Chewie(
-                controller: ChewieController(
-                  videoPlayerController: VideoPlayerController.network(
-                      'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4'),
-                  autoPlay: true,
-                  allowFullScreen: true,
+              child: YoutubePlayerBuilder(
+                player: YoutubePlayer(
+                  controller: YoutubePlayerController(
+                    initialVideoId: YoutubePlayer.convertUrlToId(
+                            'https://www.youtube.com/watch?v=zkbTp3-zBGg')
+                        .toString(),
+                  ),
                 ),
+                builder: (context, player) {
+                  return Container(
+                    child: player,
+                  );
+                },
               ),
+              // Chewie(
+              //   controller: ChewieController(
+              //     videoPlayerController: VideoPlayerController.network(
+              //         courseData.allMaterials[materialIndex].url!),
+              //     autoPlay: true,
+              //     allowFullScreen: true,
+              //   ),
+              // ),
             ),
             const SizedBox(height: 16),
             Row(
-              children: const [
+              children: [
                 Text(
-                  'videoTitle!',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  courseData.allMaterials[materialIndex].materialName!,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
                 ),
               ],
             ),
@@ -169,16 +203,26 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
             SizedBox(
               width: double.infinity,
               height: 290,
-              child: ListView.builder(
-                itemCount: 2,
-                // material.tools?.length,
-                itemBuilder: (context, index) {
-                  return ToolsCard(
-                    toolsName: '',
-                    // material.tools![index].toolsName!,
-                    imgUrl: '',
-                    // material.tools?[index].toolsIcon,
-                  );
+              child: FutureBuilder<List<Tools>>(
+                future: courseData.getAllToolsFromCourseId(courseDetail.id),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.connectionState == ConnectionState.done &&
+                      snapshot.hasData) {
+                    return ListView.builder(
+                      physics: const BouncingScrollPhysics(),
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (context, index) {
+                        return ToolsCard(
+                          toolsName: snapshot.data?[index].toolsName,
+                          imgUrl: snapshot.data?[index].toolsIcon,
+                        );
+                      },
+                    );
+                  } else {
+                    return const Center(child: Icon(Icons.error_rounded));
+                  }
                 },
               ),
             )

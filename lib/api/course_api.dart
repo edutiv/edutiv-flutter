@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:edutiv/model/course/course_model.dart';
 import 'package:edutiv/model/course/materials_model.dart';
+import 'package:edutiv/model/course/review_model.dart';
 import 'package:edutiv/model/course/section_model.dart';
+import 'package:edutiv/model/course/tools_model.dart';
 
 class CourseAPI {
   Dio dio = Dio(
@@ -48,6 +50,34 @@ class CourseAPI {
       return allMaterials;
     } else {
       throw Exception('No Materials Available');
+    }
+  }
+
+  Future<List<Tools>> getAllToolsFromCourseId(int courseId) async {
+    Response response = await Dio()
+        .get('https://edutiv-springboot.herokuapp.com/course/$courseId/tool');
+
+    if (response.statusCode == 200) {
+      List<Tools> allTools = (response.data['data'] as List)
+          .map((e) => Tools.fromJson(e))
+          .toList();
+      return allTools;
+    } else {
+      throw Exception('No Tools Available');
+    }
+  }
+
+  Future<List<Review>> getAllReviewFromCourseId(int courseId) async {
+    Response response = await Dio()
+        .get('https://edutiv-springboot.herokuapp.com/course/$courseId/review');
+
+    if (response.statusCode == 200) {
+      List<Review> allReview = (response.data['data'] as List)
+          .map((e) => Review.fromJson(e))
+          .toList();
+      return allReview;
+    } else {
+      throw Exception('No Reviews Available');
     }
   }
 }

@@ -9,13 +9,13 @@ class Review {
   int id;
   int? rating;
   String? review;
-  UserModel user;
-  CourseModel course;
+  UserModel? user;
+  CourseModel? course;
 
   Review({
     required this.id,
-    required this.user,
-    required this.course,
+    this.user,
+    this.course,
     this.rating,
     this.review,
   });
