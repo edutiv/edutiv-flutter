@@ -1,5 +1,3 @@
-import 'package:edutiv/model/course/materials_model.dart';
-import 'package:edutiv/model/course/section_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,9 +13,16 @@ class LearningMenuDrawer extends StatefulWidget {
 
 class _LearningMenuDrawerState extends State<LearningMenuDrawer> {
   @override
-  Widget build(BuildContext context) {
+  void didChangeDependencies() {
     final courseDetail =
         ModalRoute.of(context)!.settings.arguments as CourseModel;
+    Provider.of<CourseViewModel>(context, listen: false)
+        .getCourseById(courseDetail.id);
+    super.didChangeDependencies();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     var section = Provider.of<CourseViewModel>(context, listen: false);
     return Drawer(
       child: Container(
@@ -26,73 +31,51 @@ class _LearningMenuDrawerState extends State<LearningMenuDrawer> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: FutureBuilder<List<Section>>(
-                future: section.getAllSectionFromCourseId(courseDetail.id),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.connectionState == ConnectionState.done &&
-                      snapshot.hasData) {
-                    return ListView.separated(
-                      itemCount: snapshot.data!.length,
-                      shrinkWrap: true,
-                      separatorBuilder: (context, index) {
-                        return const SizedBox(height: 16);
-                      },
-                      itemBuilder: (context, index) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(snapshot.data![index].sectionName!),
+              child: ListView.separated(
+                itemCount: section.courseData.sections!.length,
+                separatorBuilder: (context, index) => const SizedBox(height: 8),
+                itemBuilder: (context, index) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(section.courseData.sections![index].sectionName!),
+                      const SizedBox(height: 8),
+                      ListView.separated(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: section
+                            .courseData.sections![index].materials!.length,
+                        separatorBuilder: (context, index) =>
                             const SizedBox(height: 8),
-                            FutureBuilder<List<Materials>>(
-                              future: section.getAllMaterialsFromSectionId(
-                                  courseDetail.id,
-                                  section.allSection[index].id),
-                              builder: (context, snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return const Center(
-                                      child: CircularProgressIndicator());
-                                } else if (snapshot.connectionState ==
-                                        ConnectionState.done &&
-                                    snapshot.hasData) {
-                                  return ListView.separated(
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    separatorBuilder: (context, index) =>
-                                        const SizedBox(height: 8),
-                                    itemCount: snapshot.data!.length,
-                                    itemBuilder: (context, subIndex) {
-                                      return CheckboxListTile(
-                                        tileColor: Colors.grey[200],
-                                        value: false,
-                                        onChanged: (isCompleted) {},
-                                        controlAffinity:
-                                            ListTileControlAffinity.trailing,
-                                        title: Text(
-                                          snapshot
-                                              .data![subIndex].materialName!,
-                                        ),
-                                        secondary: const Icon(
-                                          Icons.play_circle_fill_outlined,
-                                        ),
-                                      );
-                                    },
-                                  );
-                                } else {
-                                  return const Text('Failed to Get Materials');
-                                }
-                              },
+                        itemBuilder: (context, subIndex) {
+                          return ListTile(
+                            tileColor: Colors.grey[200],
+                            shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5)),
                             ),
-                          ],
-                        );
-                      },
-                    );
-                  } else {
-                    return const Text('Failed');
-                  }
+                            leading: section.courseData.sections![index]
+                                        .materials![subIndex].materialType ==
+                                    'slide'
+                                ? const Icon(Icons.slideshow_rounded)
+                                : section
+                                            .courseData
+                                            .sections![index]
+                                            .materials![subIndex]
+                                            .materialType ==
+                                        'quiz'
+                                    ? const Icon(Icons.history_edu_rounded)
+                                    : const Icon(
+                                        Icons.play_circle_filled_rounded),
+                            title: Text(
+                              section.courseData.sections![index]
+                                  .materials![subIndex].materialName!,
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  );
                 },
               ),
             ),

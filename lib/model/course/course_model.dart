@@ -1,4 +1,7 @@
 import 'package:edutiv/model/course/category_model.dart';
+import 'package:edutiv/model/course/review_model.dart';
+import 'package:edutiv/model/course/section_model.dart';
+import 'package:edutiv/model/course/tools_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'course_model.g.dart';
 
@@ -15,11 +18,9 @@ class CourseModel {
   int? totalVideo;
   @JsonKey(name: 'total_times')
   String? totalTime;
-  // int? rating;
-  // String? mentorName;
-  // List<Section>? section;
-  // List<Tools>? tools;
-  // List<Review>? reviews;
+  List<Section>? sections;
+  List<Review>? reviews;
+  List<Tools>? tools;
 
   CourseModel({
     required this.id,
@@ -29,8 +30,12 @@ class CourseModel {
     this.description,
     this.totalVideo,
     this.totalTime,
+    this.sections,
+    this.reviews,
+    this.tools,
   });
 
-  factory CourseModel.fromJson(Map<String, dynamic> json) => _$CourseModelFromJson(json);
+  factory CourseModel.fromJson(Map<String, dynamic> json) =>
+      _$CourseModelFromJson(json);
   Map<String, dynamic> toJson() => _$CourseModelToJson(this);
 }

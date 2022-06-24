@@ -14,6 +14,8 @@ class CourseScreen extends StatefulWidget {
 }
 
 class _CourseScreenState extends State<CourseScreen> {
+  bool isEmpty = false;
+
   @override
   void initState() {
     Provider.of<CourseViewModel>(context, listen: false).getAllCourse();
@@ -56,6 +58,7 @@ class _CourseScreenState extends State<CourseScreen> {
                     child: CourseCard(
                       courseImage: course.allCourse[index].courseImage!,
                       courseName: course.allCourse[index].courseName!,
+                      rating: course.allCourse[index].reviews?[0].rating,
                       totalTime: course.allCourse[index].totalTime!,
                       totalVideo: course.allCourse[index].totalVideo.toString(),
                     ),

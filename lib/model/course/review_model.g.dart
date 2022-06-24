@@ -8,8 +8,12 @@ part of 'review_model.dart';
 
 Review _$ReviewFromJson(Map<String, dynamic> json) => Review(
       id: json['id'] as int,
-      user: UserModel.fromJson(json['user'] as Map<String, dynamic>),
-      course: CourseModel.fromJson(json['course'] as Map<String, dynamic>),
+      user: json['user'] == null
+          ? null
+          : UserModel.fromJson(json['user'] as Map<String, dynamic>),
+      course: json['course'] == null
+          ? null
+          : CourseModel.fromJson(json['course'] as Map<String, dynamic>),
       rating: json['rating'] as int?,
       review: json['review'] as String?,
     );

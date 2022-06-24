@@ -26,8 +26,11 @@ class EnrollBottomBar extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: ElevatedButton(
-          onPressed: () => Navigator.pushNamed(context, '/learningCourse',
-              arguments: courseDetail),
+          onPressed: () => Navigator.pushNamed(
+            context,
+            '/learningCourse',
+            arguments: courseDetail,
+          ),
           child: const Text('ENROLL COURSE'),
         ),
       ),

@@ -16,6 +16,15 @@ CourseModel _$CourseModelFromJson(Map<String, dynamic> json) => CourseModel(
       description: json['description'] as String?,
       totalVideo: json['total_video'] as int?,
       totalTime: json['total_times'] as String?,
+      sections: (json['sections'] as List<dynamic>?)
+          ?.map((e) => Section.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      reviews: (json['reviews'] as List<dynamic>?)
+          ?.map((e) => Review.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      tools: (json['tools'] as List<dynamic>?)
+          ?.map((e) => Tools.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$CourseModelToJson(CourseModel instance) =>
@@ -27,4 +36,7 @@ Map<String, dynamic> _$CourseModelToJson(CourseModel instance) =>
       'description': instance.description,
       'total_video': instance.totalVideo,
       'total_times': instance.totalTime,
+      'sections': instance.sections,
+      'reviews': instance.reviews,
+      'tools': instance.tools,
     };
