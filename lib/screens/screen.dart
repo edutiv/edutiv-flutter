@@ -25,6 +25,7 @@ export 'course/success_course_screen.dart';
 
 //Profile
 export './profile/profile_screen.dart';
+export './profile/edit_profile_screen.dart';
 export './profile/faq_screen.dart';
 export './profile/form_request_screen.dart';
 export './profile/certificate_screen.dart';

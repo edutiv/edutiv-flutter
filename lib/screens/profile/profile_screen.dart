@@ -26,7 +26,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: CircleAvatar(
               backgroundColor: const Color.fromARGB(62, 158, 158, 158),
               child: IconButton(
-                onPressed: () {},
+                onPressed: () => Navigator.pushNamed(context, '/editProfile'),
                 icon: const Icon(Icons.edit_outlined, color: Colors.white),
               ),
             ),
