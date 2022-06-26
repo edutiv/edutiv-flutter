@@ -11,39 +11,54 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        minimum: const EdgeInsets.fromLTRB(27, 0, 27, 0),
+      appBar: AppBar(
+        leading: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 7),
+          child: CircleAvatar(
+            backgroundColor: const Color.fromARGB(62, 158, 158, 158),
+            child: IconButton(
+              onPressed: () => Navigator.of(context).pop(),
+              icon: const Icon(Icons.chevron_left_outlined,
+                  color: Color(0xFF126E64)),
+            ),
+          ),
+        ),
+        iconTheme: const IconThemeData(color: Color(0xFF126E64)),
+        titleTextStyle: const TextStyle(color: Colors.black),
+        centerTitle: true,
+        title: const Text(
+          'Certificate',
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              'Edutiv.',
-              style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).primaryColor),
-            ),
-            Center(
-              child: Image.asset('assets/key_icon.png', width: 48, height: 48),
-            ),
-            Center(
+            Container(
+              margin: const EdgeInsets.only(bottom: 32, top: 14),
+              height: 300,
               child: Column(
-                children: const [
-                  Text(
+                children: [
+                  Image.asset(
+                    'assets/forget_pass_icon.png',
+                    width: 200,
+                    height: 200,
+                  ),
+                  const Text(
                     'Forget Password',
                     style: TextStyle(fontSize: 28),
                   ),
-                  Text(
+                  const Text(
                     'No worries, we\'ll send you reset instruction',
                     style: TextStyle(fontSize: 13, color: Colors.grey),
                   )
                 ],
               ),
             ),
-            const SizedBox(height: 8),
-            Center(
+            // const SizedBox(height: 14),
+            Form(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -62,12 +77,20 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                 ],
               ),
             ),
-            Center(
-              child: ElevatedButton(
-                onPressed: () =>
-                    Navigator.pushNamed(context, '/confirmPasswordReset'),
-                child: const Text('SEND RESET LINK'),
-              ),
+            const SizedBox(height: 32),
+            Row(
+              children: [
+                Expanded(
+                  child: SizedBox(
+                    height: 45,
+                    child: ElevatedButton(
+                      onPressed: () =>
+                          Navigator.pushNamed(context, '/confirmPasswordReset'),
+                      child: const Text('SEND RESET LINK'),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),

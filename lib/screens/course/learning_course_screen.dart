@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../../components/learning_menu_drawer.dart';
 import '../../components/tools_card.dart';
@@ -14,48 +15,76 @@ class LearningCourseScreen extends StatefulWidget {
 }
 
 class _LearningCourseScreenState extends State<LearningCourseScreen> {
-  @override
-  void didChangeDependencies() {
-    final courseDetail =
-        ModalRoute.of(context)!.settings.arguments as CourseModel;
-    Provider.of<CourseViewModel>(context, listen: false)
-        .getCourseById(courseDetail.id);
-    super.didChangeDependencies();
-  }
-
   int sectionIndex = 0;
   int materialIndex = 0;
-  // final videoPlayerController = VideoPlayerController.network(
-  //   'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4',
-  // );
+  late YoutubePlayerController ytController;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance!.addPostFrameCallback((_) async {
+      final courseDetail =
+          ModalRoute.of(context)!.settings.arguments as CourseModel;
+      Provider.of<CourseViewModel>(context, listen: false)
+          .getCourseById(courseDetail.id);
+      var vid = Provider.of<CourseViewModel>(context, listen: false).courseData;
+      String url = vid.sections![sectionIndex].materials![materialIndex].url!;
+      ytController = YoutubePlayerController(
+        initialVideoId: YoutubePlayer.convertUrlToId(url)!,
+        // flags: const YoutubePlayerFlags(autoPlay: false),
+      );
+    });
+
+    super.initState();
+  }
+
+  // @override
+  // void didChangeDependencies() {
+  //   final courseDetail =
+  //       ModalRoute.of(context)!.settings.arguments as CourseModel;
+  //   Provider.of<CourseViewModel>(context).getCourseById(courseDetail.id);
+  //   super.didChangeDependencies();
+  // }
 
   @override
   Widget build(BuildContext context) {
     var data = Provider.of<CourseViewModel>(context);
 
-    // void nextVideo() {
-    //   if (materialIndex == materialLength - 1) {
-    //     setState(() {
-    //       sectionIndex++;
-    //       materialIndex = 0;
-    //     });
-    //   } else if (sectionIndex == sectionLength - 1 &&
-    //       materialIndex == materialLength - 1) {
-    //     setState(() {
-    //       // isDisabled = true;
-    //     });
-    //   } else {
-    //     setState(() {
-    //       materialIndex++;
-    //     });
-    //   }
-    // }
+    int materialLength =
+        data.courseData.sections![sectionIndex].materials!.length;
+    int sectionLength = data.courseData.sections!.length;
+    String url =
+        data.courseData.sections![sectionIndex].materials![materialIndex].url!;
 
-    // void prevVideo() {
-    //   setState(() {
-    //     materialIndex--;
-    //   });
-    // }
+    void nextVideo() {
+      setState(() {
+        materialIndex++;
+      });
+      ytController.load(YoutubePlayer.convertUrlToId(url)!);
+      // if (materialIndex == materialLength) {
+      //   setState(() {
+      //     materialIndex = 0;
+      //     sectionIndex++;
+      //     ytController.load(
+      //         YoutubePlayer.convertUrlToId(url.replaceAll(r'/embed/', '/'))!);
+      //   });
+      // } else if (sectionIndex == sectionLength &&
+      //     materialIndex == materialLength) {
+      //   setState(() {});
+      // } else {
+      //   setState(() {
+      //     materialIndex++;
+      //     ytController.load(YoutubePlayer.convertUrlToId(url)!);
+      //   });
+      // }
+    }
+
+    void prevVideo() {
+      setState(() {
+        materialIndex--;
+        ytController.load(YoutubePlayer.convertUrlToId(url)!);
+      });
+    }
+
     return Scaffold(
       endDrawer: const LearningMenuDrawer(),
       appBar: AppBar(
@@ -96,29 +125,23 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-                alignment: Alignment.center,
-                width: double.infinity,
-                height: 200,
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(5)),
-                ),
-                child: null
-                // YoutubePlayer(controller: youtubePlayerController),
-                // Chewie(
-                //   controller: ChewieController(
-                //     videoPlayerController: VideoPlayerController.network(
-                //         courseData.allMaterials[materialIndex].url!),
-                //     autoPlay: true,
-                //     allowFullScreen: true,
-                //   ),
-                // ),
-                ),
+              alignment: Alignment.center,
+              width: double.infinity,
+              height: 200,
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(5)),
+              ),
+              child: YoutubePlayer(
+                controller: ytController,
+              ),
+            ),
             const SizedBox(height: 16),
             Row(
-              children: const [
+              children: [
                 Text(
-                  'videoTitle!',
-                  style: TextStyle(
+                  data.courseData.sections![sectionIndex]
+                      .materials![materialIndex].materialName!,
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
@@ -130,7 +153,7 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
                 Expanded(
                   child: OutlinedButton(
                     onPressed: () {
-                      // prevVideo();
+                      prevVideo();
                       // Navigator.pushNamed(context, '/successCourse');
                     },
                     child: const Text('Previous'),
@@ -143,10 +166,9 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-                      // nextVideo();
+                      nextVideo();
                       // Navigator.pushNamed(context, '/successCourse');
                     },
-                    // isDisabled ? null : nextVideo,
                     child: const Text('Next Video'),
                   ),
                 ),
@@ -164,16 +186,18 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
             SizedBox(
               width: double.infinity,
               height: 290,
-              child: ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                itemCount: data.courseData.tools!.length,
-                itemBuilder: (context, index) {
-                  return ToolsCard(
-                    toolsName: data.courseData.tools![index].toolsName,
-                    imgUrl: data.courseData.tools![index].toolsIcon,
-                  );
-                },
-              ),
+              child: Consumer<CourseViewModel>(builder: (context, data, child) {
+                return ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: data.courseData.tools!.length,
+                  itemBuilder: (context, index) {
+                    return ToolsCard(
+                      toolsName: data.courseData.tools![index].toolsName,
+                      imgUrl: data.courseData.tools![index].toolsIcon,
+                    );
+                  },
+                );
+              }),
             )
           ],
         ),

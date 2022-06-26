@@ -91,10 +91,13 @@ class _LoginScreenState extends State<LoginScreen> {
             Row(
               children: [
                 Expanded(
-                  child: ElevatedButton(
-                    onPressed: () =>
-                        Navigator.pushReplacementNamed(context, '/mainpage'),
-                    child: const Text('LOGIN'),
+                  child: SizedBox(
+                    height: 45,
+                    child: ElevatedButton(
+                      onPressed: () =>
+                          Navigator.pushReplacementNamed(context, '/mainpage'),
+                      child: const Text('LOGIN'),
+                    ),
                   ),
                 ),
               ],
@@ -115,16 +118,17 @@ class buildLoginTextHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 32),
-      height: 150,
+      height: 300,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: const [
-          Text(
+        children: [
+          Image.asset('assets/login_hero.png'),
+          const Text(
             'Welcome Back',
             style: TextStyle(fontSize: 28),
           ),
-          Text(
+          const Text(
             'Please login with your account to continue',
             style: TextStyle(fontSize: 13, color: Colors.grey),
           ),

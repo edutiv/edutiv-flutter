@@ -58,7 +58,9 @@ class _CourseScreenState extends State<CourseScreen> {
                     child: CourseCard(
                       courseImage: course.allCourse[index].courseImage!,
                       courseName: course.allCourse[index].courseName!,
-                      rating: course.allCourse[index].reviews?[0].rating,
+                      rating: course.allCourse[index].reviews!.isEmpty
+                          ? 0
+                          : course.allCourse[index].reviews![0].rating,
                       totalTime: course.allCourse[index].totalTime!,
                       totalVideo: course.allCourse[index].totalVideo.toString(),
                     ),

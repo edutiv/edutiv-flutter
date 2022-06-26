@@ -13,45 +13,54 @@ class _ConfirmPasswordResetScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        minimum: const EdgeInsets.fromLTRB(27, 0, 27, 0),
+      appBar: AppBar(
+        titleTextStyle: const TextStyle(color: Colors.black),
+        centerTitle: true,
+        title: const Text(
+          'Check Your Email',
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              'Edutiv.',
-              style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).primaryColor),
-            ),
-            Center(
-              child:
-                  Image.asset('assets/email_icon.png', width: 48, height: 48),
-            ),
-            const Center(
-                child: Text(
-              'Check Your Email',
-              style: TextStyle(fontSize: 28),
-            )),
-            const Center(
-                child: Text(
-              'We sent a password reset link to',
-              style: TextStyle(fontSize: 13, color: Colors.grey),
-            )),
-            const Center(
-                child: Text(
-              'admin@gmail.com',
-              style: TextStyle(fontSize: 13, color: Colors.grey),
-            )),
-            const SizedBox(height: 8),
-            Center(
-              child: ElevatedButton(
-                onPressed: () => Navigator.pushNamed(context, '/passwordReset'),
-                child: const Text('OPEN EMAIL APP'),
+            Container(
+              margin: const EdgeInsets.only(bottom: 32, top: 14),
+              height: 300,
+              child: Column(
+                children: [
+                  Image.asset('assets/email_icon.png', width: 200, height: 200),
+                  const SizedBox(height: 26),
+                  const Text('Check Your Email',
+                      style: TextStyle(fontSize: 28)),
+                  const Text(
+                    'We sent a password reset link to',
+                    style: TextStyle(fontSize: 13, color: Colors.grey),
+                  ),
+                  const Text(
+                    'admin@gmail.com',
+                    style: TextStyle(fontSize: 13, color: Colors.grey),
+                  ),
+                ],
               ),
+            ),
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                Expanded(
+                  child: SizedBox(
+                    height: 45,
+                    child: ElevatedButton(
+                      onPressed: () =>
+                          Navigator.pushNamed(context, '/passwordReset'),
+                      child: const Text('SEND RESET LINK'),
+                    ),
+                  ),
+                ),
+              ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

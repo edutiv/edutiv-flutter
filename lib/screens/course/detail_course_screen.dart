@@ -20,8 +20,7 @@ class _DetailCourseScreenState extends State<DetailCourseScreen> {
   void didChangeDependencies() {
     final courseDetail =
         ModalRoute.of(context)!.settings.arguments as CourseModel;
-    Provider.of<CourseViewModel>(context, listen: false)
-        .getCourseById(courseDetail.id);
+    Provider.of<CourseViewModel>(context).getCourseById(courseDetail.id);
     super.didChangeDependencies();
   }
 
@@ -184,7 +183,7 @@ class LessonTabSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var section = Provider.of<CourseViewModel>(context, listen: false);
+    var section = Provider.of<CourseViewModel>(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

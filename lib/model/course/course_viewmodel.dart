@@ -15,18 +15,6 @@ class CourseViewModel extends ChangeNotifier {
   late CourseModel _courseData;
   CourseModel get courseData => _courseData;
 
-  // List<Section> _allSection = [];
-  // List<Section> get allSection => _allSection;
-
-  // List<Materials> _allMaterials = [];
-  // List<Materials> get allMaterials => _allMaterials;
-
-  // List<Tools> _allTools = [];
-  // List<Tools> get allTools => _allTools;
-
-  // List<Review> _allReview = [];
-  // List<Review> get allReview => _allReview;
-
   Future<List<CategoryModel>> getAllCategory() async {
     final categoryData = await CategoryAPI().fetchAllCategory();
     _allCategory = categoryData;
@@ -47,6 +35,18 @@ class CourseViewModel extends ChangeNotifier {
     notifyListeners();
     return course;
   }
+
+  // List<Section> _allSection = [];
+  // List<Section> get allSection => _allSection;
+
+  // List<Materials> _allMaterials = [];
+  // List<Materials> get allMaterials => _allMaterials;
+
+  // List<Tools> _allTools = [];
+  // List<Tools> get allTools => _allTools;
+
+  // List<Review> _allReview = [];
+  // List<Review> get allReview => _allReview;
 
   // Future<List<Section>> getAllSectionFromCourseId(int id) async {
   //   final sectionData = await CourseAPI().getAllSectionFromCourseId(id);
