@@ -49,6 +49,7 @@ class _CertificateScreenState extends State<CertificateScreen> {
         separatorBuilder: (context, index) => const SizedBox(height: 20),
         itemBuilder: (context, index) {
           return ListTile(
+            onTap: () => Navigator.pushNamed(context, '/certificateDetail'),
             leading: Container(
               width: 100,
               height: 100,

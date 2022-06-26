@@ -72,6 +72,7 @@ class MyApp extends StatelessWidget {
           '/faq': (context) => const FAQScreen(),
           '/formRequest': (context) => const FormRequestScreen(),
           '/certificate': (context) => const CertificateScreen(),
+          '/certificateDetail': (context) => const CertificateDetailScreen(),
           '/search': (context) => const SearchScreen(),
         },
       ),
