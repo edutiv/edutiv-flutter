@@ -118,12 +118,16 @@ class buildLoginTextHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 32),
-      height: 300,
+      height: 260,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Image.asset('assets/login_hero.png'),
+          Image.asset(
+            'assets/login_hero.png',
+            width: 200,
+            height: 200,
+          ),
           const Text(
             'Welcome Back',
             style: TextStyle(fontSize: 28),

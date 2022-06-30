@@ -50,6 +50,11 @@ class _WishlistScreenState extends State<WishlistScreen> {
                       wishlishedCourse.wishlishedCourse[index].courseImage!,
                   courseName:
                       wishlishedCourse.wishlishedCourse[index].courseName!,
+                  rating:
+                      wishlishedCourse.wishlishedCourse[index].reviews!.isEmpty
+                          ? 0
+                          : wishlishedCourse
+                              .wishlishedCourse[index].reviews![0].rating,
                   totalTime:
                       wishlishedCourse.wishlishedCourse[index].totalTime!,
                   totalVideo: wishlishedCourse

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../model/course/course_model.dart';
+import '../screens/course/learning_course_screen.dart';
 
 class EnrollBottomBar extends StatelessWidget {
   const EnrollBottomBar({
@@ -26,17 +27,20 @@ class EnrollBottomBar extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: ElevatedButton(
-          onPressed: () =>
-              // Navigator.push(
-              //     context,
-              //     MaterialPageRoute(
-              //       builder: (context) => LearningCourseScreen(id: courseDetail.id),
-              //     )),
-              Navigator.pushNamed(
+          onPressed: () => Navigator.push(
             context,
-            '/learningCourse',
-            arguments: courseDetail,
+            MaterialPageRoute(
+              builder: (context) => LearningCourseScreen(
+                courseId: courseDetail,
+                initURL: courseDetail.sections?[0].materials?[0].url,
+              ),
+            ),
           ),
+          //     Navigator.pushNamed(
+          //   context,
+          //   '/learningCourse',
+          //   arguments: courseDetail,
+          // ),
           child: const Text('ENROLL COURSE'),
         ),
       ),

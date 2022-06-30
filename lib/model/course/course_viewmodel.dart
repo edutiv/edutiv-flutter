@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import '../../api/course_api.dart';
 
 class CourseViewModel extends ChangeNotifier {
+  bool isLoading = true;
+
   List<CategoryModel> _allCategory = [];
   List<CategoryModel> get allCategory => _allCategory;
 
@@ -18,6 +20,7 @@ class CourseViewModel extends ChangeNotifier {
   Future<List<CategoryModel>> getAllCategory() async {
     final categoryData = await CategoryAPI().fetchAllCategory();
     _allCategory = categoryData;
+    isLoading = false;
     notifyListeners();
     return allCategory;
   }
@@ -25,6 +28,7 @@ class CourseViewModel extends ChangeNotifier {
   Future<List<CourseModel>> getAllCourse() async {
     final courseData = await CourseAPI().fetchAllCourse();
     _allCourse = courseData;
+    isLoading = false;
     notifyListeners();
     return allCourse;
   }
@@ -32,6 +36,7 @@ class CourseViewModel extends ChangeNotifier {
   Future<CourseModel> getCourseById(int id) async {
     final course = await CourseAPI().fetchCourseById(id);
     _courseData = course;
+    isLoading = false;
     notifyListeners();
     return course;
   }

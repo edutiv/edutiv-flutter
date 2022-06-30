@@ -1,8 +1,17 @@
+import 'package:edutiv/api/user_api.dart';
 import 'package:edutiv/model/profile/user_model.dart';
 import 'package:flutter/material.dart';
 
 class ProfileViewModel extends ChangeNotifier {
-  late UserModel _user;
-  UserModel get user => _user;
-  
+  bool isLoading = true;
+  late UserModel _userData;
+  UserModel get user => _userData;
+
+  Future<UserModel> getUserById(int id) async {
+    final user = await UserAPI().fetchUserById(id);
+    _userData = user;
+    isLoading = false;
+    notifyListeners();
+    return user;
+  }
 }

@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
 
+class FAQ {
+  String? title;
+  String? desc;
+  bool isExpanded;
+  FAQ({this.title, this.desc, this.isExpanded = false});
+}
+
 class FAQScreen extends StatefulWidget {
   const FAQScreen({Key? key}) : super(key: key);
 
@@ -8,11 +15,18 @@ class FAQScreen extends StatefulWidget {
 }
 
 class _FAQScreenState extends State<FAQScreen> {
-  bool isExpanded = false;
+  List<FAQ> faq = [
+    FAQ(title: 'Faq 1', desc: 'Ini faq nomor 1'),
+    FAQ(title: 'Faq 2', desc: 'Ini faq nomor 2'),
+    FAQ(title: 'Faq 3', desc: 'Ini faq nomor 3'),
+    FAQ(title: 'Faq 4', desc: 'Ini faq nomor 4'),
+    FAQ(title: 'Faq 5', desc: 'Ini faq nomor 5'),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         leading: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 7),
@@ -45,27 +59,30 @@ class _FAQScreenState extends State<FAQScreen> {
           ),
         ],
       ),
-      body: ListView.builder(
-        itemCount: 5,
-        itemBuilder: (context, index) {
-          return ExpansionTile(
-            expandedAlignment: Alignment.centerLeft,
-            childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-            textColor: Theme.of(context).primaryColor,
-            iconColor: Theme.of(context).primaryColor,
-            title: const Text('Sorem Ipsum Dolor sit Amet'),
-            trailing:
-                isExpanded ? const Icon(Icons.remove) : const Icon(Icons.add),
-            onExpansionChanged: (bool expanded) {
-              setState(() {
-                isExpanded = expanded;
-              });
-            },
-            children: const [
-              Text('Sjhfdkjsdjkshfkjhskdhfshfkshfkhskdhfksdhjk')
-            ],
-          );
-        },
+      body: SingleChildScrollView(
+        child: ExpansionPanelList(
+          dividerColor: Colors.transparent,
+          elevation: 0,
+          expansionCallback: (index, isExpanded) {
+            setState(() {
+              faq[index].isExpanded = !isExpanded;
+            });
+          },
+          children: faq
+              .map(
+                (item) => ExpansionPanel(
+                  canTapOnHeader: true,
+                  isExpanded: item.isExpanded,
+                  headerBuilder: (context, isExpanded) => ListTile(
+                    title: Text(item.title!),
+                  ),
+                  body: ListTile(
+                    title: Text(item.desc!),
+                  ),
+                ),
+              )
+              .toList(),
+        ),
       ),
     );
   }

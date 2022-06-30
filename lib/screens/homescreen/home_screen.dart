@@ -16,6 +16,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  bool isLoading = true;
+
   @override
   void initState() {
     Provider.of<CourseViewModel>(context, listen: false).getAllCategory();
@@ -42,37 +44,45 @@ class _HomeScreenState extends State<HomeScreen> {
               'Explore Categories',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
-            GridView.builder(
-              itemCount: edutiv.allCategory.length,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2),
-              itemBuilder: (context, index) {
-                return CategoryCard(
-                  img: edutiv.allCategory[index].categoryImage!,
-                  title: edutiv.allCategory[index].categoryName!,
-                  desc: edutiv.allCategory[index].description!,
-                );
-              },
-            ),
+            Consumer<CourseViewModel>(builder: (context, edutiv, child) {
+              if (edutiv.isLoading) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              return GridView.builder(
+                itemCount: edutiv.allCategory.length >= 4 ? 4 : 1,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2),
+                itemBuilder: (context, index) {
+                  return CategoryCard(
+                    img: edutiv.allCategory[index].categoryImage!,
+                    title: edutiv.allCategory[index].categoryName!,
+                    desc: edutiv.allCategory[index].description!,
+                  );
+                },
+              );
+            }),
             TeksBanner(
               title: 'Top Course',
             ),
-            ListView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: edutiv.allCourse.length >= 3 ? 3 : 1,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () => Navigator.pushNamed(
-                    context,
-                    '/detailCourse',
-                    arguments: edutiv.allCourse[index],
-                  ),
-                  child: Consumer<CourseViewModel>(
-                    builder: (context, edutiv, child) {
-                      return CourseCard(
+            Consumer<CourseViewModel>(
+              builder: (context, edutiv, child) {
+                if (edutiv.isLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                return ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: edutiv.allCourse.length >= 3 ? 3 : 1,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () => Navigator.pushNamed(
+                        context,
+                        '/detailCourse',
+                        arguments: edutiv.allCourse[index],
+                      ),
+                      child: CourseCard(
                         courseImage: edutiv.allCourse[index].courseImage!,
                         courseName: edutiv.allCourse[index].courseName!,
                         rating: edutiv.allCourse[index].reviews!.isEmpty
@@ -81,9 +91,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         totalTime: edutiv.allCourse[index].totalTime!,
                         totalVideo:
                             edutiv.allCourse[index].totalVideo.toString(),
-                      );
-                    },
-                  ),
+                      ),
+                    );
+                  },
                 );
               },
             ),

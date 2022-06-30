@@ -11,6 +11,19 @@ class FormRequestScreen extends StatefulWidget {
 class _FormRequestScreenState extends State<FormRequestScreen> {
   var formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
+  String? selectedCat = 'Backend Engineer';
+  String? selectedType = 'Course';
+  List<String> requestType = [
+    'Course',
+    '1 on 1 Consultation',
+    'Bootcamp',
+  ];
+  List<String> category = [
+    'Backend Engineer',
+    'Frontend Engineer',
+    'Mobile Engineer',
+    'UI/UX Designer'
+  ];
 
   @override
   void initState() {
@@ -142,17 +155,47 @@ class _FormRequestScreenState extends State<FormRequestScreen> {
                   ),
                   const SizedBox(height: 14),
                   const Text('Categories'),
-                  DropdownButtonFormField(
-                    items: const [],
-                    onChanged: null,
+                  DropdownButtonFormField<String>(
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(8),
+                        ),
+                      ),
+                    ),
+                    value: selectedCat,
+                    items: category
+                        .map(
+                          (e) => DropdownMenuItem<String>(
+                            value: e,
+                            child: Text(e),
+                          ),
+                        )
+                        .toList(),
+                    onChanged: (item) => setState(() => selectedCat = item),
                     hint: const Text('Choose categories'),
                   ),
                   const SizedBox(height: 14),
                   const Text('Type Request'),
-                  DropdownButtonFormField(
-                    items: const [],
-                    onChanged: null,
-                    hint: const Text('Choose type request'),
+                  DropdownButtonFormField<String>(
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(8),
+                        ),
+                      ),
+                    ),
+                    value: selectedType,
+                    items: requestType
+                        .map(
+                          (e) => DropdownMenuItem<String>(
+                            value: e,
+                            child: Text(e),
+                          ),
+                        )
+                        .toList(),
+                    onChanged: (item) => setState(() => selectedType = item),
+                    hint: const Text('Choose request type'),
                   ),
                 ],
               ),

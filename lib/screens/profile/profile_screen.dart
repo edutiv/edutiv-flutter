@@ -12,6 +12,12 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
+  void initState() {
+    Provider.of<ProfileViewModel>(context, listen: false).getUserById(1);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var user = Provider.of<ProfileViewModel>(context);
     return Scaffold(
@@ -115,52 +121,59 @@ class ProfileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var user = Provider.of<ProfileViewModel>(context);
+    // var user = Provider.of<ProfileViewModel>(context);
     return Container(
       color: Theme.of(context).primaryColor,
       width: double.infinity,
       height: 200,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Flexible(
-            flex: 2,
-            fit: FlexFit.tight,
-            child: CircleAvatar(
-              backgroundColor: Colors.grey[400],
-              radius: 50,
-              child: const CircleAvatar(
-                radius: 45,
-                backgroundImage: NetworkImage('user.user.avatar'),
+      child: Consumer<ProfileViewModel>(
+        builder: (context, user, child) {
+          if (user.isLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Flexible(
+                flex: 2,
+                fit: FlexFit.tight,
+                child: CircleAvatar(
+                  backgroundColor: Colors.grey[400],
+                  radius: 50,
+                  child: const CircleAvatar(
+                    radius: 45,
+                    backgroundImage: NetworkImage('user.user.avatar'),
+                  ),
+                ),
               ),
-            ),
-          ),
-          const Flexible(
-            fit: FlexFit.loose,
-            flex: 1,
-            child: Text(
-              'Carl Johnson',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
+              Flexible(
+                fit: FlexFit.loose,
+                flex: 1,
+                child: Text(
+                  user.user.firstname! + ' ' + user.user.lastname!,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
               ),
-            ),
-          ),
-          const Flexible(
-            fit: FlexFit.tight,
-            flex: 1,
-            child: Text(
-              'user.user.specialization',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 12,
-                color: Colors.white,
-              ),
-            ),
-          )
-        ],
+              Flexible(
+                fit: FlexFit.tight,
+                flex: 1,
+                child: Text(
+                  user.user.specialization!,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: Colors.white,
+                  ),
+                ),
+              )
+            ],
+          );
+        },
       ),
     );
   }

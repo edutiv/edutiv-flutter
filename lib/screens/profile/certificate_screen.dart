@@ -50,12 +50,11 @@ class _CertificateScreenState extends State<CertificateScreen> {
         itemBuilder: (context, index) {
           return ListTile(
             onTap: () => Navigator.pushNamed(context, '/certificateDetail'),
-            leading: Container(
-              width: 100,
+            leading: Image.asset(
+              'assets/certif_dummy.png',
               height: 100,
-              color: Colors.amberAccent,
             ),
-            title: const Text('data'),
+            title: const Text('Data'),
             trailing: const Icon(Icons.chevron_right_outlined),
           );
         },

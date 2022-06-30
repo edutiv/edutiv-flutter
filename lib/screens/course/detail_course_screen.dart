@@ -188,46 +188,59 @@ class LessonTabSection extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
-          child: ListView.separated(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            itemCount: section.courseData.sections!.length,
-            separatorBuilder: (context, index) => const SizedBox(height: 8),
-            itemBuilder: (context, index) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(section.courseData.sections![index].sectionName!),
-                  const SizedBox(height: 8),
-                  ListView.separated(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount:
-                        section.courseData.sections![index].materials!.length,
-                    separatorBuilder: (context, index) =>
-                        const SizedBox(height: 8),
-                    itemBuilder: (context, subIndex) {
-                      return ListTile(
-                        tileColor: Colors.grey[200],
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(5)),
-                        ),
-                        leading: section.courseData.sections![index]
-                                    .materials![subIndex].materialType ==
-                                'slide'
-                            ? const Icon(Icons.slideshow_rounded)
-                            : section.courseData.sections![index]
+          child: Consumer<CourseViewModel>(
+            builder: (context, section, child) {
+              if (section.isLoading) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              return ListView.separated(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                itemCount: section.courseData.sections!.length,
+                separatorBuilder: (context, index) => const SizedBox(height: 8),
+                itemBuilder: (context, index) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(section.courseData.sections![index].sectionName!),
+                      const SizedBox(height: 8),
+                      ListView.separated(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: section
+                            .courseData.sections![index].materials!.length,
+                        separatorBuilder: (context, index) =>
+                            const SizedBox(height: 8),
+                        itemBuilder: (context, subIndex) {
+                          return ListTile(
+                            tileColor: Colors.grey[200],
+                            shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5)),
+                            ),
+                            leading: section.courseData.sections![index]
                                         .materials![subIndex].materialType ==
-                                    'quiz'
-                                ? const Icon(Icons.history_edu_rounded)
-                                : const Icon(Icons.play_circle_filled_rounded),
-                        title: Text(
-                          section.courseData.sections![index]
-                              .materials![subIndex].materialName!,
-                        ),
-                      );
-                    },
-                  ),
-                ],
+                                    'slide'
+                                ? const Icon(Icons.slideshow_rounded)
+                                : section
+                                            .courseData
+                                            .sections![index]
+                                            .materials![subIndex]
+                                            .materialType ==
+                                        'quiz'
+                                    ? const Icon(Icons.history_edu_rounded)
+                                    : const Icon(
+                                        Icons.play_circle_filled_rounded),
+                            title: Text(
+                              section.courseData.sections![index]
+                                  .materials![subIndex].materialName!,
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  );
+                },
               );
             },
           ),

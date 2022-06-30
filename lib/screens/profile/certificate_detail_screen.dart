@@ -16,10 +16,10 @@ class CertificateDetailScreen extends StatelessWidget {
               'Mastering Front-End Development with React JS',
               style: TextStyle(color: Colors.white),
             ),
-            Container(
-              color: Colors.blueGrey,
+            SizedBox(
               width: 250,
               height: 180,
+              child: Image.asset('assets/certif_dummy.png'),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

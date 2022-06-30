@@ -48,7 +48,7 @@ dependencies:
   json_annotation: ^4.5.0
   shimmer: ^2.0.0
   youtube_player_flutter: ^8.0.0
-  youtube_explode_dart: ^1.11.0
+  webview_flutter: ^3.0.4
 
 
 dev_dependencies:
