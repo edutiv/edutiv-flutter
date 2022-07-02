@@ -66,13 +66,29 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 }
 
-class EditIdentityScreen extends StatelessWidget {
+class EditIdentityScreen extends StatefulWidget {
   const EditIdentityScreen({Key? key}) : super(key: key);
 
   @override
+  State<EditIdentityScreen> createState() => _EditIdentityScreenState();
+}
+
+class _EditIdentityScreenState extends State<EditIdentityScreen> {
+  var formKey = GlobalKey<FormState>();
+  final TextEditingController emailController = TextEditingController();
+  String? selectedCat = 'Backend Engineer';
+
+  List<String> category = [
+    'Backend Engineer',
+    'Frontend Engineer',
+    'Mobile Engineer',
+    'UI/UX Designer'
+  ];
+
+  @override
   Widget build(BuildContext context) {
-    final TextEditingController emailController;
     return Form(
+      key: formKey,
       child: Column(
         children: [
           Expanded(
@@ -151,10 +167,25 @@ class EditIdentityScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   const Text('Specialization'),
-                  DropdownButtonFormField(
-                    items: const [],
-                    onChanged: null,
-                    hint: const Text('UI/UX Designer'),
+                  DropdownButtonFormField<String>(
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(8),
+                        ),
+                      ),
+                    ),
+                    value: selectedCat,
+                    items: category
+                        .map(
+                          (e) => DropdownMenuItem<String>(
+                            value: e,
+                            child: Text(e),
+                          ),
+                        )
+                        .toList(),
+                    onChanged: (item) => setState(() => selectedCat = item),
+                    hint: const Text('Your specialization'),
                   ),
                 ],
               ),
@@ -302,7 +333,7 @@ class SaveBottomBar extends StatelessWidget {
         child: ElevatedButton(
           onPressed: () => Navigator.pushNamed(
             context,
-            '/learningCourse',
+            '/mainpage',
           ),
           child: const Text('SAVE CHANGES'),
         ),

@@ -49,6 +49,7 @@ dependencies:
   shimmer: ^2.0.0
   youtube_player_flutter: ^8.0.0
   webview_flutter: ^3.0.4
+  file_picker: ^4.6.1
 
 
 dev_dependencies:

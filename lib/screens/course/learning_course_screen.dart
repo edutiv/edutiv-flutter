@@ -22,6 +22,7 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
   int sectionIndex = 0;
   int materialIndex = 0;
   bool isLoading = true;
+  String widgetType = '';
 
   @override
   void initState() {
@@ -66,9 +67,6 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
   }
 
   prevVideo() {
-    if (widget.courseId!.sections![sectionIndex].materials![materialIndex]
-            .materialType !=
-        'video') {}
     setState(() {
       materialIndex--;
       ytController!.load(
@@ -76,6 +74,14 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
             .courseId!.sections![sectionIndex].materials![materialIndex].url!)!,
       );
     });
+  }
+
+  slideView() {
+    return const SlideWebView();
+  }
+
+  quizView() {
+    return const Center(child: Text('QUIZ Nih Bosss'));
   }
 
   @override
@@ -133,17 +139,14 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if (!isLoading)
-                  widget.courseId!.sections![sectionIndex]
-                              .materials![materialIndex].materialType ==
-                          'video'
+                  widgetType == ''
                       ? player
-                      : widget.courseId!.sections![sectionIndex]
-                                  .materials![materialIndex].materialType ==
-                              'slide'
-                          ? const CircleAvatar()
-                          : Container(),
+                      : widgetType == 'slide'
+                          ? slideView()
+                          : widgetType == 'quiz'
+                              ? quizView()
+                              : widgetType == '',
                 const SizedBox(height: 16),
-                const SlideWebView(),
                 const SizedBox(height: 16),
                 Row(
                   children: [
@@ -163,7 +166,6 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
                       child: OutlinedButton(
                         onPressed: () {
                           prevVideo();
-                          // prevVideo(urlBaru, sectionLength, materialLength);
                           // setState(() {
                           //   materialIndex--;
                           //   ytController!.load(
@@ -186,17 +188,45 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () {
-                          nextVideo();
-                          // setState(() {
-                          //   materialIndex++;
-                          //   ytController!.load(
-                          //     YoutubePlayer.convertUrlToId(widget
-                          //         .courseId!
-                          //         .sections![sectionIndex]
-                          //         .materials![materialIndex]
-                          //         .url!)!,
-                          //   );
-                          // });
+                          // nextVideo();
+                          setState(() {
+                            materialIndex++;
+                            if (widget.courseId!.sections![sectionIndex]
+                                    .materials![materialIndex].materialType ==
+                                'slide') {
+                              setState(() {
+                                widgetType = 'slide';
+                              });
+                            }
+                            if (widget.courseId!.sections![sectionIndex]
+                                    .materials![materialIndex].materialType ==
+                                'quiz') {
+                              setState(() {
+                                widgetType = 'quiz';
+                              });
+                            }
+                            if (widget.courseId!.sections![sectionIndex]
+                                    .materials![materialIndex].materialType ==
+                                'video') {
+                              setState(() {
+                                widgetType = '';
+                                ytController!.load(
+                                  YoutubePlayer.convertUrlToId(widget
+                                      .courseId!
+                                      .sections![sectionIndex]
+                                      .materials![materialIndex]
+                                      .url!)!,
+                                );
+                              });
+                            }
+                            ytController!.load(
+                              YoutubePlayer.convertUrlToId(widget
+                                  .courseId!
+                                  .sections![sectionIndex]
+                                  .materials![materialIndex]
+                                  .url!)!,
+                            );
+                          });
                         },
                         // Navigator.pushNamed(context, '/successCourse');
                         child: const Text('Next Video'),
