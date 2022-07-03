@@ -50,6 +50,8 @@ dependencies:
   youtube_player_flutter: ^8.0.0
   webview_flutter: ^3.0.4
   file_picker: ^4.6.1
+  url_launcher: ^6.1.4
+  flutter_webview_plugin: ^0.4.0
 
 
 dev_dependencies:

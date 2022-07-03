@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -19,17 +21,23 @@ class LearningCourseScreen extends StatefulWidget {
 
 class _LearningCourseScreenState extends State<LearningCourseScreen> {
   YoutubePlayerController? ytController;
+  WebViewController? slideController;
+  WebViewController? quizController;
   int sectionIndex = 0;
   int materialIndex = 0;
   bool isLoading = true;
   String widgetType = '';
+  bool isToolsVisible = true;
 
   @override
   void initState() {
     super.initState();
+    if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
     Provider.of<CourseViewModel>(context, listen: false)
         .getCourseById(widget.courseId!.id);
     playYT();
+    // slideController;
+    // quizController;
     setState(() {
       isLoading = false;
     });
@@ -63,6 +71,7 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
     if (materialType == 'video') {
       setState(() {
         widgetType = '';
+        isToolsVisible = true;
         ytController!.load(
           YoutubePlayer.convertUrlToId(widget.courseId!.sections![sectionIndex]
               .materials![materialIndex].url!)!,
@@ -72,11 +81,13 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
     if (materialType == 'slide') {
       setState(() {
         widgetType = 'slide';
+        isToolsVisible = true;
       });
     }
     if (materialType == 'quiz') {
       setState(() {
         widgetType = 'quiz';
+        isToolsVisible = false;
       });
     }
   }
@@ -114,11 +125,38 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
   }
 
   slideView() {
-    return const SlideWebView();
+    return SizedBox(
+      height: 250,
+      width: double.infinity,
+      child: WebView(
+        javascriptMode: JavascriptMode.unrestricted,
+        initialUrl: widget
+            .courseId!.sections![sectionIndex].materials![materialIndex].url!,
+        onWebViewCreated: (controller) {
+          controller = slideController!;
+        },
+      ),
+    );
   }
 
   quizView() {
-    return const Center(child: Text('QUIZ Nih Bosss'));
+    String quizUrl =
+        widget.courseId!.sections![sectionIndex].materials![materialIndex].url!;
+    return Material(
+      child: SizedBox(
+        height: 500,
+        width: double.infinity,
+        child: WebView(
+          userAgent: 'fake',
+          gestureNavigationEnabled: true,
+          javascriptMode: JavascriptMode.unrestricted,
+          initialUrl: quizUrl,
+          onWebViewCreated: (controller) {
+            controller = quizController!;
+          },
+        ),
+      ),
+    );
   }
 
   @override
@@ -168,6 +206,7 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
             ],
           ),
           body: SingleChildScrollView(
+            physics: const NeverScrollableScrollPhysics(),
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -219,31 +258,38 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
                   ],
                 ),
                 const SizedBox(height: 16),
-                Row(
-                  children: const [
-                    Text(
-                      'Tools Course',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                    ),
-                  ],
+                Visibility(
+                  visible: isToolsVisible,
+                  child: Row(
+                    children: const [
+                      Text(
+                        'Tools Course',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
+                    ],
+                  ),
                 ),
-                SizedBox(
-                  width: double.infinity,
-                  height: 290,
-                  child: Consumer<CourseViewModel>(
-                    builder: (context, data, child) {
-                      return ListView.builder(
-                        physics: const BouncingScrollPhysics(),
-                        itemCount: data.courseData.tools!.length,
-                        itemBuilder: (context, index) {
-                          return ToolsCard(
-                            toolsName: data.courseData.tools![index].toolsName,
-                            imgUrl: data.courseData.tools![index].toolsIcon,
-                          );
-                        },
-                      );
-                    },
+                Visibility(
+                  visible: isToolsVisible,
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: 290,
+                    child: Consumer<CourseViewModel>(
+                      builder: (context, data, child) {
+                        return ListView.builder(
+                          physics: const BouncingScrollPhysics(),
+                          itemCount: data.courseData.tools!.length,
+                          itemBuilder: (context, index) {
+                            return ToolsCard(
+                              toolsName:
+                                  data.courseData.tools![index].toolsName,
+                              imgUrl: data.courseData.tools![index].toolsIcon,
+                            );
+                          },
+                        );
+                      },
+                    ),
                   ),
                 )
               ],
@@ -251,25 +297,6 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
           ),
         );
       },
-    );
-  }
-}
-
-class SlideWebView extends StatelessWidget {
-  const SlideWebView({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const SizedBox(
-      width: double.infinity,
-      height: 250,
-      child: WebView(
-        javascriptMode: JavascriptMode.unrestricted,
-        initialUrl:
-            'https://www.slideshare.net/slideshow/embed_code/key/96RRG7B2iq0Tqn',
-      ),
     );
   }
 }
