@@ -1,3 +1,4 @@
+import 'package:edutiv/model/course/course_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:lottie/lottie.dart';
@@ -12,6 +13,7 @@ class SuccessCourseScreen extends StatefulWidget {
 class _SuccessCourseScreenState extends State<SuccessCourseScreen> {
   @override
   Widget build(BuildContext context) {
+    final data = ModalRoute.of(context)!.settings.arguments as CourseModel;
     return Scaffold(
       body: SafeArea(
         minimum: const EdgeInsets.all(24),
@@ -22,14 +24,13 @@ class _SuccessCourseScreenState extends State<SuccessCourseScreen> {
               CircleAvatar(
                 child: Lottie.asset('assets/success.json'),
                 backgroundColor: Colors.transparent,
-                // backgroundImage: AssetImage('assets/success.png'),
                 radius: 150,
               ),
               const SizedBox(height: 16),
               const Text('What a Day!'),
               const SizedBox(height: 8),
-              const Text(
-                'Finally you have completed the Introduction to UI/UX Designer course very well.',
+              Text(
+                'Finally you have completed the ${data.courseName} course very well.',
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 16),
@@ -49,7 +50,7 @@ class _SuccessCourseScreenState extends State<SuccessCourseScreen> {
                         onPressed: () {
                           showDialog(
                             context: context,
-                            builder: (context) {
+                            builder: (dialogContext) {
                               return SimpleDialog(
                                 titlePadding:
                                     const EdgeInsets.fromLTRB(16, 0, 0, 0),
@@ -64,15 +65,15 @@ class _SuccessCourseScreenState extends State<SuccessCourseScreen> {
                                       style: TextStyle(fontSize: 16),
                                     ),
                                     IconButton(
-                                        onPressed: () {},
+                                        onPressed: () =>
+                                            Navigator.pop(dialogContext),
                                         icon: const Icon(Icons.close_outlined))
                                   ],
                                 ),
                                 children: [
-                                  const Padding(
-                                    padding: EdgeInsets.all(8.0),
-                                    child:
-                                        Text('Introduction to UI/UX Designer'),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(data.courseName!),
                                   ),
                                   RatingBar.builder(
                                     initialRating: 2,

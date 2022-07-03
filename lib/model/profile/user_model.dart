@@ -1,7 +1,7 @@
+import 'package:edutiv/model/course/category_model.dart';
 import 'package:edutiv/model/course/course_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import '../wishlist/wishlist_model.dart';
 part 'user_model.g.dart';
 
 @JsonSerializable()
@@ -13,9 +13,11 @@ class UserModel {
   String? email;
   String? password;
   String? role;
-  String? specialization;
+  @JsonKey(name: 'category')
+  CategoryModel? specialization;
+  @JsonKey(name: 'enrolled_course')
+  List<CourseModel>? enrolledCourse;
   // List<WishlistModel>? wishlist;
-  // List<CourseModel>? enrolledCourse;
   // List<Review>? reviews;
 
   UserModel({
@@ -29,6 +31,7 @@ class UserModel {
     this.specialization,
   });
 
-  factory UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
+  factory UserModel.fromJson(Map<String, dynamic> json) =>
+      _$UserModelFromJson(json);
   Map<String, dynamic> toJson() => _$UserModelToJson(this);
 }

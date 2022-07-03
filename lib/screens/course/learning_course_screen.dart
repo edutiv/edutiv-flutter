@@ -99,7 +99,7 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
 
     if (sectionIndex == sectionLength - 1 &&
         materialIndex == materialLength - 1) {
-      Navigator.pushReplacementNamed(context, '/successCourse');
+      Navigator.pushReplacementNamed(context, '/successCourse', arguments: widget.courseId);
     }
 
     if (materialIndex < materialLength - 1) {

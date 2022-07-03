@@ -49,7 +49,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Column(
                 children: [
                   ListTile(
-                    onTap: () => Navigator.pushNamed(context, '/myCourse'),
+                    onTap: () => Navigator.pushNamed(context, '/myCourse',
+                        arguments: user.user),
                     tileColor: Colors.grey[200],
                     shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(5))),
@@ -163,7 +164,7 @@ class ProfileHeader extends StatelessWidget {
                 fit: FlexFit.tight,
                 flex: 1,
                 child: Text(
-                  user.user.specialization!,
+                  user.user.specialization!.categoryName!,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontSize: 12,

@@ -14,8 +14,12 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       email: json['email'] as String?,
       password: json['password'] as String?,
       role: json['role'] as String?,
-      specialization: json['specialization'] as String?,
-    );
+      specialization: json['category'] == null
+          ? null
+          : CategoryModel.fromJson(json['category'] as Map<String, dynamic>),
+    )..enrolledCourse = (json['enrolled_course'] as List<dynamic>?)
+        ?.map((e) => CourseModel.fromJson(e as Map<String, dynamic>))
+        .toList();
 
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'id': instance.id,
@@ -25,5 +29,6 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'email': instance.email,
       'password': instance.password,
       'role': instance.role,
-      'specialization': instance.specialization,
+      'category': instance.specialization,
+      'enrolled_course': instance.enrolledCourse,
     };
