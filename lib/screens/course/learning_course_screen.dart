@@ -99,10 +99,6 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
         sectionIndex++;
         materialIndex = 0;
         getMaterialType();
-        // ytController!.load(
-        //   YoutubePlayer.convertUrlToId(widget.courseId!.sections![sectionIndex]
-        //       .materials![materialIndex].url!)!,
-        // );
       });
     }
   }
@@ -127,16 +123,8 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(
-        'Tipe ${widget.courseId!.sections![sectionIndex].materials![materialIndex].materialType!}');
-    // var data = Provider.of<CourseViewModel>(context);
-    // int materialLength =
-    //     widget.courseId!.sections![sectionIndex].materials!.length;
     int sectionLength = widget.courseId!.sections!.length;
-    String urlBaru =
-        widget.courseId!.sections![sectionIndex].materials![materialIndex].url!;
     print('haloo banggg $materialIndex');
-    print('ini url videooo $urlBaru');
     print('ini $sectionLength');
     print('ini material index $materialIndex');
     print('ini section index $sectionIndex');
@@ -212,18 +200,7 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
                       child: OutlinedButton(
                         onPressed: () {
                           prevVideo();
-                          // setState(() {
-                          //   materialIndex--;
-                          //   ytController!.load(
-                          //     YoutubePlayer.convertUrlToId(widget
-                          //         .courseId!
-                          //         .sections![sectionIndex]
-                          //         .materials![materialIndex]
-                          //         .url!)!,
-                          //   );
-                          // });
                         },
-                        // Navigator.pushNamed(context, '/successCourse');
                         child: const Text('Previous'),
                       ),
                     ),
@@ -236,7 +213,6 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
                         onPressed: () {
                           nextVideo();
                         },
-                        // Navigator.pushNamed(context, '/successCourse');
                         child: const Text('Next Video'),
                       ),
                     ),
