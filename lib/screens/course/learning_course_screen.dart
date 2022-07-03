@@ -37,7 +37,8 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
 
   void playYT() {
     ytController = YoutubePlayerController(
-      initialVideoId: YoutubePlayer.convertUrlToId(widget.initURL!)!,
+      initialVideoId: YoutubePlayer.convertUrlToId(
+          widget.courseId!.sections![sectionIndex].materials![0].url!)!,
       flags: const YoutubePlayerFlags(
         useHybridComposition: false,
       ),
@@ -56,14 +57,63 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
     super.dispose();
   }
 
-  nextVideo() {
-    setState(() {
+  getMaterialType() {
+    String materialType = widget.courseId!.sections![sectionIndex]
+        .materials![materialIndex].materialType!;
+    if (materialType == 'video') {
+      setState(() {
+        widgetType = '';
+        ytController!.load(
+          YoutubePlayer.convertUrlToId(widget.courseId!.sections![sectionIndex]
+              .materials![materialIndex].url!)!,
+        );
+      });
+    }
+    if (materialType == 'slide') {
+      setState(() {
+        widgetType = 'slide';
+      });
+    }
+    if (materialType == 'quiz') {
+      setState(() {
+        widgetType = 'quiz';
+      });
+    }
+  }
+
+  nextVideo() async {
+    int materialLength =
+        widget.courseId!.sections![sectionIndex].materials!.length;
+    int sectionLength = widget.courseId!.sections!.length;
+    print('ini material length $materialLength');
+    print('ini material index $materialIndex');
+    print('ini section index $sectionIndex');
+
+    if (materialIndex < materialLength - 1) {
       materialIndex++;
-      ytController!.load(
-        YoutubePlayer.convertUrlToId(widget
-            .courseId!.sections![sectionIndex].materials![materialIndex].url!)!,
-      );
-    });
+      getMaterialType();
+    } else if (materialIndex <= materialLength - 1) {
+      setState(() {
+        sectionIndex++;
+        materialIndex = 0;
+        getMaterialType();
+        ytController!.load(
+          YoutubePlayer.convertUrlToId(widget.courseId!.sections![sectionIndex]
+              .materials![materialIndex].url!)!,
+        );
+      });
+    } else if (sectionIndex == sectionLength - 1 &&
+        materialIndex == materialLength - 1) {
+      Navigator.pushReplacementNamed(context, '/successCourse');
+    }
+
+    // if (sectionIndex > widget.courseId!.sections!.length - 1 &&
+    //     materialIndex >
+    //         widget.courseId!.sections![sectionIndex].materials!.length) {
+    //   // Navigator.pushNamedAndRemoveUntil(
+    //   //     context, '/successCourse', (route) => false);
+    //   Navigator.pushReplacementNamed(context, '/successCourse');
+    // }
   }
 
   prevVideo() {
@@ -116,6 +166,8 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
             centerTitle: true,
             title: Text(
               widget.courseId!.courseName!,
+              softWrap: true,
+              overflow: TextOverflow.ellipsis,
               style: const TextStyle(color: Colors.black, fontSize: 14),
             ),
             actions: [
@@ -145,7 +197,7 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
                           ? slideView()
                           : widgetType == 'quiz'
                               ? quizView()
-                              : widgetType == '',
+                              : widgetType = '',
                 const SizedBox(height: 16),
                 const SizedBox(height: 16),
                 Row(
@@ -188,45 +240,7 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () {
-                          // nextVideo();
-                          setState(() {
-                            materialIndex++;
-                            if (widget.courseId!.sections![sectionIndex]
-                                    .materials![materialIndex].materialType ==
-                                'slide') {
-                              setState(() {
-                                widgetType = 'slide';
-                              });
-                            }
-                            if (widget.courseId!.sections![sectionIndex]
-                                    .materials![materialIndex].materialType ==
-                                'quiz') {
-                              setState(() {
-                                widgetType = 'quiz';
-                              });
-                            }
-                            if (widget.courseId!.sections![sectionIndex]
-                                    .materials![materialIndex].materialType ==
-                                'video') {
-                              setState(() {
-                                widgetType = '';
-                                ytController!.load(
-                                  YoutubePlayer.convertUrlToId(widget
-                                      .courseId!
-                                      .sections![sectionIndex]
-                                      .materials![materialIndex]
-                                      .url!)!,
-                                );
-                              });
-                            }
-                            ytController!.load(
-                              YoutubePlayer.convertUrlToId(widget
-                                  .courseId!
-                                  .sections![sectionIndex]
-                                  .materials![materialIndex]
-                                  .url!)!,
-                            );
-                          });
+                          nextVideo();
                         },
                         // Navigator.pushNamed(context, '/successCourse');
                         child: const Text('Next Video'),

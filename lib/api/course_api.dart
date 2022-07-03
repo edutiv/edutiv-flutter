@@ -1,12 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:edutiv/model/course/course_model.dart';
-import 'package:edutiv/model/course/materials_model.dart';
-import 'package:edutiv/model/course/review_model.dart';
-import 'package:edutiv/model/course/section_model.dart';
-import 'package:edutiv/model/course/tools_model.dart';
 
 class CourseAPI {
-  String baseUrl = 'https://edutiv-springboot.herokuapp.com';
+  String baseUrl = 'https://edutiv-capstone.herokuapp.com';
 
   Future<List<CourseModel>> fetchAllCourse() async {
     Response response = await Dio().get(baseUrl + '/course');

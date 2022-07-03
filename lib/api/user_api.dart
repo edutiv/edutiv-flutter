@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:edutiv/model/profile/user_model.dart';
 
 class UserAPI {
-  String baseUrl = 'https://edutiv-springboot.herokuapp.com';
+  String baseUrl = 'https://edutiv-capstone.herokuapp.com';
 
   Future<List<UserModel>> fetchAllUser() async {
     Response response = await Dio().get(baseUrl + '/user');
