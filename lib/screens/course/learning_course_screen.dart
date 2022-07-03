@@ -81,39 +81,30 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
     }
   }
 
-  nextVideo() async {
+  nextVideo() {
     int materialLength =
         widget.courseId!.sections![sectionIndex].materials!.length;
     int sectionLength = widget.courseId!.sections!.length;
-    print('ini material length $materialLength');
-    print('ini material index $materialIndex');
-    print('ini section index $sectionIndex');
 
-    if (materialIndex < materialLength - 1) {
-      materialIndex++;
-      getMaterialType();
-    } else if (materialIndex <= materialLength - 1) {
-      setState(() {
-        sectionIndex++;
-        materialIndex = 0;
-        getMaterialType();
-        ytController!.load(
-          YoutubePlayer.convertUrlToId(widget.courseId!.sections![sectionIndex]
-              .materials![materialIndex].url!)!,
-        );
-      });
-    } else if (sectionIndex == sectionLength - 1 &&
+    if (sectionIndex == sectionLength - 1 &&
         materialIndex == materialLength - 1) {
       Navigator.pushReplacementNamed(context, '/successCourse');
     }
 
-    // if (sectionIndex > widget.courseId!.sections!.length - 1 &&
-    //     materialIndex >
-    //         widget.courseId!.sections![sectionIndex].materials!.length) {
-    //   // Navigator.pushNamedAndRemoveUntil(
-    //   //     context, '/successCourse', (route) => false);
-    //   Navigator.pushReplacementNamed(context, '/successCourse');
-    // }
+    if (materialIndex < materialLength - 1) {
+      materialIndex++;
+      getMaterialType();
+    } else {
+      setState(() {
+        sectionIndex++;
+        materialIndex = 0;
+        getMaterialType();
+        // ytController!.load(
+        //   YoutubePlayer.convertUrlToId(widget.courseId!.sections![sectionIndex]
+        //       .materials![materialIndex].url!)!,
+        // );
+      });
+    }
   }
 
   prevVideo() {
@@ -139,13 +130,16 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
     print(
         'Tipe ${widget.courseId!.sections![sectionIndex].materials![materialIndex].materialType!}');
     // var data = Provider.of<CourseViewModel>(context);
-    int materialLength =
-        widget.courseId!.sections![sectionIndex].materials!.length;
+    // int materialLength =
+    //     widget.courseId!.sections![sectionIndex].materials!.length;
     int sectionLength = widget.courseId!.sections!.length;
     String urlBaru =
         widget.courseId!.sections![sectionIndex].materials![materialIndex].url!;
     print('haloo banggg $materialIndex');
     print('ini url videooo $urlBaru');
+    print('ini $sectionLength');
+    print('ini material index $materialIndex');
+    print('ini section index $sectionIndex');
     return YoutubePlayerBuilder(
       player: YoutubePlayer(controller: ytController!),
       builder: (context, player) {
