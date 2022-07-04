@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:email_validator/email_validator.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -85,6 +88,8 @@ class _EditIdentityScreenState extends State<EditIdentityScreen> {
     'UI/UX Designer'
   ];
 
+  File pp = File('assets/default_pp.png');
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -100,9 +105,26 @@ class _EditIdentityScreenState extends State<EditIdentityScreen> {
                   const Text('Profile Picture'),
                   Row(
                     children: [
-                      const CircleAvatar(),
+                      CircleAvatar(
+                        backgroundImage: Image.file(pp).image,
+                      ),
                       TextButton(
-                          onPressed: () {}, child: const Text('UPLOAD PHOTO')),
+                        onPressed: () async {
+                          FilePickerResult? result = await FilePicker.platform
+                              .pickFiles(type: FileType.image);
+
+                          if (result != null) {
+                            File file = File(result.files.single.path!);
+                            setState(() {
+                              pp = File(file.path);
+                            });
+                          } else {}
+                        },
+                        child: const Text(
+                          'UPLOAD PHOTO',
+                          style: TextStyle(color: Color(0xFF126E64)),
+                        ),
+                      ),
                     ],
                   ),
                   const Text(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../model/profile/profile_viewmodel.dart';
 
@@ -90,6 +91,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   const SizedBox(height: 16),
                   ListTile(
+                    onTap: () {
+                      String? encodeQueryParameters(
+                          Map<String, String> params) {
+                        return params.entries
+                            .map((e) =>
+                                '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+                            .join('&');
+                      }
+
+                      final Uri emailLaunchUri = Uri(
+                        scheme: 'mailto',
+                        path: 'admin@edutiv.com',
+                        query: encodeQueryParameters(<String, String>{
+                          'subject': 'Tell us to improve edutiv services!'
+                        }),
+                      );
+
+                      launchUrl(emailLaunchUri);
+                    },
                     tileColor: Colors.grey[200],
                     shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(5))),

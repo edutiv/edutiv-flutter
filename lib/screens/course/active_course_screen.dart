@@ -1,5 +1,4 @@
 import 'package:edutiv/model/profile/profile_viewmodel.dart';
-import 'package:edutiv/model/profile/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,11 +14,14 @@ class ActiveCourseScreen extends StatefulWidget {
 class _ActiveCourseScreenState extends State<ActiveCourseScreen> {
   @override
   Widget build(BuildContext context) {
-    final user = ModalRoute.of(context)!.settings.arguments as UserModel;
+    // final user = ModalRoute.of(context)!.settings.arguments as UserModel;
+    final user = Provider.of<ProfileViewModel>(context);
+    // print(user.enrolledCourse);
     return Scaffold(
-      body: Consumer<ProfileViewModel>(
-        builder: (context, user, child) {
-          return ListView.builder(
+      body: FutureBuilder(
+          future: user.getUserById(1),
+          builder: (context, snapshot) {
+            return ListView.builder(
               itemCount: user.enrolledCourse.length,
               itemBuilder: (context, index) {
                 return CourseCard(
@@ -31,10 +33,9 @@ class _ActiveCourseScreenState extends State<ActiveCourseScreen> {
                   totalTime: user.enrolledCourse[index].totalTime!,
                   totalVideo: user.enrolledCourse[index].totalVideo.toString(),
                 );
-              });
-        },
-        child: const Text('Active Course'),
-      ),
+              },
+            );
+          }),
     );
   }
 }
