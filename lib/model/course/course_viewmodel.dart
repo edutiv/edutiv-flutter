@@ -41,6 +41,29 @@ class CourseViewModel extends ChangeNotifier {
     return course;
   }
 
+  Future<List<CourseModel>> searchCourseByName(String query) async {
+    final data = await CourseAPI().searchCourseByName(query);
+    _allCourse = data;
+    if (query == '' || query.isEmpty) {
+      getAllCourse();
+      notifyListeners();
+    }
+    notifyListeners();
+    return data;
+  }
+
+  // searchCourse(String query) {
+  //   // var data = Provider.of<CourseViewModel>(context, listen: false);
+  //   final suggestions = allCourse.where((c) {
+  //     final courseTitle = c.courseName?.toLowerCase();
+  //     final input = query.toLowerCase();
+  //     return courseTitle!.contains(input);
+  //   }).toList();
+  //   _allCourse = suggestions;
+  //   notifyListeners();
+  //   // setState(() => data.allCourse == suggestions);
+  // }
+
   // List<Section> _allSection = [];
   // List<Section> get allSection => _allSection;
 

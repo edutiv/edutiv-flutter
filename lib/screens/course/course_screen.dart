@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 
 import '../../components/choice_chip_row.dart';
 import '../../components/course_card.dart';
-import '../../components/searchbar.dart';
 
 class CourseScreen extends StatefulWidget {
   const CourseScreen({Key? key}) : super(key: key);
@@ -15,12 +14,23 @@ class CourseScreen extends StatefulWidget {
 
 class _CourseScreenState extends State<CourseScreen> {
   bool isEmpty = false;
+  TextEditingController controller = TextEditingController();
 
   @override
   void initState() {
     Provider.of<CourseViewModel>(context, listen: false).getAllCourse();
     super.initState();
   }
+
+  // searchCourse(String query) {
+  //   var data = Provider.of<CourseViewModel>(context, listen: false);
+  //   final suggestions = data.allCourse.where((c) {
+  //     final courseTitle = c.courseName?.toLowerCase();
+  //     final input = query.toLowerCase();
+  //     return courseTitle!.contains(input);
+  //   }).toList();
+  //   setState(() => data.allCourse == suggestions);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -41,21 +51,46 @@ class _CourseScreenState extends State<CourseScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SearchBar(),
+            // const SearchBar(),
+            TextField(
+              controller: controller,
+              decoration: const InputDecoration(
+                prefixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(20),
+                  ),
+                ),
+                hintText: 'Search course...',
+              ),
+              onChanged: (val) {
+                course.searchCourseByName(val);
+              },
+            ),
+            const SizedBox(height: 8),
             const ChoiceChipRow(),
             Expanded(
               child: ListView.builder(
                 physics: const BouncingScrollPhysics(),
-                // shrinkWrap: true,
                 itemCount: course.allCourse.length,
                 itemBuilder: (context, index) {
+                  // final data = course.allCourse[index];
                   return GestureDetector(
                     onTap: () => Navigator.pushNamed(
                       context,
                       '/detailCourse',
                       arguments: course.allCourse[index],
                     ),
-                    child: CourseCard(
+                    child:
+                        // CourseCard(
+                        //   courseImage: data.courseImage!,
+                        //   courseName: data.courseName!,
+                        //   rating:
+                        //       data.reviews!.isEmpty ? 0 : data.reviews![0].rating,
+                        //   totalTime: data.totalTime!,
+                        //   totalVideo: data.totalVideo.toString(),
+                        // ),
+                        CourseCard(
                       courseImage: course.allCourse[index].courseImage!,
                       courseName: course.allCourse[index].courseName!,
                       rating: course.allCourse[index].reviews!.isEmpty

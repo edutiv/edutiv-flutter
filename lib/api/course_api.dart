@@ -27,6 +27,22 @@ class CourseAPI {
     }
   }
 
+  Future searchCourseByName(String query) async {
+    Response response =
+        await Dio().get(baseUrl + '/course' + '/search' + '/$query');
+
+    if (response.statusCode == 200) {
+      List<CourseModel> course = (response.data['data'] as List)
+          .map((e) => CourseModel.fromJson(e))
+          .toList();
+      return course;
+    } else if (response.statusCode == 400) {
+      return query = '';
+    } else {
+      throw Exception('Course Not Available');
+    }
+  }
+
   // Future<List<Section>> getAllSectionFromCourseId(int id) async {
   //   Response response = await Dio()
   //       .get('https://edutiv-springboot.herokuapp.com/course/$id/section');
