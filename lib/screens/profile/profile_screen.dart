@@ -14,7 +14,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
-    Provider.of<ProfileViewModel>(context, listen: false).getUserById(2);
+    // Provider.of<ProfileViewModel>(context, listen: false).getUserById(2);
     super.initState();
   }
 

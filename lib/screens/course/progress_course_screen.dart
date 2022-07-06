@@ -21,8 +21,11 @@ class _ProgressCourseScreenState extends State<ProgressCourseScreen> {
         itemBuilder: (context, index) {
           return CourseProgressCard(
             courseImage: data.allCourse[index].courseImage!,
+            rating: data.allCourse[index].reviews!.isEmpty
+                ? 0
+                : data.allCourse[index].reviews![0].rating,
             courseName: data.allCourse[index].courseName!,
-            totalTime: data.allCourse[index].totalTime!,
+            categoryName: data.allCourse[index].category!.categoryName,
             totalVideo: data.allCourse[index].totalVideo.toString(),
           );
         },

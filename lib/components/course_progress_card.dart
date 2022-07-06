@@ -3,20 +3,18 @@ import 'package:flutter/material.dart';
 class CourseProgressCard extends StatelessWidget {
   String courseImage;
   String courseName;
-  String? mentorName;
-  String totalVideo;
-  String totalTime;
+  String? categoryName;
   int? rating;
+  String? totalVideo;
 
-  CourseProgressCard(
-      {Key? key,
-      required this.courseImage,
-      required this.courseName,
-      this.mentorName,
-      this.rating,
-      required this.totalTime,
-      required this.totalVideo})
-      : super(key: key);
+  CourseProgressCard({
+    Key? key,
+    required this.courseImage,
+    required this.courseName,
+    this.categoryName,
+    this.rating,
+    this.totalVideo,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -95,26 +93,31 @@ class CourseProgressCard extends StatelessWidget {
                   ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: const [
-                      CircleAvatar(radius: 8),
-                      SizedBox(width: 8),
-                      Text(''),
-                      // isAvailable ? mentorName! : '',
+                    children: [
+                      Text(
+                        '$categoryName',
+                        style: TextStyle(color: Colors.grey[500]),
+                      ),
                     ],
                   ),
                   Row(
                     children: [
-                      GreenChipWidget(
-                        icon: Icons.timelapse,
-                        label: totalTime,
+                      //ProgressBar
+                      const Expanded(
+                        child: LinearProgressIndicator(
+                          value: 0.5,
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            Color(0xFF126E64),
+                          ),
+                          backgroundColor: Colors.grey,
+                          // color: Color(0xFF126E64),
+                        ),
                       ),
                       const SizedBox(width: 8),
-                      GreenChipWidget(
-                        icon: Icons.videocam,
-                        label: '$totalVideo Video',
-                      ),
+                      Text('10/$totalVideo')
                     ],
                   ),
+                  // const SizedBox(height: 1),
                 ],
               ),
             ),
