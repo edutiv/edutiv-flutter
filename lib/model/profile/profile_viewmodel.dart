@@ -7,11 +7,11 @@ import '../course/course_model.dart';
 class ProfileViewModel extends ChangeNotifier {
   bool isLoading = true;
 
-  List<CourseModel> _enrolledCourse = [];
+  final List<CourseModel> _enrolledCourse = [];
   List<CourseModel> get enrolledCourse => _enrolledCourse;
 
   late UserModel _userData;
-  UserModel get user => _userData;
+  UserModel get userData => _userData;
 
   Future<UserModel> getUserById(int id) async {
     final user = await UserAPI().fetchUserById(id);

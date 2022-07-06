@@ -1,8 +1,12 @@
 import 'dart:io';
 
+import 'package:edutiv/api/user_api.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../model/profile/profile_viewmodel.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({Key? key}) : super(key: key);
@@ -78,20 +82,35 @@ class EditIdentityScreen extends StatefulWidget {
 
 class _EditIdentityScreenState extends State<EditIdentityScreen> {
   var formKey = GlobalKey<FormState>();
+  final TextEditingController firstnameController = TextEditingController();
+  final TextEditingController lastnameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   String? selectedCat = 'Backend Engineer';
 
-  List<String> category = [
-    'Backend Engineer',
-    'Frontend Engineer',
-    'Mobile Engineer',
-    'UI/UX Designer'
-  ];
+  // List<String> category = [
+  //   'Backend Engineer', //1
+  //   'Frontend Engineer', //2
+  //   'Mobile Engineer', //3
+  //   'UI/UX Designer' //4
+  // ];
+
+  Map<String, int> specialization = {
+    'Backend Engineer': 1,
+    'Frontend Engineer': 2,
+    'Mobile Engineer': 3,
+    'UI/UX Designer': 4
+  };
 
   File pp = File('assets/default_pp.png');
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<ProfileViewModel>(context);
+    String firstname = user.userData.firstname!;
+    String lastname = user.userData.lastname!;
+    var email = user.userData.email!;
+    int specializationId = user.userData.specialization!.id;
+
     return Form(
       key: formKey,
       child: Column(
@@ -141,6 +160,12 @@ class _EditIdentityScreenState extends State<EditIdentityScreen> {
                     children: [
                       Expanded(
                         child: TextFormField(
+                          // controller: firstnameController,
+                          initialValue: user.userData.firstname,
+                          onChanged: (val) {
+                            firstnameController.text = val;
+                            firstname = val;
+                          },
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
@@ -154,6 +179,12 @@ class _EditIdentityScreenState extends State<EditIdentityScreen> {
                       const SizedBox(width: 12),
                       Expanded(
                         child: TextFormField(
+                          // controller: lastnameController,
+                          initialValue: user.userData.lastname,
+                          onChanged: (val) {
+                            lastnameController.text = val;
+                            lastname = val;
+                          },
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
@@ -169,8 +200,12 @@ class _EditIdentityScreenState extends State<EditIdentityScreen> {
                   const SizedBox(height: 16),
                   const Text('Email'),
                   TextFormField(
-                    controller: null,
-                    // emailController,
+                    // controller: emailController,
+                    initialValue: user.userData.email,
+                    onChanged: (val) {
+                      emailController.text = val;
+                      email = val;
+                    },
                     validator: (email) {
                       if (email != null && !EmailValidator.validate(email)) {
                         return 'Masukkan email dengan benar';
@@ -197,23 +232,76 @@ class _EditIdentityScreenState extends State<EditIdentityScreen> {
                         ),
                       ),
                     ),
-                    value: selectedCat,
-                    items: category
+                    value: user.userData.specialization!.categoryName,
+                    items: specialization.entries
                         .map(
                           (e) => DropdownMenuItem<String>(
-                            value: e,
-                            child: Text(e),
+                            value: e.key,
+                            child: Text(e.key),
                           ),
                         )
                         .toList(),
-                    onChanged: (item) => setState(() => selectedCat = item),
+                    // category
+                    //     .map(
+                    //       (e) => DropdownMenuItem<String>(
+                    //         value: e,
+                    //         child: Text(e),
+                    //       ),
+                    //     )
+                    //     .toList(),
+                    onChanged: (item) {
+                      if (item == 'Backend Engineer') {
+                        specializationId = 1;
+                      } else if (item == 'Frontend Engineer') {
+                        specializationId = 2;
+                      } else if (item == 'Mobile Engineer') {
+                        specializationId = 3;
+                      } else if (item == 'UI/UX Designer') {
+                        specializationId = 4;
+                      }
+                      setState(() => selectedCat = item);
+                    },
                     hint: const Text('Your specialization'),
                   ),
                 ],
               ),
             ),
           ),
-          const SaveBottomBar()
+          // const SaveBottomBar()
+          Container(
+            width: double.infinity,
+            height: 70,
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Color.fromARGB(62, 158, 158, 158),
+                  blurRadius: 15,
+                ),
+              ],
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: ElevatedButton(
+                onPressed: () {
+                  UserAPI().updateProfile(
+                    user.userData.id,
+                    specializationId,
+                    email,
+                    firstname,
+                    lastname,
+                    user.userData.password,
+                  );
+                  Navigator.pushReplacementNamed(
+                    context,
+                    '/mainpage',
+                    arguments: 3,
+                  );
+                },
+                child: const Text('SAVE CHANGES'),
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -240,6 +328,7 @@ class _ChangePasswordOnEditProfileScreenState
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<ProfileViewModel>(context);
     return Column(
       children: [
         Expanded(
@@ -253,6 +342,7 @@ class _ChangePasswordOnEditProfileScreenState
                     children: [
                       const Text('Old Password'),
                       TextFormField(
+                        initialValue: user.userData.password,
                         obscureText: !_passwordVisible,
                         decoration: InputDecoration(
                           border: const OutlineInputBorder(
@@ -273,6 +363,7 @@ class _ChangePasswordOnEditProfileScreenState
                           ),
                         ),
                       ),
+                      const SizedBox(height: 16),
                       const Text('Password'),
                       TextFormField(
                         obscureText: !_passwordVisible,
@@ -295,7 +386,7 @@ class _ChangePasswordOnEditProfileScreenState
                           ),
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 16),
                       const Text('Confirm Password'),
                       TextFormField(
                         obscureText: !_passwordVisible,

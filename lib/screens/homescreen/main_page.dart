@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../screen.dart';
 
 class MainPage extends StatefulWidget {
+  // int? currentIndex = 0;
   const MainPage({Key? key}) : super(key: key);
 
   @override
@@ -20,6 +21,10 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    // final newIndex = ModalRoute.of(context)?.settings.arguments as int;
+
+    // currentIndex = newIndex;
+
     return Scaffold(
       body: screens[currentIndex],
       bottomNavigationBar: BottomNavigationBar(

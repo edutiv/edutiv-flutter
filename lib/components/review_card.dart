@@ -45,6 +45,7 @@ class ReviewCard extends StatelessWidget {
           ),
           Text(
             desc,
+            overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 11,

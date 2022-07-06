@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:edutiv/model/course/course_model.dart';
+import 'package:edutiv/model/course/review_model.dart';
 
 class CourseAPI {
   String baseUrl = 'https://edutiv-capstone.herokuapp.com';
@@ -25,6 +26,18 @@ class CourseAPI {
     } else {
       throw Exception('Course Not Available');
     }
+  }
+
+  Future<Review> createReview(
+      int courseId, int userId, int rating, String review) async {
+    Response response =
+        await Dio().post(baseUrl + '/course' + '/$courseId' + '/review', data: {
+      "courseId": courseId,
+      "user_id": userId,
+      "rating": rating,
+      "review": review,
+    });
+    return Review.fromJson(response.data);
   }
 
   Future searchCourseByName(String query) async {

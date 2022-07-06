@@ -2,6 +2,7 @@ import 'package:edutiv/components/carousel_hero.dart';
 import 'package:edutiv/components/course_card.dart';
 import 'package:edutiv/components/logo.dart';
 import 'package:edutiv/components/teks_banner.dart';
+import 'package:edutiv/model/profile/profile_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -22,6 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     Provider.of<CourseViewModel>(context, listen: false).getAllCategory();
     Provider.of<CourseViewModel>(context, listen: false).getAllCourse();
+    Provider.of<ProfileViewModel>(context, listen: false).getUserById(2);
     super.initState();
   }
 

@@ -295,7 +295,7 @@ class ReviewsTabSection extends StatelessWidget {
             ),
             itemBuilder: (context, index) {
               return ReviewCard(
-                img: review.courseData.reviews![index].user!.role!,
+                img: review.courseData.reviews![index].user!.id.toString(),
                 title: review.courseData.reviews![index].user!.firstname!,
                 rating: review.courseData.reviews![index].rating!.toDouble(),
                 desc: review.courseData.reviews![index].review!,

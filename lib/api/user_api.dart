@@ -26,4 +26,17 @@ class UserAPI {
       throw Exception('User Not Available');
     }
   }
+
+  Future<UserModel> updateProfile(int userId, int specializationId,
+      String email, firstname, lastname, var password) async {
+    Response response = await Dio().put(baseUrl + '/user' + '/$userId', data: {
+      "id": userId,
+      "firstname": firstname,
+      "lastname": lastname,
+      "username": email,
+      "password": password,
+      "specialization_id": specializationId,
+    });
+    return UserModel.fromJson(response.data);
+  }
 }

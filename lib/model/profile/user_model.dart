@@ -10,6 +10,7 @@ class UserModel {
   String? avatar;
   String? firstname;
   String? lastname;
+  @JsonKey(name: 'username')
   String? email;
   String? password;
   String? role;

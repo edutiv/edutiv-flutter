@@ -14,7 +14,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
-    Provider.of<ProfileViewModel>(context, listen: false).getUserById(1);
+    Provider.of<ProfileViewModel>(context, listen: false).getUserById(2);
     super.initState();
   }
 
@@ -51,7 +51,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   ListTile(
                     onTap: () => Navigator.pushNamed(context, '/myCourse',
-                        arguments: user.user),
+                        arguments: user.userData),
                     tileColor: Colors.grey[200],
                     shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(5))),
@@ -171,7 +171,7 @@ class ProfileHeader extends StatelessWidget {
                 fit: FlexFit.loose,
                 flex: 1,
                 child: Text(
-                  user.user.firstname! + ' ' + user.user.lastname!,
+                  user.userData.firstname! + ' ' + user.userData.lastname!,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontSize: 24,
@@ -184,7 +184,7 @@ class ProfileHeader extends StatelessWidget {
                 fit: FlexFit.tight,
                 flex: 1,
                 child: Text(
-                  user.user.specialization!.categoryName!,
+                  user.userData.specialization!.categoryName!,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontSize: 12,
