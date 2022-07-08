@@ -126,7 +126,7 @@ class buildLoginTextHeader extends StatelessWidget {
           Image.asset(
             'assets/login_hero.png',
             width: 200,
-            height: 200,
+            height: 190,
           ),
           const Text(
             'Welcome Back',

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../model/course/course_viewmodel.dart';
 
 class TeksBanner extends StatelessWidget {
   String? title;
@@ -7,6 +10,7 @@ class TeksBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var edutiv = Provider.of<CourseViewModel>(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

@@ -105,7 +105,7 @@ class _EditIdentityScreenState extends State<EditIdentityScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<ProfileViewModel>(context);
+    final user = Provider.of<ProfileViewModel>(context, listen: false);
     String firstname = user.userData.firstname!;
     String lastname = user.userData.lastname!;
     var email = user.userData.email!;
@@ -163,8 +163,11 @@ class _EditIdentityScreenState extends State<EditIdentityScreen> {
                           // controller: firstnameController,
                           initialValue: user.userData.firstname,
                           onChanged: (val) {
-                            firstnameController.text = val;
-                            firstname = val;
+                            setState(() {
+                              firstname = val;
+                            });
+                            print(firstname);
+                            // firstnameController.text = val;
                           },
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(
@@ -182,8 +185,10 @@ class _EditIdentityScreenState extends State<EditIdentityScreen> {
                           // controller: lastnameController,
                           initialValue: user.userData.lastname,
                           onChanged: (val) {
-                            lastnameController.text = val;
-                            lastname = val;
+                            setState(() {
+                              lastname = val;
+                            });
+                            // lastnameController.text = val;
                           },
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(
@@ -203,8 +208,10 @@ class _EditIdentityScreenState extends State<EditIdentityScreen> {
                     // controller: emailController,
                     initialValue: user.userData.email,
                     onChanged: (val) {
-                      emailController.text = val;
-                      email = val;
+                      setState(() {
+                        email = val;
+                      });
+                      // emailController.text = val;
                     },
                     validator: (email) {
                       if (email != null && !EmailValidator.validate(email)) {
@@ -241,23 +248,23 @@ class _EditIdentityScreenState extends State<EditIdentityScreen> {
                           ),
                         )
                         .toList(),
-                    // category
-                    //     .map(
-                    //       (e) => DropdownMenuItem<String>(
-                    //         value: e,
-                    //         child: Text(e),
-                    //       ),
-                    //     )
-                    //     .toList(),
                     onChanged: (item) {
                       if (item == 'Backend Engineer') {
-                        specializationId = 1;
+                        setState(() {
+                          specializationId = 1;
+                        });
                       } else if (item == 'Frontend Engineer') {
-                        specializationId = 2;
+                        setState(() {
+                          specializationId = 2;
+                        });
                       } else if (item == 'Mobile Engineer') {
-                        specializationId = 3;
+                        setState(() {
+                          specializationId = 3;
+                        });
                       } else if (item == 'UI/UX Designer') {
-                        specializationId = 4;
+                        setState(() {
+                          specializationId = 4;
+                        });
                       }
                       setState(() => selectedCat = item);
                     },
@@ -283,19 +290,21 @@ class _EditIdentityScreenState extends State<EditIdentityScreen> {
             child: Padding(
               padding: const EdgeInsets.all(12),
               child: ElevatedButton(
-                onPressed: () {
-                  UserAPI().updateProfile(
-                    user.userData.id,
-                    specializationId,
-                    email,
+                onPressed: () async {
+                  formKey.currentState!.save();
+
+                  await UserAPI().updateProfile(
+                    user.userData.id!,
                     firstname,
                     lastname,
+                    email,
                     user.userData.password,
+                    specializationId,
                   );
+
                   Navigator.pushReplacementNamed(
                     context,
                     '/mainpage',
-                    arguments: 3,
                   );
                 },
                 child: const Text('SAVE CHANGES'),

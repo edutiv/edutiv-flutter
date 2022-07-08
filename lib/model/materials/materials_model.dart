@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import 'section_model.dart';
+import '../section/section_model.dart';
 part 'materials_model.g.dart';
 
 @JsonSerializable()

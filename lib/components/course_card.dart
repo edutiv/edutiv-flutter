@@ -83,7 +83,6 @@ class CourseCard extends StatelessWidget {
               margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
               width: 100,
               height: 100,
-              // color: Colors.amber,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,

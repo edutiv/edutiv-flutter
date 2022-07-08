@@ -72,32 +72,21 @@ class _CourseScreenState extends State<CourseScreen> {
             Expanded(
               child: ListView.builder(
                 physics: const BouncingScrollPhysics(),
-                itemCount: course.allCourse.length,
+                itemCount: course.allCourse?.length ?? 0,
                 itemBuilder: (context, index) {
-                  // final data = course.allCourse[index];
                   return GestureDetector(
                     onTap: () => Navigator.pushNamed(
                       context,
                       '/detailCourse',
-                      arguments: course.allCourse[index],
+                      arguments: course.allCourse?[index],
                     ),
-                    child:
-                        // CourseCard(
-                        //   courseImage: data.courseImage!,
-                        //   courseName: data.courseName!,
-                        //   rating:
-                        //       data.reviews!.isEmpty ? 0 : data.reviews![0].rating,
-                        //   totalTime: data.totalTime!,
-                        //   totalVideo: data.totalVideo.toString(),
-                        // ),
-                        CourseCard(
-                      courseImage: course.allCourse[index].courseImage!,
-                      courseName: course.allCourse[index].courseName!,
-                      rating: course.allCourse[index].reviews!.isEmpty
-                          ? 0
-                          : course.allCourse[index].reviews![0].rating,
-                      totalTime: course.allCourse[index].totalTime!,
-                      totalVideo: course.allCourse[index].totalVideo.toString(),
+                    child: CourseCard(
+                      courseImage: course.allCourse?[index].courseImage ?? '',
+                      courseName: course.allCourse?[index].courseName ?? '',
+                      rating:
+                          course.allCourse?[index].reviews?[index].rating ?? 0,
+                      totalTime: course.allCourse?[index].totalTime ?? '',
+                      totalVideo: course.allCourse?[index].totalVideo.toString() ?? '',
                     ),
                   );
                 },

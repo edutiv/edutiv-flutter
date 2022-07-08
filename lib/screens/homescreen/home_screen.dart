@@ -1,12 +1,11 @@
 import 'package:edutiv/components/carousel_hero.dart';
-import 'package:edutiv/components/course_card.dart';
 import 'package:edutiv/components/logo.dart';
 import 'package:edutiv/components/teks_banner.dart';
-import 'package:edutiv/model/profile/profile_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../components/category_card.dart';
+import '../../components/course_card.dart';
 import '../../model/course/course_viewmodel.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -23,13 +22,13 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     Provider.of<CourseViewModel>(context, listen: false).getAllCategory();
     Provider.of<CourseViewModel>(context, listen: false).getAllCourse();
-    Provider.of<ProfileViewModel>(context, listen: false).getUserById(2);
+    // Provider.of<ProfileViewModel>(context, listen: false).getUserById(2);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    var edutiv = Provider.of<CourseViewModel>(context);
+    var data = Provider.of<CourseViewModel>(context);
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -69,30 +68,34 @@ class _HomeScreenState extends State<HomeScreen> {
               title: 'Top Course',
             ),
             Consumer<CourseViewModel>(
-              builder: (context, edutiv, child) {
-                if (edutiv.isLoading) {
+              builder: (context, courseData, child) {
+                if (courseData.isLoading2) {
                   return const Center(child: CircularProgressIndicator());
                 }
                 return ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  itemCount: edutiv.allCourse.length >= 3 ? 3 : 1,
+                  itemCount: courseData.allCourse!.length >= 3 ? 3 : 1,
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () => Navigator.pushNamed(
                         context,
                         '/detailCourse',
-                        arguments: edutiv.allCourse[index],
+                        arguments: courseData.allCourse?[index],
                       ),
                       child: CourseCard(
-                        courseImage: edutiv.allCourse[index].courseImage!,
-                        courseName: edutiv.allCourse[index].courseName!,
-                        rating: edutiv.allCourse[index].reviews!.isEmpty
-                            ? 0
-                            : edutiv.allCourse[index].reviews![0].rating,
-                        totalTime: edutiv.allCourse[index].totalTime!,
-                        totalVideo:
-                            edutiv.allCourse[index].totalVideo.toString(),
+                        courseImage:
+                            courseData.allCourse?[index].courseImage ?? '-',
+                        courseName:
+                            courseData.allCourse?[index].courseName ?? '-',
+                        rating: courseData
+                                .allCourse?[index].reviews?[index].rating ??
+                            0,
+                        totalTime:
+                            courseData.allCourse?[index].totalTime ?? '-',
+                        totalVideo: courseData.allCourse?[index].totalVideo
+                                .toString() ??
+                            '-',
                       ),
                     );
                   },

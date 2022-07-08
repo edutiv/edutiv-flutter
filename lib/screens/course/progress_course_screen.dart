@@ -20,13 +20,11 @@ class _ProgressCourseScreenState extends State<ProgressCourseScreen> {
         itemCount: 1,
         itemBuilder: (context, index) {
           return CourseProgressCard(
-            courseImage: data.allCourse[index].courseImage!,
-            rating: data.allCourse[index].reviews!.isEmpty
-                ? 0
-                : data.allCourse[index].reviews![0].rating,
-            courseName: data.allCourse[index].courseName!,
-            categoryName: data.allCourse[index].category!.categoryName,
-            totalVideo: data.allCourse[index].totalVideo.toString(),
+            courseImage: data.allCourse?[index].courseImage ?? '',
+            rating: data.allCourse?[index].reviews?[index].rating ?? 0,
+            courseName: data.allCourse?[index].courseName ?? '',
+            categoryName: data.allCourse?[index].category?.categoryName ?? '',
+            totalVideo: data.allCourse?[index].totalVideo.toString() ?? '',
           );
         },
       ),

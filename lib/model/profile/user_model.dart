@@ -1,12 +1,16 @@
-import 'package:edutiv/model/course/category_model.dart';
 import 'package:edutiv/model/course/course_model.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+import '../category/category_model.dart';
 
 part 'user_model.g.dart';
 
 @JsonSerializable()
 class UserModel {
-  int id;
+  int? id;
+  @JsonKey(name: 'specialization_id')
+  int? specializationId;
+  @JsonKey(name: 'profile_image')
   String? avatar;
   String? firstname;
   String? lastname;
@@ -22,7 +26,8 @@ class UserModel {
   // List<Review>? reviews;
 
   UserModel({
-    required this.id,
+    this.id,
+    this.specializationId,
     this.avatar,
     this.firstname,
     this.lastname,

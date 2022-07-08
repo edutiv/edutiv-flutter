@@ -1,18 +1,19 @@
 import 'package:edutiv/api/category_api.dart';
-import 'package:edutiv/model/course/category_model.dart';
 import 'package:edutiv/model/course/course_model.dart';
 import 'package:flutter/material.dart';
 
 import '../../api/course_api.dart';
+import '../category/category_model.dart';
 
 class CourseViewModel extends ChangeNotifier {
   bool isLoading = true;
+  bool isLoading2 = true;
 
   List<CategoryModel> _allCategory = [];
   List<CategoryModel> get allCategory => _allCategory;
 
   List<CourseModel> _allCourse = [];
-  List<CourseModel> get allCourse => _allCourse;
+  List<CourseModel>? get allCourse => _allCourse;
 
   late CourseModel _courseData;
   CourseModel get courseData => _courseData;
@@ -25,12 +26,12 @@ class CourseViewModel extends ChangeNotifier {
     return allCategory;
   }
 
-  Future<List<CourseModel>> getAllCourse() async {
+  Future<List<CourseModel>>? getAllCourse() async {
     final courseData = await CourseAPI().fetchAllCourse();
     _allCourse = courseData;
-    isLoading = false;
+    isLoading2 = false;
     notifyListeners();
-    return allCourse;
+    return allCourse ?? [];
   }
 
   Future<CourseModel> getCourseById(int id) async {

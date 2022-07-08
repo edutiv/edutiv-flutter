@@ -34,7 +34,7 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
     super.initState();
     if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
     Provider.of<CourseViewModel>(context, listen: false)
-        .getCourseById(widget.courseId!.id);
+        .getCourseById(widget.courseId!.id!);
     playYT();
     // slideController;
     // quizController;
@@ -170,7 +170,7 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
       player: YoutubePlayer(controller: ytController!),
       builder: (context, player) {
         return Scaffold(
-          endDrawer: LearningMenuDrawer(id: widget.courseId!.id),
+          endDrawer: LearningMenuDrawer(id: widget.courseId!.id!),
           appBar: AppBar(
             leading: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 7),

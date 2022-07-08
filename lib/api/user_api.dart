@@ -27,16 +27,32 @@ class UserAPI {
     }
   }
 
-  Future<UserModel> updateProfile(int userId, int specializationId,
-      String email, firstname, lastname, var password) async {
-    Response response = await Dio().put(baseUrl + '/user' + '/$userId', data: {
-      "id": userId,
-      "firstname": firstname,
-      "lastname": lastname,
-      "username": email,
-      "password": password,
-      "specialization_id": specializationId,
-    });
-    return UserModel.fromJson(response.data);
+  Future<UserModel> updateProfile(int userId, String firstname, String lastname,
+      String email, var password, int specializationId) async {
+    try {
+      var response = await Dio().put(
+        baseUrl + '/user' + '/$userId',
+        options: Options(
+          sendTimeout: 9000,
+          receiveTimeout: 9000,
+          method: 'put',
+        ),
+        data: {
+          "firstname": firstname,
+          "lastname": lastname,
+          "username": email,
+          "password": password,
+          "specialization_id": specializationId,
+        },
+      );
+      if (response.statusCode == 200) {
+        print(response.data);
+        return UserModel.fromJson(response.data['data']);
+      } else {
+        throw Exception('User Not Available');
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
   }
 }

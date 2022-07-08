@@ -60,7 +60,7 @@ class MyApp extends StatelessWidget {
           '/passwordReset': (context) => const PasswordResetScreen(),
           '/passwordResetSuccess': (context) =>
               const PasswordResetSuccessScreen(),
-          '/mainpage': (context) => MainPage(),
+          '/mainpage': (context) => const MainPage(),
           '/homeScreen': (context) => const HomeScreen(),
           '/courseScreen': (context) => const CourseScreen(),
           '/myCourse': (context) => const MyCourseScreen(),

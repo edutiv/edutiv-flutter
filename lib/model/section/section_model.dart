@@ -1,6 +1,7 @@
 import 'package:edutiv/model/course/course_model.dart';
-import 'package:edutiv/model/course/materials_model.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+import '../materials/materials_model.dart';
 part 'section_model.g.dart';
 
 @JsonSerializable()

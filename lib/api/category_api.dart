@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:edutiv/model/course/category_model.dart';
+
+import '../model/category/category_model.dart';
 
 class CategoryAPI {
   String baseUrl = 'https://edutiv-capstone.herokuapp.com';

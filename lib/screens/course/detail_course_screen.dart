@@ -20,7 +20,7 @@ class _DetailCourseScreenState extends State<DetailCourseScreen> {
   void didChangeDependencies() {
     final courseDetail =
         ModalRoute.of(context)!.settings.arguments as CourseModel;
-    Provider.of<CourseViewModel>(context).getCourseById(courseDetail.id);
+    Provider.of<CourseViewModel>(context).getCourseById(courseDetail.id!);
     super.didChangeDependencies();
   }
 
@@ -289,7 +289,7 @@ class ReviewsTabSection extends StatelessWidget {
         Expanded(
           child: GridView.builder(
             padding: const EdgeInsets.all(16),
-            itemCount: review.courseData.reviews!.length,
+            itemCount: review.courseData.reviews?.length ?? 0,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
             ),
@@ -297,7 +297,8 @@ class ReviewsTabSection extends StatelessWidget {
               return ReviewCard(
                 img: review.courseData.reviews![index].user!.id.toString(),
                 title: review.courseData.reviews![index].user!.firstname!,
-                rating: review.courseData.reviews![index].rating!.toDouble(),
+                rating:
+                    review.courseData.reviews?[index].rating?.toDouble() ?? 1,
                 desc: review.courseData.reviews![index].review!,
               );
             },

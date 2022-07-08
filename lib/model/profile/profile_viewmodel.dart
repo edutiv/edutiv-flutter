@@ -20,4 +20,20 @@ class ProfileViewModel extends ChangeNotifier {
     notifyListeners();
     return user;
   }
+
+  Future<UserModel> updateProfile(int userId, String firstname, String lastname,
+      String email, var password, int specializationId) async {
+    final updatedUser = await UserAPI().updateProfile(
+      userId,
+      firstname,
+      lastname,
+      email,
+      password,
+      specializationId,
+    );
+    // print(updatedUser.firstname);
+    _userData = updatedUser;
+    notifyListeners();
+    return updatedUser;
+  }
 }

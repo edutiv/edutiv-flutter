@@ -1,13 +1,14 @@
-import 'package:edutiv/model/course/category_model.dart';
-import 'package:edutiv/model/course/review_model.dart';
-import 'package:edutiv/model/course/section_model.dart';
-import 'package:edutiv/model/course/tools_model.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+import '../category/category_model.dart';
+import '../review/review_model.dart';
+import '../section/section_model.dart';
+import '../tools/tools_model.dart';
 part 'course_model.g.dart';
 
 @JsonSerializable()
 class CourseModel {
-  int id;
+  int? id;
   @JsonKey(name: 'course_name')
   String? courseName;
   @JsonKey(name: 'course_image')
@@ -23,7 +24,7 @@ class CourseModel {
   List<Tools>? tools;
 
   CourseModel({
-    required this.id,
+    this.id,
     this.courseName,
     this.courseImage,
     this.category,

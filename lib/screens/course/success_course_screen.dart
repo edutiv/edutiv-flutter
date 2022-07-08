@@ -121,8 +121,8 @@ class _SuccessCourseScreenState extends State<SuccessCourseScreen> {
                                 ElevatedButton(
                                   onPressed: () {
                                     CourseAPI().createReview(
-                                      data.id,
-                                      user.userData.id,
+                                      data.id!,
+                                      user.userData.id!,
                                       ratingValue,
                                       reviewController.text,
                                     );

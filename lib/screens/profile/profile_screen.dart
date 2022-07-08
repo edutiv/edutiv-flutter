@@ -14,7 +14,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
-    // Provider.of<ProfileViewModel>(context, listen: false).getUserById(2);
+    Provider.of<ProfileViewModel>(context, listen: false).getUserById(2);
     super.initState();
   }
 
@@ -161,9 +161,9 @@ class ProfileHeader extends StatelessWidget {
                 child: CircleAvatar(
                   backgroundColor: Colors.grey[400],
                   radius: 50,
-                  child: const CircleAvatar(
+                  child: CircleAvatar(
                     radius: 45,
-                    backgroundImage: NetworkImage('user.user.avatar'),
+                    backgroundImage: NetworkImage(user.userData.avatar!),
                   ),
                 ),
               ),

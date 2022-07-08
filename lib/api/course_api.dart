@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:edutiv/model/course/course_model.dart';
-import 'package:edutiv/model/course/review_model.dart';
+
+import '../model/review/review_model.dart';
 
 class CourseAPI {
   String baseUrl = 'https://edutiv-capstone.herokuapp.com';
