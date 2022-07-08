@@ -196,7 +196,7 @@ class LessonTabSection extends StatelessWidget {
               return ListView.separated(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                itemCount: section.courseData.sections!.length,
+                itemCount: section.courseData.sections?.length ?? 0,
                 separatorBuilder: (context, index) => const SizedBox(height: 8),
                 itemBuilder: (context, index) {
                   return Column(
@@ -207,8 +207,9 @@ class LessonTabSection extends StatelessWidget {
                       ListView.separated(
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
-                        itemCount: section
-                            .courseData.sections![index].materials!.length,
+                        itemCount: section.courseData.sections?[index].materials
+                                ?.length ??
+                            0,
                         separatorBuilder: (context, index) =>
                             const SizedBox(height: 8),
                         itemBuilder: (context, subIndex) {

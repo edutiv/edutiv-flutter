@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../../components/category_card.dart';
 import '../../components/course_card.dart';
 import '../../model/course/course_viewmodel.dart';
+import '../../model/profile/profile_viewmodel.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -16,13 +17,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  bool isLoading = true;
+  // bool isLoading = true;
 
   @override
   void initState() {
     Provider.of<CourseViewModel>(context, listen: false).getAllCategory();
     Provider.of<CourseViewModel>(context, listen: false).getAllCourse();
-    // Provider.of<ProfileViewModel>(context, listen: false).getUserById(2);
+    Provider.of<ProfileViewModel>(context, listen: false).getUserById(6);
     super.initState();
   }
 

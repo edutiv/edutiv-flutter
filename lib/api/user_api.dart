@@ -18,7 +18,15 @@ class UserAPI {
   }
 
   Future<UserModel> fetchUserById(int id) async {
-    Response response = await Dio().get(baseUrl + '/user' + '/$id');
+    Response response = await Dio().get(
+      baseUrl + '/user' + '/$id',
+      options: Options(
+        headers: {
+          'Authorization':
+              'Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI2Iiwic3ViIjoiYWRtaW4yLmVkdXRpdkBnbWFpbC5jb20ifQ.qtH6fLPJkiMDEQCwcwEgyOkD3uVGWedIc_VwcPtYCVQ'
+        },
+      ),
+    );
 
     if (response.statusCode == 200) {
       return UserModel.fromJson(response.data['data']);
@@ -27,8 +35,7 @@ class UserAPI {
     }
   }
 
-  Future<UserModel> updateProfile(int userId, String firstname, String lastname,
-      String email, var password, int specializationId) async {
+  Future<UserModel> updateProfile(int userId, int specializationId) async {
     try {
       var response = await Dio().put(
         baseUrl + '/user' + '/$userId',
@@ -36,12 +43,12 @@ class UserAPI {
           sendTimeout: 9000,
           receiveTimeout: 9000,
           method: 'put',
+          headers: {
+            'Authorization':
+                'Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI2Iiwic3ViIjoiYWRtaW4yLmVkdXRpdkBnbWFpbC5jb20ifQ.qtH6fLPJkiMDEQCwcwEgyOkD3uVGWedIc_VwcPtYCVQ'
+          },
         ),
         data: {
-          "firstname": firstname,
-          "lastname": lastname,
-          "username": email,
-          "password": password,
           "specialization_id": specializationId,
         },
       );

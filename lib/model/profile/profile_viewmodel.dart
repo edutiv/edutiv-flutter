@@ -21,14 +21,9 @@ class ProfileViewModel extends ChangeNotifier {
     return user;
   }
 
-  Future<UserModel> updateProfile(int userId, String firstname, String lastname,
-      String email, var password, int specializationId) async {
+  Future<UserModel> updateProfile(int userId, int specializationId) async {
     final updatedUser = await UserAPI().updateProfile(
       userId,
-      firstname,
-      lastname,
-      email,
-      password,
       specializationId,
     );
     // print(updatedUser.firstname);

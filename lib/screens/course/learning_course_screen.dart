@@ -99,7 +99,8 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
 
     if (sectionIndex == sectionLength - 1 &&
         materialIndex == materialLength - 1) {
-      Navigator.pushReplacementNamed(context, '/successCourse', arguments: widget.courseId);
+      Navigator.pushReplacementNamed(context, '/successCourse',
+          arguments: widget.courseId);
     }
 
     if (materialIndex < materialLength - 1) {
@@ -279,7 +280,7 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
                       builder: (context, data, child) {
                         return ListView.builder(
                           physics: const BouncingScrollPhysics(),
-                          itemCount: data.courseData.tools!.length,
+                          itemCount: data.courseData.tools?.length ?? 0,
                           itemBuilder: (context, index) {
                             return ToolsCard(
                               toolsName:
@@ -330,7 +331,7 @@ class _LearningMenuDrawerState extends State<LearningMenuDrawer> {
           children: [
             Expanded(
               child: ListView.separated(
-                itemCount: section.courseData.sections!.length,
+                itemCount: section.courseData.sections?.length ?? 0,
                 separatorBuilder: (context, index) => const SizedBox(height: 8),
                 itemBuilder: (context, index) {
                   return Column(
@@ -341,8 +342,9 @@ class _LearningMenuDrawerState extends State<LearningMenuDrawer> {
                       ListView.separated(
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
-                        itemCount: section
-                            .courseData.sections![index].materials!.length,
+                        itemCount: section.courseData.sections?[index].materials
+                                ?.length ??
+                            0,
                         separatorBuilder: (context, index) =>
                             const SizedBox(height: 8),
                         itemBuilder: (context, subIndex) {

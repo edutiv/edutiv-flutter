@@ -109,7 +109,7 @@ class _EditIdentityScreenState extends State<EditIdentityScreen> {
     String firstname = user.userData.firstname!;
     String lastname = user.userData.lastname!;
     var email = user.userData.email!;
-    int specializationId = user.userData.specialization!.id;
+    int specializationId = user.userData.specialization?.id ?? 1;
 
     return Form(
       key: formKey,
@@ -125,8 +125,11 @@ class _EditIdentityScreenState extends State<EditIdentityScreen> {
                   Row(
                     children: [
                       CircleAvatar(
-                        backgroundImage: Image.file(pp).image,
-                      ),
+                          backgroundImage: NetworkImage(
+                        user.userData.avatar ?? '',
+                      )
+                          // Image.file(pp).image,
+                          ),
                       TextButton(
                         onPressed: () async {
                           FilePickerResult? result = await FilePicker.platform
@@ -160,14 +163,15 @@ class _EditIdentityScreenState extends State<EditIdentityScreen> {
                     children: [
                       Expanded(
                         child: TextFormField(
-                          // controller: firstnameController,
                           initialValue: user.userData.firstname,
+                          readOnly: true,
+                          enabled: false,
+                          style: const TextStyle(color: Colors.grey),
                           onChanged: (val) {
                             setState(() {
                               firstname = val;
                             });
                             print(firstname);
-                            // firstnameController.text = val;
                           },
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(
@@ -182,13 +186,14 @@ class _EditIdentityScreenState extends State<EditIdentityScreen> {
                       const SizedBox(width: 12),
                       Expanded(
                         child: TextFormField(
-                          // controller: lastnameController,
                           initialValue: user.userData.lastname,
+                          readOnly: true,
+                          enabled: false,
+                          style: const TextStyle(color: Colors.grey),
                           onChanged: (val) {
                             setState(() {
                               lastname = val;
                             });
-                            // lastnameController.text = val;
                           },
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(
@@ -205,13 +210,14 @@ class _EditIdentityScreenState extends State<EditIdentityScreen> {
                   const SizedBox(height: 16),
                   const Text('Email'),
                   TextFormField(
-                    // controller: emailController,
                     initialValue: user.userData.email,
+                    readOnly: true,
+                    enabled: false,
+                    style: const TextStyle(color: Colors.grey),
                     onChanged: (val) {
                       setState(() {
                         email = val;
                       });
-                      // emailController.text = val;
                     },
                     validator: (email) {
                       if (email != null && !EmailValidator.validate(email)) {
@@ -239,7 +245,8 @@ class _EditIdentityScreenState extends State<EditIdentityScreen> {
                         ),
                       ),
                     ),
-                    value: user.userData.specialization!.categoryName,
+                    value: user.userData.specialization?.categoryName ??
+                        'Backend Engineer',
                     items: specialization.entries
                         .map(
                           (e) => DropdownMenuItem<String>(
@@ -295,10 +302,6 @@ class _EditIdentityScreenState extends State<EditIdentityScreen> {
 
                   await UserAPI().updateProfile(
                     user.userData.id!,
-                    firstname,
-                    lastname,
-                    email,
-                    user.userData.password,
                     specializationId,
                   );
 
