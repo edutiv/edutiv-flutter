@@ -3,6 +3,7 @@ import 'package:edutiv/screens/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'model/auth/auth_viewmodel.dart';
 import 'model/profile/profile_viewmodel.dart';
 import 'model/wishlist/wishlist_viewmodel.dart';
 
@@ -18,6 +19,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => AuthViewModel()),
         ChangeNotifierProvider(create: (_) => CourseViewModel()),
         ChangeNotifierProvider(create: (_) => WishlistViewModel()),
         ChangeNotifierProvider(create: (_) => ProfileViewModel()),

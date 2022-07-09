@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../model/auth/auth_viewmodel.dart';
 import '../model/course/course_viewmodel.dart';
 
 class TeksBanner extends StatelessWidget {
@@ -22,7 +23,7 @@ class TeksBanner extends StatelessWidget {
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () async {},
               child: const Text(
                 'See all',
                 style: TextStyle(color: Color(0xFF126E64)),

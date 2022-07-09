@@ -1,6 +1,10 @@
 import 'package:edutiv/components/logo.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../model/auth/auth_viewmodel.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -23,6 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var data = Provider.of<AuthViewModel>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Logo(),
@@ -45,6 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(height: 14),
                   const Text('Password'),
                   TextFormField(
+                    controller: passwordController,
                     obscureText: !_passwordVisible,
                     validator: (val) {
                       if (val != null && val.length < 4) {
@@ -94,8 +100,18 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: SizedBox(
                     height: 45,
                     child: ElevatedButton(
-                      onPressed: () =>
-                          Navigator.pushReplacementNamed(context, '/mainpage'),
+                      onPressed: () async {
+                        formKey.currentState!.validate();
+                        await data.login(
+                          emailController.text,
+                          passwordController.text,
+                        );
+                        print(data.loginData.token);
+                        final prefs = await SharedPreferences.getInstance();
+                        await data.saveToken(data.loginData.token!);
+                        print('ini hasil token ${prefs.getString('token')}');
+                        Navigator.pushReplacementNamed(context, '/mainpage');
+                      },
                       child: const Text('LOGIN'),
                     ),
                   ),

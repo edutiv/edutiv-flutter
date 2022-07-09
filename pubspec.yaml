@@ -51,6 +51,8 @@ dependencies:
   webview_flutter: ^3.0.4
   file_picker: ^4.6.1
   url_launcher: ^6.1.4
+  jwt_decoder: ^2.0.1
+  shared_preferences: ^2.0.15
 
 
 dev_dependencies:

@@ -1,15 +1,24 @@
 import 'package:dio/dio.dart';
 
+import '../model/auth/auth_model.dart';
+
 class AuthAPI {
   String baseUrl = 'https://edutiv-capstone.herokuapp.com';
 
-  Future login(String email, String password) async {
+  Future<AuthModel> login(String email, String password) async {
     try {
       Response response = await Dio().post(
         baseUrl + '/user/login',
-        data: {'email': email, 'password': password},
+        data: {
+          'email': email,
+          'password': password,
+        },
       );
-      return response.data;
+      if (response.statusCode == 200) {
+        return AuthModel.fromJson(response.data);
+      } else {
+        throw Exception('Data Not Available');
+      }
     } on DioError catch (e) {
       return e.response!.data;
     }
