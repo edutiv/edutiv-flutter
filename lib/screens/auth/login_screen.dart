@@ -1,6 +1,5 @@
 import 'package:edutiv/components/logo.dart';
 import 'package:edutiv/model/profile/profile_viewmodel.dart';
-import 'package:edutiv/screens/homescreen/home_screen.dart';
 import 'package:edutiv/screens/homescreen/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
@@ -111,10 +110,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           emailController.text,
                           passwordController.text,
                         );
-                        print(data.loginTokenData.token);
                         final prefs = await SharedPreferences.getInstance();
                         await data.saveToken(data.loginTokenData.token!);
-                        print('ini hasil token ${prefs.getString('token')}');
                         Map<String, dynamic> decodedToken = JwtDecoder.decode(
                             prefs.getString('token').toString());
                         await data.saveLoginData(decodedToken);
@@ -127,7 +124,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                             (route) => false);
-                        //BELUM DECODE ID FROM JWT
                       },
                       child: const Text('LOGIN'),
                     ),
