@@ -5,7 +5,7 @@ import '../model/auth/auth_model.dart';
 class AuthAPI {
   String baseUrl = 'https://edutiv-capstone.herokuapp.com';
 
-  Future<AuthModel> login(String email, String password) async {
+  Future<TokenModel> login(String email, String password) async {
     try {
       Response response = await Dio().post(
         baseUrl + '/user/login',
@@ -15,7 +15,7 @@ class AuthAPI {
         },
       );
       if (response.statusCode == 200) {
-        return AuthModel.fromJson(response.data);
+        return TokenModel.fromJson(response.data);
       } else {
         throw Exception('Data Not Available');
       }

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../model/course/course_viewmodel.dart';
+import '../../model/profile/profile_viewmodel.dart';
 import '../screen.dart';
 
 class MainPage extends StatefulWidget {
-  // int? currentIndex = 0;
-  const MainPage({Key? key}) : super(key: key);
+  int? id;
+  MainPage({Key? key, this.id}) : super(key: key);
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -18,6 +21,15 @@ class _MainPageState extends State<MainPage> {
     const WishlistScreen(),
     const ProfileScreen(),
   ];
+
+  @override
+  void initState() {
+    Provider.of<CourseViewModel>(context, listen: false).getAllCategory();
+    Provider.of<CourseViewModel>(context, listen: false).getAllCourse();
+    Provider.of<ProfileViewModel>(context, listen: false)
+        .getUserById(widget.id!);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

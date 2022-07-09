@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import '../model/auth/auth_viewmodel.dart';
 import '../model/course/course_viewmodel.dart';
 
 class TeksBanner extends StatelessWidget {
@@ -23,7 +24,12 @@ class TeksBanner extends StatelessWidget {
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
             TextButton(
-              onPressed: () async {},
+              onPressed: () async {
+                final prefs = await SharedPreferences.getInstance();
+                Map<String, dynamic> decodedToken =
+                    JwtDecoder.decode(prefs.getString('token').toString());
+                print(decodedToken);
+              },
               child: const Text(
                 'See all',
                 style: TextStyle(color: Color(0xFF126E64)),

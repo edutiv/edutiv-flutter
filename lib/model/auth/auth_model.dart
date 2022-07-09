@@ -5,10 +5,19 @@ part 'auth_model.g.dart';
 class AuthModel {
   String? jti;
   String? sub;
-  String? token;
 
   AuthModel({this.jti, this.sub});
 
-  factory AuthModel.fromJson(Map<String, dynamic> json) => _$AuthModelFromJson(json);
+  factory AuthModel.fromJson(Map<String, dynamic> json) =>
+      _$AuthModelFromJson(json);
   Map<String, dynamic> toJson() => _$AuthModelToJson(this);
+}
+
+@JsonSerializable()
+class TokenModel {
+  String? token;
+  TokenModel({this.token});
+  factory TokenModel.fromJson(Map<String, dynamic> json) =>
+      _$TokenModelFromJson(json);
+  Map<String, dynamic> toJson() => _$TokenModelToJson(this);
 }

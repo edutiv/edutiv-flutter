@@ -1,6 +1,10 @@
 import 'package:edutiv/components/logo.dart';
+import 'package:edutiv/model/profile/profile_viewmodel.dart';
+import 'package:edutiv/screens/homescreen/home_screen.dart';
+import 'package:edutiv/screens/homescreen/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -28,6 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     var data = Provider.of<AuthViewModel>(context);
+    final user = Provider.of<ProfileViewModel>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Logo(),
@@ -106,11 +111,23 @@ class _LoginScreenState extends State<LoginScreen> {
                           emailController.text,
                           passwordController.text,
                         );
-                        print(data.loginData.token);
+                        print(data.loginTokenData.token);
                         final prefs = await SharedPreferences.getInstance();
-                        await data.saveToken(data.loginData.token!);
+                        await data.saveToken(data.loginTokenData.token!);
                         print('ini hasil token ${prefs.getString('token')}');
-                        Navigator.pushReplacementNamed(context, '/mainpage');
+                        Map<String, dynamic> decodedToken = JwtDecoder.decode(
+                            prefs.getString('token').toString());
+                        await data.saveLoginData(decodedToken);
+
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MainPage(
+                                id: int.tryParse(data.loginData.jti!),
+                              ),
+                            ),
+                            (route) => false);
+                        //BELUM DECODE ID FROM JWT
                       },
                       child: const Text('LOGIN'),
                     ),

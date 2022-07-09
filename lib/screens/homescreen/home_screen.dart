@@ -23,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     Provider.of<CourseViewModel>(context, listen: false).getAllCategory();
     Provider.of<CourseViewModel>(context, listen: false).getAllCourse();
-    Provider.of<ProfileViewModel>(context, listen: false).getUserById(6);
+    // Provider.of<ProfileViewModel>(context, listen: false).getUserById(widget.id!);
     super.initState();
   }
 
