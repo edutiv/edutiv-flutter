@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:edutiv/api/user_api.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -86,13 +85,7 @@ class _EditIdentityScreenState extends State<EditIdentityScreen> {
   final TextEditingController lastnameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   String? selectedCat = 'Backend Engineer';
-
-  // List<String> category = [
-  //   'Backend Engineer', //1
-  //   'Frontend Engineer', //2
-  //   'Mobile Engineer', //3
-  //   'UI/UX Designer' //4
-  // ];
+  int specializationId = 0;
 
   Map<String, int> specialization = {
     'Backend Engineer': 1,
@@ -109,7 +102,8 @@ class _EditIdentityScreenState extends State<EditIdentityScreen> {
     String firstname = user.userData.firstname!;
     String lastname = user.userData.lastname!;
     var email = user.userData.email!;
-    int specializationId = user.userData.specialization?.id ?? 1;
+    // int specializationId = user.userData.specialization?.id ?? 1;
+    print(specializationId);
 
     return Form(
       key: formKey,
@@ -299,9 +293,9 @@ class _EditIdentityScreenState extends State<EditIdentityScreen> {
               child: ElevatedButton(
                 onPressed: () async {
                   formKey.currentState!.save();
+                  formKey.currentState!.validate();
 
-                  await UserAPI().updateProfile(
-                    user.userData.id!,
+                  await user.updateProfile(
                     specializationId,
                   );
 

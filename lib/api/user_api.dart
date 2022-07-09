@@ -35,30 +35,22 @@ class UserAPI {
     }
   }
 
-  Future<UserModel> updateProfile(int userId, int specializationId) async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final String? token = prefs.getString('token');
-      var response = await Dio().put(
-        baseUrl + '/user' + '/$userId',
-        options: Options(
-          sendTimeout: 9000,
-          receiveTimeout: 9000,
-          method: 'put',
-          headers: {'Authorization': 'Bearer $token'},
-        ),
-        data: {
-          "specialization_id": specializationId,
-        },
-      );
-      if (response.statusCode == 200) {
-        print(response.data);
-        return UserModel.fromJson(response.data['data']);
-      } else {
-        throw Exception('User Not Available');
-      }
-    } catch (e) {
-      throw Exception(e.toString());
+  Future<UserModel> updateProfile(int specializationId) async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? token = prefs.getString('token');
+    Response response = await Dio().put(
+      baseUrl + '/user/edit-user',
+      options: Options(
+        headers: {'Authorization': 'Bearer $token'},
+      ),
+      data: {
+        "specialization_id": specializationId,
+      },
+    );
+    if (response.statusCode == 200) {
+      return UserModel.fromJson(response.data['data']);
+    } else {
+      throw Exception('User Not Available');
     }
   }
 }

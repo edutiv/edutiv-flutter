@@ -115,15 +115,16 @@ class _LoginScreenState extends State<LoginScreen> {
                         Map<String, dynamic> decodedToken = JwtDecoder.decode(
                             prefs.getString('token').toString());
                         await data.saveLoginData(decodedToken);
-
+                        await user.getWhoLogin();
                         Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => MainPage(
-                                id: int.tryParse(data.loginData.jti!),
-                              ),
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MainPage(
+                              id: int.tryParse(data.loginData.jti!),
                             ),
-                            (route) => false);
+                          ),
+                          (route) => false,
+                        );
                       },
                       child: const Text('LOGIN'),
                     ),

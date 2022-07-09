@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../model/course/course_viewmodel.dart';
-import '../../model/profile/profile_viewmodel.dart';
 import '../screen.dart';
 
 class MainPage extends StatefulWidget {
@@ -26,8 +25,8 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     Provider.of<CourseViewModel>(context, listen: false).getAllCategory();
     Provider.of<CourseViewModel>(context, listen: false).getAllCourse();
-    Provider.of<ProfileViewModel>(context, listen: false)
-        .getUserById(widget.id!);
+    // Provider.of<ProfileViewModel>(context, listen: false)
+    //     .getUserById(widget.id!);
     super.initState();
   }
 

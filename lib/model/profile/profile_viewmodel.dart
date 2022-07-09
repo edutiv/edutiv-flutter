@@ -1,3 +1,4 @@
+import 'package:edutiv/api/auth_api.dart';
 import 'package:edutiv/api/user_api.dart';
 import 'package:edutiv/model/profile/user_model.dart';
 import 'package:flutter/material.dart';
@@ -21,14 +22,20 @@ class ProfileViewModel extends ChangeNotifier {
     return user;
   }
 
-  Future<UserModel> updateProfile(int userId, int specializationId) async {
+  Future<UserModel> updateProfile(int specializationId) async {
     final updatedUser = await UserAPI().updateProfile(
-      userId,
       specializationId,
     );
-    // print(updatedUser.firstname);
     _userData = updatedUser;
     notifyListeners();
     return updatedUser;
+  }
+
+  Future<UserModel> getWhoLogin() async {
+    final whoLoggedIn = await AuthAPI().getWhoLogin();
+    _userData = whoLoggedIn;
+    isLoading = false;
+    notifyListeners();
+    return whoLoggedIn;
   }
 }

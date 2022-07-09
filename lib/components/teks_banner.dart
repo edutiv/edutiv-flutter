@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/course/course_viewmodel.dart';
 
@@ -25,10 +23,10 @@ class TeksBanner extends StatelessWidget {
             ),
             TextButton(
               onPressed: () async {
-                final prefs = await SharedPreferences.getInstance();
-                Map<String, dynamic> decodedToken =
-                    JwtDecoder.decode(prefs.getString('token').toString());
-                print(decodedToken);
+                // final prefs = await SharedPreferences.getInstance();
+                // Map<String, dynamic> decodedToken =
+                //     JwtDecoder.decode(prefs.getString('token').toString());
+                // print(decodedToken);
               },
               child: const Text(
                 'See all',

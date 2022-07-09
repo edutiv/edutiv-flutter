@@ -8,8 +8,6 @@ part 'user_model.g.dart';
 @JsonSerializable()
 class UserModel {
   int? id;
-  @JsonKey(name: 'specialization_id')
-  int? specializationId;
   @JsonKey(name: 'profile_image')
   String? avatar;
   String? firstname;
@@ -27,7 +25,6 @@ class UserModel {
 
   UserModel({
     this.id,
-    this.specializationId,
     this.avatar,
     this.firstname,
     this.lastname,

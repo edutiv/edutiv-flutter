@@ -7,7 +7,6 @@ import 'package:provider/provider.dart';
 import '../../components/category_card.dart';
 import '../../components/course_card.dart';
 import '../../model/course/course_viewmodel.dart';
-import '../../model/profile/profile_viewmodel.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
