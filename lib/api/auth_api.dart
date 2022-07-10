@@ -38,7 +38,7 @@ class AuthAPI {
     }
   }
 
-  Future logout() async {
-    //IMPLEMENT USER LOGOUT
-  }
+  // Future logout() async {
+  //   //IMPLEMENT USER LOGOUT
+  // }
 }

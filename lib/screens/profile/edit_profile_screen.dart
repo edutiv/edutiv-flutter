@@ -169,7 +169,6 @@ class _EditIdentityScreenState extends State<EditIdentityScreen> {
                                   setState(() {
                                     firstname = val;
                                   });
-                                  print(firstname);
                                 },
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(
@@ -301,18 +300,21 @@ class _EditIdentityScreenState extends State<EditIdentityScreen> {
             padding: const EdgeInsets.all(12),
             child: ElevatedButton(
               onPressed: () async {
-                formKey.currentState!.save();
-                formKey.currentState!.validate();
+                if (formKey.currentState!.validate()) {
+                  formKey.currentState!.save();
 
-                await user.updateProfile(
-                  specializationId,
-                );
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MainPage(index: 3),
-                  ),
-                );
+                  await user.updateProfile(
+                    specializationId,
+                  );
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MainPage(index: 3),
+                    ),
+                  );
+                } else {
+                  return;
+                }
               },
               child: const Text('SAVE CHANGES'),
             ),

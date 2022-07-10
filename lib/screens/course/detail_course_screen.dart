@@ -1,6 +1,7 @@
 import 'package:edutiv/model/course/course_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../../components/enroll_bottom_bar.dart';
 import '../../components/review_card.dart';
@@ -78,7 +79,37 @@ class _DetailCourseScreenState extends State<DetailCourseScreen> {
                           fontWeight: FontWeight.bold),
                     ),
                     TextButton.icon(
-                      onPressed: () {},
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return SimpleDialog(
+                              contentPadding: EdgeInsets.zero,
+                              children: [
+                                SizedBox(
+                                  width: double.infinity,
+                                  height: 200,
+                                  child: YoutubePlayer(
+                                    bottomActions: [
+                                      CurrentPosition(),
+                                      ProgressBar(isExpanded: true),
+                                      RemainingDuration(),
+                                    ],
+                                    controller: YoutubePlayerController(
+                                      initialVideoId:
+                                          YoutubePlayer.convertUrlToId(
+                                                  courseDetail.sections?[0]
+                                                          .materials?[0].url ??
+                                                      '') ??
+                                              '',
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
                       icon: const Icon(
                         Icons.play_circle_outline_outlined,
                         color: Colors.white,
