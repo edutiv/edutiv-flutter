@@ -1,5 +1,8 @@
+import 'package:edutiv/model/profile/profile_viewmodel.dart';
+import 'package:edutiv/screens/homescreen/main_page.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class FormRequestScreen extends StatefulWidget {
   const FormRequestScreen({Key? key}) : super(key: key);
@@ -11,6 +14,7 @@ class FormRequestScreen extends StatefulWidget {
 class _FormRequestScreenState extends State<FormRequestScreen> {
   var formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
+  final titleController = TextEditingController();
   String? selectedCat = 'Backend Engineer';
   String? selectedType = 'Course';
   List<String> requestType = [
@@ -32,6 +36,7 @@ class _FormRequestScreenState extends State<FormRequestScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<ProfileViewModel>(context);
     return Scaffold(
       appBar: AppBar(
         leading: Padding(
@@ -79,7 +84,11 @@ class _FormRequestScreenState extends State<FormRequestScreen> {
                 children: [
                   const Text('Email'),
                   TextFormField(
-                    controller: emailController,
+                    initialValue: user.userData.email,
+                    // controller: emailController,
+                    readOnly: true,
+                    enabled: false,
+                    style: const TextStyle(color: Colors.grey),
                     validator: (email) {
                       if (email != null && !EmailValidator.validate(email)) {
                         return 'Masukkan email dengan benar';
@@ -108,6 +117,10 @@ class _FormRequestScreenState extends State<FormRequestScreen> {
                     children: [
                       Expanded(
                         child: TextFormField(
+                          initialValue: user.userData.firstname,
+                          readOnly: true,
+                          enabled: false,
+                          style: const TextStyle(color: Colors.grey),
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
@@ -121,6 +134,10 @@ class _FormRequestScreenState extends State<FormRequestScreen> {
                       const SizedBox(width: 12),
                       Expanded(
                         child: TextFormField(
+                          initialValue: user.userData.lastname,
+                          readOnly: true,
+                          enabled: false,
+                          style: const TextStyle(color: Colors.grey),
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
@@ -136,10 +153,10 @@ class _FormRequestScreenState extends State<FormRequestScreen> {
                   const SizedBox(height: 14),
                   const Text('Title'),
                   TextFormField(
-                    controller: emailController,
-                    validator: (email) {
-                      if (email != null && !EmailValidator.validate(email)) {
-                        return 'Masukkan email dengan benar';
+                    controller: titleController,
+                    validator: (val) {
+                      if (titleController.text.isEmpty) {
+                        return 'Title tidak boleh kosong!';
                       } else {
                         return null;
                       }
@@ -204,10 +221,19 @@ class _FormRequestScreenState extends State<FormRequestScreen> {
             Row(
               children: [
                 Expanded(
-                  child: ElevatedButton(
-                    onPressed: () =>
-                        Navigator.pushReplacementNamed(context, '/mainpage'),
-                    child: const Text('SUBMIT REQUEST'),
+                  child: SizedBox(
+                    height: 45,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MainPage(index: 3),
+                          ),
+                        );
+                      },
+                      child: const Text('SUBMIT REQUEST'),
+                    ),
                   ),
                 ),
               ],

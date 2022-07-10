@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../model/course/course_viewmodel.dart';
+import '../screens/homescreen/main_page.dart';
 
 class TeksBanner extends StatelessWidget {
   String? title;
@@ -27,6 +28,12 @@ class TeksBanner extends StatelessWidget {
                 // Map<String, dynamic> decodedToken =
                 //     JwtDecoder.decode(prefs.getString('token').toString());
                 // print(decodedToken);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MainPage(index: 1),
+                  ),
+                );
               },
               child: const Text(
                 'See all',
