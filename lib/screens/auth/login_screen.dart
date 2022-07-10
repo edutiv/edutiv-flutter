@@ -105,26 +105,29 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 45,
                     child: ElevatedButton(
                       onPressed: () async {
-                        formKey.currentState!.validate();
-                        await data.login(
-                          emailController.text,
-                          passwordController.text,
-                        );
-                        final prefs = await SharedPreferences.getInstance();
-                        await data.saveToken(data.loginTokenData.token!);
-                        Map<String, dynamic> decodedToken = JwtDecoder.decode(
-                            prefs.getString('token').toString());
-                        await data.saveLoginData(decodedToken);
-                        await user.getWhoLogin();
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => MainPage(
-                              id: int.tryParse(data.loginData.jti!),
+                        if (formKey.currentState!.validate()) {
+                          await data.login(
+                            emailController.text,
+                            passwordController.text,
+                          );
+                          final prefs = await SharedPreferences.getInstance();
+                          await data.saveToken(data.loginTokenData.token!);
+                          Map<String, dynamic> decodedToken = JwtDecoder.decode(
+                              prefs.getString('token').toString());
+                          await data.saveLoginData(decodedToken);
+                          await user.getWhoLogin();
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MainPage(
+                                id: int.tryParse(data.loginData.jti!),
+                              ),
                             ),
-                          ),
-                          (route) => false,
-                        );
+                            (route) => false,
+                          );
+                        } else {
+                          return;
+                        }
                       },
                       child: const Text('LOGIN'),
                     ),

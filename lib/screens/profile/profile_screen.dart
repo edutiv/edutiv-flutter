@@ -128,6 +128,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         '/',
                         (route) => false,
                       );
+                      print(prefs.getString('token'));
                     },
                     tileColor: Colors.grey[200],
                     shape: const RoundedRectangleBorder(

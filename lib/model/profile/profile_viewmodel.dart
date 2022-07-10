@@ -38,4 +38,13 @@ class ProfileViewModel extends ChangeNotifier {
     notifyListeners();
     return whoLoggedIn;
   }
+
+  Future<UserModel> changePassword(
+      String currentPassword, String newPassword) async {
+    final changedPassword =
+        await UserAPI().changePassword(currentPassword, newPassword);
+    _userData = changedPassword;
+    notifyListeners();
+    return changedPassword;
+  }
 }

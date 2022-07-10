@@ -53,4 +53,24 @@ class UserAPI {
       throw Exception('User Not Available');
     }
   }
+
+  Future<UserModel> changePassword(String currentPassword, String newPassword) async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? token = prefs.getString('token');
+    Response response = await Dio().put(
+      baseUrl + '/user/change-password',
+      options: Options(
+        headers: {'Authorization': 'Bearer $token'},
+      ),
+      data: {
+        "current_password": currentPassword,
+        "new_password" : newPassword,
+      },
+    );
+    if (response.statusCode == 200) {
+      return UserModel.fromJson(response.data['data']);
+    } else {
+      throw Exception('Failed to Change Password');
+    }
+  }
 }

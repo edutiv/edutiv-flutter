@@ -10,7 +10,7 @@ class AuthViewModel extends ChangeNotifier {
   late AuthModel _loginData;
   AuthModel get loginData => _loginData;
 
-  Future<TokenModel> login(String email, String password) async {
+  Future login(String email, String password) async {
     final login = await AuthAPI().login(email, password);
     _loginTokenData = login;
     notifyListeners();

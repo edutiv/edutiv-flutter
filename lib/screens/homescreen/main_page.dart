@@ -6,7 +6,8 @@ import '../screen.dart';
 
 class MainPage extends StatefulWidget {
   int? id;
-  MainPage({Key? key, this.id}) : super(key: key);
+  int? index;
+  MainPage({Key? key, this.id, this.index}) : super(key: key);
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -27,6 +28,7 @@ class _MainPageState extends State<MainPage> {
     Provider.of<CourseViewModel>(context, listen: false).getAllCourse();
     // Provider.of<ProfileViewModel>(context, listen: false)
     //     .getUserById(widget.id!);
+    currentIndex = widget.index ?? 0;
     super.initState();
   }
 
@@ -40,9 +42,6 @@ class _MainPageState extends State<MainPage> {
       body: screens[currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        // unselectedItemColor: const Color(0xFF9E9E9E),
-        // showUnselectedLabels: true,
-        // unselectedLabelStyle: const TextStyle(color: Colors.grey),
         currentIndex: currentIndex,
         onTap: (index) => setState(() => currentIndex = index),
         selectedItemColor: Theme.of(context).primaryColor,
