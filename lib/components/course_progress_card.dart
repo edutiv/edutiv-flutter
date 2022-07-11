@@ -4,7 +4,7 @@ class CourseProgressCard extends StatelessWidget {
   String courseImage;
   String courseName;
   String? categoryName;
-  int? rating;
+  double? rating;
   String? totalVideo;
 
   CourseProgressCard({
@@ -46,6 +46,12 @@ class CourseProgressCard extends StatelessWidget {
                     child: Image.network(
                       courseImage,
                       fit: BoxFit.cover,
+                      errorBuilder: (context, Object exception, stackTrace) {
+                        return Image.asset(
+                          'assets/empty_image.png',
+                          fit: BoxFit.cover,
+                        );
+                      },
                     ),
                   ),
                   Positioned(

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:edutiv/model/course/course_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/review/review_model.dart';
 
@@ -29,21 +30,43 @@ class CourseAPI {
     }
   }
 
+  Future enrollCourse(int userId, int courseId) async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? token = prefs.getString('token');
+    Response response = await Dio().post(
+      baseUrl + '/enrolled',
+      options: Options(
+        headers: {'Authorization': 'Bearer $token'},
+      ),
+      data: {
+        "user_id": userId,
+        "course_id": courseId,
+      },
+    );
+    return response.data;
+  }
+
   Future<Review> createReview(
       int courseId, int userId, int rating, String review) async {
-    Response response =
-        await Dio().post(baseUrl + '/course' + '/$courseId' + '/review', data: {
-      "courseId": courseId,
-      "user_id": userId,
-      "rating": rating,
-      "review": review,
-    });
+    final prefs = await SharedPreferences.getInstance();
+    final String? token = prefs.getString('token');
+    Response response = await Dio().post(
+      baseUrl + '/course' + '/$courseId' + '/review',
+      options: Options(
+        headers: {'Authorization': 'Bearer $token'},
+      ),
+      data: {
+        "courseId": courseId,
+        "user_id": userId,
+        "rating": rating,
+        "review": review,
+      },
+    );
     return Review.fromJson(response.data);
   }
 
   Future searchCourseByName(String query) async {
-    Response response =
-        await Dio().get(baseUrl + '/course' + '/search' + '/$query');
+    Response response = await Dio().get(baseUrl + '/course/search/$query');
 
     if (response.statusCode == 200) {
       List<CourseModel> course = (response.data['data'] as List)
@@ -54,6 +77,26 @@ class CourseAPI {
       return query = '';
     } else {
       throw Exception('Course Not Available');
+    }
+  }
+
+  Future<List<Review>> fetchAllReviewFromCourseId(int courseId) async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? token = prefs.getString('token');
+    Response response = await Dio().get(
+      baseUrl + '/enrolled/courses/$courseId',
+      options: Options(
+        headers: {'Authorization': 'Bearer $token'},
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      List<Review> allReview = (response.data['data'] as List)
+          .map((e) => Review.fromJson(e))
+          .toList();
+      return allReview;
+    } else {
+      throw Exception('No Reviews Available');
     }
   }
 
@@ -100,17 +143,4 @@ class CourseAPI {
   //   }
   // }
 
-  // Future<List<Review>> getAllReviewFromCourseId(int courseId) async {
-  //   Response response = await Dio()
-  //       .get('https://edutiv-springboot.herokuapp.com/course/$courseId/review');
-
-  //   if (response.statusCode == 200) {
-  //     List<Review> allReview = (response.data['data'] as List)
-  //         .map((e) => Review.fromJson(e))
-  //         .toList();
-  //     return allReview;
-  //   } else {
-  //     throw Exception('No Reviews Available');
-  //   }
-  // }
 }

@@ -22,6 +22,9 @@ class _DetailCourseScreenState extends State<DetailCourseScreen> {
     final courseDetail =
         ModalRoute.of(context)!.settings.arguments as CourseModel;
     Provider.of<CourseViewModel>(context).getCourseById(courseDetail.id!);
+    Provider.of<CourseViewModel>(context)
+        .getAllReviewByCourseId(courseDetail.id!);
+
     super.didChangeDependencies();
   }
 
@@ -163,18 +166,18 @@ class _DetailCourseScreenState extends State<DetailCourseScreen> {
           ),
         ),
         body: Column(
-          children: const [
+          children: [
             Expanded(
               child: TabBarView(
                 children: [
-                  AboutTabSection(),
-                  LessonTabSection(),
-                  ToolsTabSection(),
-                  ReviewsTabSection(),
+                  const AboutTabSection(),
+                  const LessonTabSection(),
+                  const ToolsTabSection(),
+                  ReviewsTabSection(id: courseDetail.id),
                 ],
               ),
             ),
-            EnrollBottomBar()
+            const EnrollBottomBar()
           ],
         ),
       ),
@@ -317,29 +320,41 @@ class ToolsTabSection extends StatelessWidget {
   }
 }
 
-class ReviewsTabSection extends StatelessWidget {
-  const ReviewsTabSection({Key? key}) : super(key: key);
+class ReviewsTabSection extends StatefulWidget {
+  int? id;
+  ReviewsTabSection({Key? key, this.id}) : super(key: key);
+
+  @override
+  State<ReviewsTabSection> createState() => _ReviewsTabSectionState();
+}
+
+class _ReviewsTabSectionState extends State<ReviewsTabSection> {
+  @override
+  void initState() {
+    Provider.of<CourseViewModel>(context, listen: false)
+        .getAllReviewByCourseId(widget.id!);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    var review = Provider.of<CourseViewModel>(context);
+    final review = Provider.of<CourseViewModel>(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
           child: GridView.builder(
             padding: const EdgeInsets.all(16),
-            itemCount: review.courseData.reviews?.length ?? 0,
+            itemCount: review.allReview?.length ?? 0,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
             ),
             itemBuilder: (context, index) {
               return ReviewCard(
-                img: review.courseData.reviews![index].user!.id.toString(),
-                title: review.courseData.reviews![index].user!.firstname!,
-                rating:
-                    review.courseData.reviews?[index].rating?.toDouble() ?? 1,
-                desc: review.courseData.reviews![index].review!,
+                img: review.allReview?[index].user?.avatar ?? '',
+                title: review.allReview?[index].user?.firstname ?? '',
+                rating: review.allReview?[index].rating ?? 1,
+                desc: review.allReview?[index].review ?? '',
               );
             },
           ),

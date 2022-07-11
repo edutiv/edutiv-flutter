@@ -3,13 +3,13 @@ import 'package:edutiv/api/user_api.dart';
 import 'package:edutiv/model/profile/user_model.dart';
 import 'package:flutter/material.dart';
 
-import '../course/course_model.dart';
+import '../review/review_model.dart';
 
 class ProfileViewModel extends ChangeNotifier {
   bool isLoading = true;
 
-  final List<CourseModel> _enrolledCourse = [];
-  List<CourseModel> get enrolledCourse => _enrolledCourse;
+  List<Review> _enrolledCourse = [];
+  List<Review> get enrolledCourse => _enrolledCourse;
 
   late UserModel _userData;
   UserModel get userData => _userData;
@@ -46,5 +46,12 @@ class ProfileViewModel extends ChangeNotifier {
     _userData = changedPassword;
     notifyListeners();
     return changedPassword;
+  }
+
+  Future<List<Review>> getEnrolledCourse() async {
+    final enrolled = await UserAPI().fetchEnrolledCourse();
+    _enrolledCourse = enrolled;
+    notifyListeners();
+    return enrolled;
   }
 }

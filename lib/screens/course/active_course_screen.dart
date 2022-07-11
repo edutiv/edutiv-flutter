@@ -16,26 +16,29 @@ class _ActiveCourseScreenState extends State<ActiveCourseScreen> {
   Widget build(BuildContext context) {
     // final user = ModalRoute.of(context)!.settings.arguments as UserModel;
     final user = Provider.of<ProfileViewModel>(context);
-    // print(user.enrolledCourse);
+    //Enroll History
     return Scaffold(
       body: FutureBuilder(
-          future: user.getUserById(1),
-          builder: (context, snapshot) {
-            return ListView.builder(
-              itemCount: user.enrolledCourse.length,
-              itemBuilder: (context, index) {
-                return CourseCard(
-                  courseImage: user.enrolledCourse[index].courseImage!,
-                  courseName: user.enrolledCourse[index].courseName!,
-                  rating: user.enrolledCourse[index].reviews!.isEmpty
-                      ? 0
-                      : user.enrolledCourse[index].reviews![0].rating,
-                  totalTime: user.enrolledCourse[index].totalTime!,
-                  totalVideo: user.enrolledCourse[index].totalVideo.toString(),
-                );
-              },
-            );
-          }),
+        future: user.getEnrolledCourse(),
+        builder: (context, snapshot) {
+          return ListView.builder(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            itemCount: user.enrolledCourse.length,
+            itemBuilder: (context, index) {
+              return CourseCard(
+                courseImage:
+                    user.enrolledCourse[index].course?.courseImage ?? '',
+                courseName: user.enrolledCourse[index].course?.courseName ?? '',
+                rating: user.enrolledCourse[index].rating ?? 1,
+                totalTime: user.enrolledCourse[index].course?.totalTime ?? '',
+                totalVideo:
+                    user.enrolledCourse[index].course?.totalVideo.toString() ??
+                        '',
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../api/course_api.dart';
 import '../category/category_model.dart';
+import '../review/review_model.dart';
 
 class CourseViewModel extends ChangeNotifier {
   bool isLoading = true;
@@ -14,6 +15,9 @@ class CourseViewModel extends ChangeNotifier {
 
   List<CourseModel> _allCourse = [];
   List<CourseModel>? get allCourse => _allCourse;
+
+  List<Review> _allReview = [];
+  List<Review>? get allReview => _allReview;
 
   late CourseModel _courseData;
   CourseModel get courseData => _courseData;
@@ -34,6 +38,14 @@ class CourseViewModel extends ChangeNotifier {
     return allCourse ?? [];
   }
 
+  Future<List<Review>>? getAllReviewByCourseId(int courseId) async {
+    final listReview = await CourseAPI().fetchAllReviewFromCourseId(courseId);
+    _allReview = listReview;
+    // isLoading2 = false;
+    notifyListeners();
+    return listReview;
+  }
+
   Future<CourseModel> getCourseById(int id) async {
     final course = await CourseAPI().fetchCourseById(id);
     _courseData = course;
@@ -51,6 +63,14 @@ class CourseViewModel extends ChangeNotifier {
     }
     notifyListeners();
     return data;
+  }
+
+  Future<Review> createReview(
+      int courseId, int userId, int rating, String review) async {
+    final reviewCourse =
+        await CourseAPI().createReview(courseId, userId, rating, review);
+    notifyListeners();
+    return reviewCourse;
   }
 
   // searchCourse(String query) {

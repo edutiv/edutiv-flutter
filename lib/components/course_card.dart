@@ -6,7 +6,7 @@ class CourseCard extends StatelessWidget {
   String? mentorName;
   String totalVideo;
   String totalTime;
-  int? rating;
+  double? rating;
 
   CourseCard(
       {Key? key,
@@ -48,6 +48,12 @@ class CourseCard extends StatelessWidget {
                     child: Image.network(
                       courseImage,
                       fit: BoxFit.cover,
+                      errorBuilder: (context, Object exception, stackTrace) {
+                        return Image.asset(
+                          'assets/empty_image.png',
+                          fit: BoxFit.cover,
+                        );
+                      },
                     ),
                   ),
                   Positioned(

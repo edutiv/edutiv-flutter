@@ -6,6 +6,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../model/auth/auth_viewmodel.dart';
 
@@ -156,6 +157,35 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ],
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('Don\'t have an account?'),
+                TextButton(
+                  onPressed: () {
+                    String? encodeQueryParameters(Map<String, String> params) {
+                      return params.entries
+                          .map((e) =>
+                              '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+                          .join('&');
+                    }
+
+                    final Uri emailLaunchUri = Uri(
+                      scheme: 'mailto',
+                      path: 'admin@edutiv.com',
+                      query: encodeQueryParameters(
+                          <String, String>{'subject': 'Request an Account'}),
+                    );
+
+                    launchUrl(emailLaunchUri);
+                  },
+                  child: const Text(
+                    'Contact admin',
+                    style: TextStyle(color: Color(0xFF126E64)),
+                  ),
+                ),
+              ],
+            )
           ],
         ),
       ),
@@ -172,7 +202,7 @@ class buildLoginTextHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 32),
-      height: 260,
+      height: 230,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -180,7 +210,7 @@ class buildLoginTextHeader extends StatelessWidget {
           Image.asset(
             'assets/login_hero.png',
             width: 200,
-            height: 190,
+            height: 160,
           ),
           const Text(
             'Welcome Back',

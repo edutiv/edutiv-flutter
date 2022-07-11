@@ -14,7 +14,7 @@ Review _$ReviewFromJson(Map<String, dynamic> json) => Review(
       course: json['course'] == null
           ? null
           : CourseModel.fromJson(json['course'] as Map<String, dynamic>),
-      rating: json['rating'] as int?,
+      rating: (json['rating'] as num?)?.toDouble(),
       review: json['review'] as String?,
     );
 

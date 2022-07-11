@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:edutiv/model/profile/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../model/review/review_model.dart';
+
 class UserAPI {
   String baseUrl = 'https://edutiv-capstone.herokuapp.com';
 
@@ -54,7 +56,8 @@ class UserAPI {
     }
   }
 
-  Future<UserModel> changePassword(String currentPassword, String newPassword) async {
+  Future<UserModel> changePassword(
+      String currentPassword, String newPassword) async {
     final prefs = await SharedPreferences.getInstance();
     final String? token = prefs.getString('token');
     Response response = await Dio().put(
@@ -64,13 +67,33 @@ class UserAPI {
       ),
       data: {
         "current_password": currentPassword,
-        "new_password" : newPassword,
+        "new_password": newPassword,
       },
     );
     if (response.statusCode == 200) {
       return UserModel.fromJson(response.data['data']);
     } else {
       throw Exception('Failed to Change Password');
+    }
+  }
+
+  Future<List<Review>> fetchEnrolledCourse() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? token = prefs.getString('token');
+    Response response = await Dio().get(
+      baseUrl + '/enrolled/history',
+      options: Options(
+        headers: {'Authorization': 'Bearer $token'},
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      List<Review> enrolledCourse = (response.data['data'] as List)
+          .map((e) => Review.fromJson(e))
+          .toList();
+      return enrolledCourse;
+    } else {
+      throw Exception('No Course Available.');
     }
   }
 }

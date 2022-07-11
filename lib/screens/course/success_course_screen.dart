@@ -30,118 +30,120 @@ class _SuccessCourseScreenState extends State<SuccessCourseScreen> {
       body: SafeArea(
         minimum: const EdgeInsets.all(24),
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CircleAvatar(
-                child: Lottie.asset('assets/success.json'),
-                backgroundColor: Colors.transparent,
-                radius: 150,
-              ),
-              const SizedBox(height: 16),
-              const Text('What a Day!'),
-              const SizedBox(height: 8),
-              Text(
-                'Finally you have completed the ${data.courseName} course very well.',
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 16),
-              Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                        onPressed: () {},
-                        child: const Text('DOWNLOAD CERTIFICATE')),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: OutlinedButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (dialogContext) {
-                            return SimpleDialog(
-                              titlePadding:
-                                  const EdgeInsets.fromLTRB(16, 0, 0, 0),
-                              contentPadding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
-                              title: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircleAvatar(
+                  child: Lottie.asset('assets/success.json'),
+                  backgroundColor: Colors.transparent,
+                  radius: 150,
+                ),
+                const SizedBox(height: 16),
+                const Text('What a Day!'),
+                const SizedBox(height: 8),
+                Text(
+                  'Finally you have completed the ${data.courseName} course very well.',
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                          onPressed: () {},
+                          child: const Text('DOWNLOAD CERTIFICATE')),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (dialogContext) {
+                              return SimpleDialog(
+                                titlePadding:
+                                    const EdgeInsets.fromLTRB(16, 0, 0, 0),
+                                contentPadding:
+                                    const EdgeInsets.symmetric(horizontal: 8),
+                                title: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text(
+                                      'Rating a Course',
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                    IconButton(
+                                      onPressed: () =>
+                                          Navigator.pop(dialogContext),
+                                      icon: const Icon(Icons.close_outlined),
+                                    )
+                                  ],
+                                ),
                                 children: [
-                                  const Text(
-                                    'Rating a Course',
-                                    style: TextStyle(fontSize: 16),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(data.courseName!),
                                   ),
-                                  IconButton(
-                                    onPressed: () =>
-                                        Navigator.pop(dialogContext),
-                                    icon: const Icon(Icons.close_outlined),
+                                  RatingBar.builder(
+                                    initialRating: 1,
+                                    minRating: 1,
+                                    direction: Axis.horizontal,
+                                    itemCount: 5,
+                                    itemPadding: const EdgeInsets.symmetric(
+                                      horizontal: 4.0,
+                                      vertical: 2,
+                                    ),
+                                    itemBuilder: (context, _) => const Icon(
+                                      Icons.star,
+                                      color: Colors.amber,
+                                    ),
+                                    onRatingUpdate: (rating) {
+                                      setState(() {
+                                        ratingValue = rating.toInt();
+                                      });
+                                    },
+                                  ),
+                                  const SizedBox(height: 8),
+                                  TextFormField(
+                                    controller: reviewController,
+                                    decoration: const InputDecoration(
+                                      hintText: 'Write review...',
+                                      border: OutlineInputBorder(),
+                                    ),
+                                    minLines: 5,
+                                    keyboardType: TextInputType.multiline,
+                                    maxLines: null,
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      CourseAPI().createReview(
+                                        data.id!,
+                                        user.userData.id!,
+                                        ratingValue,
+                                        reviewController.text,
+                                      );
+                                      Navigator.pushReplacementNamed(
+                                          context, '/mainpage');
+                                    },
+                                    child: const Text('SUBMIT'),
                                   )
                                 ],
-                              ),
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(data.courseName!),
-                                ),
-                                RatingBar.builder(
-                                  initialRating: 1,
-                                  minRating: 1,
-                                  direction: Axis.horizontal,
-                                  itemCount: 5,
-                                  itemPadding: const EdgeInsets.symmetric(
-                                    horizontal: 4.0,
-                                    vertical: 2,
-                                  ),
-                                  itemBuilder: (context, _) => const Icon(
-                                    Icons.star,
-                                    color: Colors.amber,
-                                  ),
-                                  onRatingUpdate: (rating) {
-                                    setState(() {
-                                      ratingValue = rating.toInt();
-                                    });
-                                  },
-                                ),
-                                const SizedBox(height: 8),
-                                TextFormField(
-                                  controller: reviewController,
-                                  decoration: const InputDecoration(
-                                    hintText: 'Write review...',
-                                    border: OutlineInputBorder(),
-                                  ),
-                                  minLines: 5,
-                                  keyboardType: TextInputType.multiline,
-                                  maxLines: null,
-                                ),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    CourseAPI().createReview(
-                                      data.id!,
-                                      user.userData.id!,
-                                      ratingValue,
-                                      reviewController.text,
-                                    );
-                                    Navigator.pushReplacementNamed(
-                                        context, '/mainpage');
-                                  },
-                                  child: const Text('SUBMIT'),
-                                )
-                              ],
-                            );
-                          },
-                        );
-                      },
-                      child: const Text('RATING COURSE'),
+                              );
+                            },
+                          );
+                        },
+                        child: const Text('RATING COURSE'),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
