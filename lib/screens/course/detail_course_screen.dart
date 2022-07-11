@@ -137,7 +137,7 @@ class _DetailCourseScreenState extends State<DetailCourseScreen> {
                   backgroundColor: const Color.fromARGB(62, 158, 158, 158),
                   child: IconButton(
                     onPressed: () {
-                      wishlist.wishlishedCourse.add(courseDetail);
+                      wishlist.wishlishedCourse?.add(courseDetail);
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Added to Wishlist!')),
                       );
@@ -162,12 +162,19 @@ class _DetailCourseScreenState extends State<DetailCourseScreen> {
             ),
           ),
         ),
-        body: const TabBarView(
-          children: [
-            AboutTabSection(),
-            LessonTabSection(),
-            ToolsTabSection(),
-            ReviewsTabSection(),
+        body: Column(
+          children: const [
+            Expanded(
+              child: TabBarView(
+                children: [
+                  AboutTabSection(),
+                  LessonTabSection(),
+                  ToolsTabSection(),
+                  ReviewsTabSection(),
+                ],
+              ),
+            ),
+            EnrollBottomBar()
           ],
         ),
       ),
@@ -201,7 +208,7 @@ class AboutTabSection extends StatelessWidget {
             ),
           ),
         ),
-        const EnrollBottomBar(),
+        // const EnrollBottomBar(),
       ],
     );
   }
@@ -277,7 +284,7 @@ class LessonTabSection extends StatelessWidget {
             },
           ),
         ),
-        const EnrollBottomBar(),
+        // const EnrollBottomBar(),
       ],
     );
   }
@@ -297,13 +304,14 @@ class ToolsTabSection extends StatelessWidget {
             itemCount: tools.courseData.tools!.length,
             itemBuilder: (context, index) {
               return ToolsCard(
-                toolsName: tools.courseData.tools![index].toolsName,
-                imgUrl: tools.courseData.tools![index].toolsIcon,
+                toolsName: tools.courseData.tools?[index].toolsName,
+                imgUrl: tools.courseData.tools?[index].toolsIcon,
+                toolUrl: tools.courseData.tools?[index].url,
               );
             },
           ),
         ),
-        const EnrollBottomBar(),
+        // const EnrollBottomBar(),
       ],
     );
   }
@@ -336,7 +344,7 @@ class ReviewsTabSection extends StatelessWidget {
             },
           ),
         ),
-        const EnrollBottomBar(),
+        // const EnrollBottomBar(),
       ],
     );
   }

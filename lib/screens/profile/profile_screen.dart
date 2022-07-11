@@ -123,6 +123,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     onTap: () async {
                       final prefs = await SharedPreferences.getInstance();
                       await prefs.remove('token');
+                      await prefs.setBool('isLoggedIn', false);
                       Navigator.pushNamedAndRemoveUntil(
                         context,
                         '/',

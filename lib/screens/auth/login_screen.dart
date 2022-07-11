@@ -22,10 +22,29 @@ class _LoginScreenState extends State<LoginScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
+  late SharedPreferences loginState;
+  bool isLoggedIn = false;
+
   @override
   void initState() {
     super.initState();
+    checkIsLoggedIn();
     _passwordVisible = false;
+  }
+
+  void checkIsLoggedIn() async {
+    loginState = await SharedPreferences.getInstance();
+    isLoggedIn = loginState.getBool('isLoggedIn') ?? false;
+
+    if (isLoggedIn == true) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MainPage(),
+        ),
+        (route) => false,
+      );
+    }
   }
 
   @override
@@ -105,7 +124,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 45,
                     child: ElevatedButton(
                       onPressed: () async {
-                        if (formKey.currentState!.validate()) {
+                        final isValidForm = formKey.currentState!.validate();
+                        if (isValidForm) {
                           await data.login(
                             emailController.text,
                             passwordController.text,
@@ -116,6 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               prefs.getString('token').toString());
                           await data.saveLoginData(decodedToken);
                           await user.getWhoLogin();
+                          await prefs.setBool('isLoggedIn', true);
                           Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(

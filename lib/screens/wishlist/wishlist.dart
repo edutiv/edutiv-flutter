@@ -28,44 +28,39 @@ class _WishlistScreenState extends State<WishlistScreen> {
       ),
       body: ListView.builder(
         padding: const EdgeInsets.all(16),
-        itemCount: wishlishedCourse.wishlishedCourse.length,
+        itemCount: wishlishedCourse.wishlishedCourse?.length ?? 0,
         itemBuilder: (context, index) {
-          if (index != null) {
-            return Dismissible(
-              key: UniqueKey(),
-              onDismissed: (direction) {
-                setState(() {
-                  wishlishedCourse.wishlishedCourse.removeAt(index);
-                });
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                      content: Text(
-                          '${wishlishedCourse.wishlishedCourse[index].courseName} Removed')),
-                );
-              },
-              child: GestureDetector(
-                onTap: () => Navigator.pushNamed(context, '/detailCourse'),
-                child: CourseCard(
-                  courseImage:
-                      wishlishedCourse.wishlishedCourse[index].courseImage!,
-                  courseName:
-                      wishlishedCourse.wishlishedCourse[index].courseName!,
-                  rating:
-                      wishlishedCourse.wishlishedCourse[index].reviews!.isEmpty
-                          ? 0
-                          : wishlishedCourse
-                              .wishlishedCourse[index].reviews![0].rating,
-                  totalTime:
-                      wishlishedCourse.wishlishedCourse[index].totalTime!,
-                  totalVideo: wishlishedCourse
-                      .wishlishedCourse[index].totalVideo
-                      .toString(),
+          return Dismissible(
+            key: UniqueKey(),
+            onDismissed: (direction) {
+              setState(() {
+                wishlishedCourse.wishlishedCourse?.removeAt(index);
+              });
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                      '${wishlishedCourse.wishlishedCourse?[index].courseName} Removed'),
                 ),
+              );
+            },
+            child: GestureDetector(
+              onTap: () => Navigator.pushNamed(context, '/detailCourse'),
+              child: CourseCard(
+                courseImage:
+                    wishlishedCourse.wishlishedCourse?[index].courseImage ?? '',
+                courseName:
+                    wishlishedCourse.wishlishedCourse?[index].courseName ?? '',
+                rating: wishlishedCourse
+                        .wishlishedCourse?[index].reviews?[index].rating ??
+                    0,
+                totalTime:
+                    wishlishedCourse.wishlishedCourse?[index].totalTime ?? '',
+                totalVideo: wishlishedCourse.wishlishedCourse?[index].totalVideo
+                        .toString() ??
+                    '',
               ),
-            );
-          } else {
-            return const Center(child: Text('You Have no Wishlist'));
-          }
+            ),
+          );
         },
       ),
     );

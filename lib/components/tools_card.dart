@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ToolsCard extends StatelessWidget {
   String? toolsName;
   String? imgUrl;
-  ToolsCard({Key? key, this.toolsName, this.imgUrl}) : super(key: key);
+  String? toolUrl;
+  ToolsCard({Key? key, this.toolsName, this.imgUrl, this.toolUrl})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +30,11 @@ class ToolsCard extends StatelessWidget {
                     const SizedBox(height: 8),
                     Text(toolsName!),
                     TextButton.icon(
-                      onPressed: () {},
+                      onPressed: () async {
+                        if (await canLaunchUrl(Uri.parse(toolUrl ?? ''))) {
+                          await launchUrl(Uri.parse(toolUrl ?? ''));
+                        }
+                      },
                       icon: const Icon(
                         Icons.download,
                         color: Colors.black,
