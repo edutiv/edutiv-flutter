@@ -66,11 +66,17 @@ class CourseViewModel extends ChangeNotifier {
   }
 
   Future<Review> createReview(
-      int courseId, int userId, int rating, String review) async {
+      int enrolledCourseId, int rating, String review) async {
     final reviewCourse =
-        await CourseAPI().createReview(courseId, userId, rating, review);
+        await CourseAPI().createReview(enrolledCourseId, rating, review);
     notifyListeners();
     return reviewCourse;
+  }
+
+  Future enrollCourse(int userId, int courseId) async {
+    final enroll = await CourseAPI().enrollCourse(userId, courseId);
+    notifyListeners();
+    return enroll;
   }
 
   // searchCourse(String query) {

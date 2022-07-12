@@ -47,17 +47,15 @@ class CourseAPI {
   }
 
   Future<Review> createReview(
-      int courseId, int userId, int rating, String review) async {
+      int enrolledCourseId, int rating, String review) async {
     final prefs = await SharedPreferences.getInstance();
     final String? token = prefs.getString('token');
-    Response response = await Dio().post(
-      baseUrl + '/course' + '/$courseId' + '/review',
+    Response response = await Dio().put(
+      baseUrl + '/enrolled/$enrolledCourseId',
       options: Options(
         headers: {'Authorization': 'Bearer $token'},
       ),
       data: {
-        "courseId": courseId,
-        "user_id": userId,
         "rating": rating,
         "review": review,
       },

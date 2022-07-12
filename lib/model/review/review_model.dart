@@ -6,7 +6,7 @@ part 'review_model.g.dart';
 
 @JsonSerializable()
 class Review {
-  int id;
+  int? id;
   double? rating;
   String? review;
   UserModel? user;

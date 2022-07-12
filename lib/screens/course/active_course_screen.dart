@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../components/course_card.dart';
+import '../screen.dart';
 
 class ActiveCourseScreen extends StatefulWidget {
   const ActiveCourseScreen({Key? key}) : super(key: key);
@@ -25,15 +26,30 @@ class _ActiveCourseScreenState extends State<ActiveCourseScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             itemCount: user.enrolledCourse.length,
             itemBuilder: (context, index) {
-              return CourseCard(
-                courseImage:
-                    user.enrolledCourse[index].course?.courseImage ?? '',
-                courseName: user.enrolledCourse[index].course?.courseName ?? '',
-                rating: user.enrolledCourse[index].rating ?? 1,
-                totalTime: user.enrolledCourse[index].course?.totalTime ?? '',
-                totalVideo:
-                    user.enrolledCourse[index].course?.totalVideo.toString() ??
-                        '',
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => LearningCourseScreen(
+                        courseId: user.enrolledCourse[index].course,
+                        initURL: user.enrolledCourse[index].course?.sections?[0]
+                            .materials?[0].url,
+                      ),
+                    ),
+                  );
+                },
+                child: CourseCard(
+                  courseImage:
+                      user.enrolledCourse[index].course?.courseImage ?? '',
+                  courseName:
+                      user.enrolledCourse[index].course?.courseName ?? '',
+                  rating: user.enrolledCourse[index].rating ?? 1,
+                  totalTime: user.enrolledCourse[index].course?.totalTime ?? '',
+                  totalVideo: user.enrolledCourse[index].course?.totalVideo
+                          .toString() ??
+                      '',
+                ),
               );
             },
           );

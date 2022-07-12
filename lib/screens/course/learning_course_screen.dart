@@ -145,7 +145,7 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
         widget.courseId!.sections![sectionIndex].materials![materialIndex].url!;
     return Material(
       child: SizedBox(
-        height: 500,
+        height: 450,
         width: double.infinity,
         child: WebView(
           userAgent: 'fake',
@@ -221,15 +221,16 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
                               ? quizView()
                               : widgetType = '',
                 const SizedBox(height: 16),
-                const SizedBox(height: 16),
                 Row(
                   children: [
-                    Text(
-                      widget.courseId!.sections![sectionIndex]
-                          .materials![materialIndex].materialName!,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
+                    Expanded(
+                      child: Text(
+                        widget.courseId!.sections![sectionIndex]
+                            .materials![materialIndex].materialName!,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
                       ),
                     ),
                   ],

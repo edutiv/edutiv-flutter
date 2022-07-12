@@ -1,5 +1,5 @@
-import 'package:edutiv/api/course_api.dart';
 import 'package:edutiv/model/course/course_model.dart';
+import 'package:edutiv/model/course/course_viewmodel.dart';
 import 'package:edutiv/model/profile/profile_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -26,6 +26,7 @@ class _SuccessCourseScreenState extends State<SuccessCourseScreen> {
   Widget build(BuildContext context) {
     final data = ModalRoute.of(context)!.settings.arguments as CourseModel;
     final user = Provider.of<ProfileViewModel>(context);
+    final course = Provider.of<CourseViewModel>(context);
     return Scaffold(
       body: SafeArea(
         minimum: const EdgeInsets.all(24),
@@ -120,10 +121,9 @@ class _SuccessCourseScreenState extends State<SuccessCourseScreen> {
                                     maxLines: null,
                                   ),
                                   ElevatedButton(
-                                    onPressed: () {
-                                      CourseAPI().createReview(
+                                    onPressed: () async {
+                                      await course.createReview(
                                         data.id!,
-                                        user.userData.id!,
                                         ratingValue,
                                         reviewController.text,
                                       );
