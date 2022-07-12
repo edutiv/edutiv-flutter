@@ -44,11 +44,6 @@ class EnrollBottomBar extends StatelessWidget {
               ),
             );
           },
-          //     Navigator.pushNamed(
-          //   context,
-          //   '/learningCourse',
-          //   arguments: courseDetail,
-          // ),
           child: const Text('ENROLL COURSE'),
         ),
       ),

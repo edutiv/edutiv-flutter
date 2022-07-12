@@ -91,45 +91,4 @@ class CourseViewModel extends ChangeNotifier {
   //   // setState(() => data.allCourse == suggestions);
   // }
 
-  // List<Section> _allSection = [];
-  // List<Section> get allSection => _allSection;
-
-  // List<Materials> _allMaterials = [];
-  // List<Materials> get allMaterials => _allMaterials;
-
-  // List<Tools> _allTools = [];
-  // List<Tools> get allTools => _allTools;
-
-  // List<Review> _allReview = [];
-  // List<Review> get allReview => _allReview;
-
-  // Future<List<Section>> getAllSectionFromCourseId(int id) async {
-  //   final sectionData = await CourseAPI().getAllSectionFromCourseId(id);
-  //   _allSection = sectionData;
-  //   notifyListeners();
-  //   return allSection;
-  // }
-
-  // Future<List<Materials>> getAllMaterialsFromSectionId(
-  //     int courseId, int sectionId) async {
-  //   final materialsData =
-  //       await CourseAPI().getAllMaterialsFromSectionId(courseId, sectionId);
-  //   _allMaterials = materialsData;
-  //   notifyListeners();
-  //   return allMaterials;
-  // }
-
-  // Future<List<Tools>> getAllToolsFromCourseId(int courseId) async {
-  //   final toolsData = await CourseAPI().getAllToolsFromCourseId(courseId);
-  //   _allTools = toolsData;
-  //   notifyListeners();
-  //   return allTools;
-  // }
-
-  // Future<List<Review>> getAllReviewFromCourseId(int courseId) async {
-  //   final reviewData = await CourseAPI().getAllReviewFromCourseId(courseId);
-  //   _allReview = reviewData;
-  //   notifyListeners();
-  //   return allReview;
-  // }
 }
