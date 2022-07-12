@@ -19,6 +19,8 @@ class CourseModel {
   int? totalVideo;
   @JsonKey(name: 'total_times')
   String? totalTime;
+  @JsonKey(name: 'total_rating')
+  double? totalRating;
   List<Section>? sections;
   List<Review>? reviews;
   List<Tools>? tools;
@@ -31,6 +33,7 @@ class CourseModel {
     this.description,
     this.totalVideo,
     this.totalTime,
+    this.totalRating,
     this.sections,
     this.reviews,
     this.tools,

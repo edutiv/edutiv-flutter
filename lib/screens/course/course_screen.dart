@@ -2,7 +2,6 @@ import 'package:edutiv/model/course/course_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../components/choice_chip_row.dart';
 import '../../components/course_card.dart';
 
 class CourseScreen extends StatefulWidget {
@@ -14,7 +13,15 @@ class CourseScreen extends StatefulWidget {
 
 class _CourseScreenState extends State<CourseScreen> {
   bool isEmpty = false;
+  bool isSelected = false;
   TextEditingController controller = TextEditingController();
+  final List categories = [
+    'All',
+    'Backend Engineer',
+    'Frontend Engineer',
+    'Mobile Developer',
+    'UI/UX Designer',
+  ];
 
   @override
   void initState() {
@@ -68,7 +75,38 @@ class _CourseScreenState extends State<CourseScreen> {
               },
             ),
             const SizedBox(height: 8),
-            const ChoiceChipRow(),
+            Row(
+              children: [
+                Expanded(
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: 40,
+                    child: ListView.separated(
+                      physics: const BouncingScrollPhysics(),
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 5,
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(width: 4),
+                      itemBuilder: (context, index) {
+                        return ChoiceChip(
+                          label: Text(
+                            categories[index],
+                          ),
+                          selected: isSelected,
+                          onSelected: (selected) {
+                            setState(() {
+                              isSelected = selected;
+                            });
+                          },
+                          selectedColor: Colors.green,
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            // const ChoiceChipRow(),
             Expanded(
               child: ListView.builder(
                 physics: const BouncingScrollPhysics(),
@@ -86,7 +124,8 @@ class _CourseScreenState extends State<CourseScreen> {
                       rating:
                           course.allCourse?[index].reviews?[index].rating ?? 0,
                       totalTime: course.allCourse?[index].totalTime ?? '',
-                      totalVideo: course.allCourse?[index].totalVideo.toString() ?? '',
+                      totalVideo:
+                          course.allCourse?[index].totalVideo.toString() ?? '',
                     ),
                   );
                 },

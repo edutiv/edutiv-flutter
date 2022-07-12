@@ -1,5 +1,7 @@
 import 'package:edutiv/api/auth_api.dart';
+import 'package:edutiv/api/faq_api.dart';
 import 'package:edutiv/api/user_api.dart';
+import 'package:edutiv/model/faq/faq_model.dart';
 import 'package:edutiv/model/profile/user_model.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +12,9 @@ class ProfileViewModel extends ChangeNotifier {
 
   List<Review> _enrolledCourse = [];
   List<Review> get enrolledCourse => _enrolledCourse;
+
+  List<FAQModel> _allFAQ = [];
+  List<FAQModel> get allFAQ => _allFAQ;
 
   late UserModel _userData;
   UserModel get userData => _userData;
@@ -53,5 +58,12 @@ class ProfileViewModel extends ChangeNotifier {
     _enrolledCourse = enrolled;
     notifyListeners();
     return enrolled;
+  }
+
+  Future<List<FAQModel>> getAllFAQ() async {
+    final faqData = await FaqAPI().fetchAllFAQ();
+    _allFAQ = faqData;
+    notifyListeners();
+    return allFAQ;
   }
 }
