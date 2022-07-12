@@ -3,6 +3,7 @@ import 'package:edutiv/api/faq_api.dart';
 import 'package:edutiv/api/user_api.dart';
 import 'package:edutiv/model/faq/faq_model.dart';
 import 'package:edutiv/model/profile/user_model.dart';
+import 'package:edutiv/model/request/request_model.dart';
 import 'package:flutter/material.dart';
 
 import '../review/review_model.dart';
@@ -58,6 +59,14 @@ class ProfileViewModel extends ChangeNotifier {
     _enrolledCourse = enrolled;
     notifyListeners();
     return enrolled;
+  }
+
+  Future<RequestModel> requestForm(
+      int userId, String title, int categoryId, String requestType) async {
+    final request =
+        await UserAPI().requestForm(userId, title, categoryId, requestType);
+    notifyListeners();
+    return request;
   }
 
   Future<List<FAQModel>> getAllFAQ() async {

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:edutiv/model/profile/user_model.dart';
+import 'package:edutiv/model/request/request_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/review/review_model.dart';
@@ -94,6 +95,29 @@ class UserAPI {
       return enrolledCourse;
     } else {
       throw Exception('No Course Available.');
+    }
+  }
+
+  Future<RequestModel> requestForm(
+      int userId, String title, int categoryId, String requestType) async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? token = prefs.getString('token');
+    Response response = await Dio().post(
+      baseUrl + '/request',
+      options: Options(
+        headers: {'Authorization': 'Bearer $token'},
+      ),
+      data: {
+        "user_id": userId,
+        "title": title,
+        "category_id": categoryId,
+        "request_type": requestType,
+      },
+    );
+    if (response.statusCode == 200) {
+      return RequestModel.fromJson(response.data['data']);
+    } else {
+      throw Exception('Failed to Make Request Form');
     }
   }
 }

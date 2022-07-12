@@ -17,17 +17,18 @@ class _FormRequestScreenState extends State<FormRequestScreen> {
   final titleController = TextEditingController();
   String? selectedCat = 'Backend Engineer';
   String? selectedType = 'Course';
+  int categoryId = 0;
   List<String> requestType = [
     'Course',
     '1 on 1 Consultation',
     'Bootcamp',
   ];
-  List<String> category = [
-    'Backend Engineer',
-    'Frontend Engineer',
-    'Mobile Engineer',
-    'UI/UX Designer'
-  ];
+  Map<String, int> category = {
+    'Backend Engineer': 1,
+    'Frontend Engineer': 2,
+    'Mobile Engineer': 3,
+    'UI/UX Designer': 4
+  };
 
   @override
   void initState() {
@@ -37,6 +38,8 @@ class _FormRequestScreenState extends State<FormRequestScreen> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<ProfileViewModel>(context);
+    // print('ini $selectedCat dengan id $categoryId');
+    // print('ini $selectedType');
     return Scaffold(
       appBar: AppBar(
         leading: Padding(
@@ -180,17 +183,37 @@ class _FormRequestScreenState extends State<FormRequestScreen> {
                         ),
                       ),
                     ),
-                    value: selectedCat,
-                    items: category
+                    value: user.userData.specialization?.categoryName ??
+                        'Backend Engineer',
+                    items: category.entries
                         .map(
                           (e) => DropdownMenuItem<String>(
-                            value: e,
-                            child: Text(e),
+                            value: e.key,
+                            child: Text(e.key),
                           ),
                         )
                         .toList(),
-                    onChanged: (item) => setState(() => selectedCat = item),
-                    hint: const Text('Choose categories'),
+                    onChanged: (item) {
+                      if (item == 'Backend Engineer') {
+                        setState(() {
+                          categoryId = 1;
+                        });
+                      } else if (item == 'Frontend Engineer') {
+                        setState(() {
+                          categoryId = 2;
+                        });
+                      } else if (item == 'Mobile Engineer') {
+                        setState(() {
+                          categoryId = 3;
+                        });
+                      } else if (item == 'UI/UX Designer') {
+                        setState(() {
+                          categoryId = 4;
+                        });
+                      }
+                      setState(() => selectedCat = item);
+                    },
+                    hint: const Text('Select categories'),
                   ),
                   const SizedBox(height: 14),
                   const Text('Type Request'),
@@ -224,13 +247,24 @@ class _FormRequestScreenState extends State<FormRequestScreen> {
                   child: SizedBox(
                     height: 45,
                     child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => MainPage(index: 3),
-                          ),
-                        );
+                      onPressed: () async {
+                        if (formKey.currentState!.validate()) {
+                          formKey.currentState!.save();
+                          await user.requestForm(
+                            user.userData.id!,
+                            titleController.text,
+                            categoryId,
+                            selectedType!,
+                          );
+                          await Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MainPage(index: 3),
+                            ),
+                          );
+                        } else {
+                          return;
+                        }
                       },
                       child: const Text('SUBMIT REQUEST'),
                     ),
