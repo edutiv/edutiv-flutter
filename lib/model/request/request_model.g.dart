@@ -7,7 +7,7 @@ part of 'request_model.dart';
 // **************************************************************************
 
 RequestModel _$RequestModelFromJson(Map<String, dynamic> json) => RequestModel(
-      userId: json['user_id'] as int?,
+      userId: json['id'] as int?,
       title: json['title'] as String?,
       categoryId: json['category_id'] as int?,
       requestType: json['request_type'] as String?,
@@ -15,7 +15,7 @@ RequestModel _$RequestModelFromJson(Map<String, dynamic> json) => RequestModel(
 
 Map<String, dynamic> _$RequestModelToJson(RequestModel instance) =>
     <String, dynamic>{
-      'user_id': instance.userId,
+      'id': instance.userId,
       'title': instance.title,
       'category_id': instance.categoryId,
       'request_type': instance.requestType,

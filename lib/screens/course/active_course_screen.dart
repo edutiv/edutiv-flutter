@@ -44,7 +44,7 @@ class _ActiveCourseScreenState extends State<ActiveCourseScreen> {
                       user.enrolledCourse[index].course?.courseImage ?? '',
                   courseName:
                       user.enrolledCourse[index].course?.courseName ?? '',
-                  rating: user.enrolledCourse[index].rating ?? 1,
+                  rating: user.enrolledCourse[index].course?.totalRating ?? 0,
                   totalTime: user.enrolledCourse[index].course?.totalTime ?? '',
                   totalVideo: user.enrolledCourse[index].course?.totalVideo
                           .toString() ??

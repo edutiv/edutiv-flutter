@@ -1,8 +1,9 @@
 import 'package:edutiv/model/profile/profile_viewmodel.dart';
-import 'package:edutiv/screens/homescreen/main_page.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../homescreen/main_page.dart';
 
 class FormRequestScreen extends StatefulWidget {
   const FormRequestScreen({Key? key}) : super(key: key);
@@ -32,6 +33,8 @@ class _FormRequestScreenState extends State<FormRequestScreen> {
 
   @override
   void initState() {
+    final user = Provider.of<ProfileViewModel>(context, listen: false);
+    categoryId = user.userData.specialization?.id ?? 1;
     super.initState();
   }
 
@@ -250,6 +253,10 @@ class _FormRequestScreenState extends State<FormRequestScreen> {
                       onPressed: () async {
                         if (formKey.currentState!.validate()) {
                           formKey.currentState!.save();
+                          // print('ini id user ${user.userData.id}');
+                          // print('ini category id $categoryId');
+                          // print('ini title ${titleController.text}');
+                          // print('ini tipe $selectedType');
                           await user.requestForm(
                             user.userData.id!,
                             titleController.text,

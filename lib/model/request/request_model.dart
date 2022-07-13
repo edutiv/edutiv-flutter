@@ -3,7 +3,7 @@ part 'request_model.g.dart';
 
 @JsonSerializable()
 class RequestModel {
-  @JsonKey(name: 'user_id')
+  @JsonKey(name: 'id')
   int? userId;
   String? title;
   @JsonKey(name: 'category_id')

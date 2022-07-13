@@ -88,9 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             courseData.allCourse?[index].courseImage ?? '-',
                         courseName:
                             courseData.allCourse?[index].courseName ?? '-',
-                        rating: courseData
-                                .allCourse?[index].reviews?[index].rating ??
-                            0,
+                        rating: courseData.allCourse?[index].totalRating ?? 0,
                         totalTime:
                             courseData.allCourse?[index].totalTime ?? '-',
                         totalVideo: courseData.allCourse?[index].totalVideo
