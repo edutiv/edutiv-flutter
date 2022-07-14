@@ -1,29 +1,11 @@
 import 'package:edutiv/api/certificate_api.dart';
 import 'package:flutter/material.dart';
 import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
 
 import '../../components/data.dart';
 
 class CertificateDetailScreen extends StatelessWidget {
-  CertificateDetailScreen({Key? key}) : super(key: key);
-
-  final certificate = pw.Document();
-
-  // writeOnCertificate() {
-  //   certificate.addPage(
-  //     pw.Page(
-  //       pageFormat: PdfPageFormat.a4,
-  //       orientation: pw.PageOrientation.landscape,
-  //       build: (pw.Context context) {
-  //         return pw.Widget[
-  //           pw.Center(child: )
-  //         ];
-
-  //       },
-  //     ),
-  //   );
-  // }
+  const CertificateDetailScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

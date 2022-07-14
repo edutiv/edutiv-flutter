@@ -1,11 +1,13 @@
-import 'package:edutiv/model/course/course_model.dart';
 import 'package:edutiv/model/course/course_viewmodel.dart';
 import 'package:edutiv/model/profile/profile_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:lottie/lottie.dart';
+import 'package:pdf/pdf.dart';
 import 'package:provider/provider.dart';
 
+import '../../api/certificate_api.dart';
+import '../../components/data.dart';
 import '../../model/course/enrolled_course_model.dart';
 
 class SuccessCourseScreen extends StatefulWidget {
@@ -26,7 +28,8 @@ class _SuccessCourseScreenState extends State<SuccessCourseScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final data = ModalRoute.of(context)!.settings.arguments as EnrolledCourseModel;
+    final data =
+        ModalRoute.of(context)!.settings.arguments as EnrolledCourseModel;
     final user = Provider.of<ProfileViewModel>(context);
     final course = Provider.of<CourseViewModel>(context);
     return Scaffold(
@@ -54,7 +57,18 @@ class _SuccessCourseScreenState extends State<SuccessCourseScreen> {
                   children: [
                     Expanded(
                       child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                            final certificateFile =
+                                await CertificateAPI.generate(
+                              PdfPageFormat.a4,
+                              CustomData(
+                                name:
+                                    '${user.userData.firstname?.toUpperCase()} ${user.userData.lastname?.toUpperCase()}',
+                                courseName: data.course?.courseName,
+                              ),
+                            );
+                            CertificateAPI.openFile(certificateFile);
+                          },
                           child: const Text('DOWNLOAD CERTIFICATE')),
                     ),
                   ],
