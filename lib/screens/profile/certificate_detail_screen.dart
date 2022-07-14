@@ -1,7 +1,29 @@
+import 'package:edutiv/api/certificate_api.dart';
 import 'package:flutter/material.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+
+import '../../components/data.dart';
 
 class CertificateDetailScreen extends StatelessWidget {
-  const CertificateDetailScreen({Key? key}) : super(key: key);
+  CertificateDetailScreen({Key? key}) : super(key: key);
+
+  final certificate = pw.Document();
+
+  // writeOnCertificate() {
+  //   certificate.addPage(
+  //     pw.Page(
+  //       pageFormat: PdfPageFormat.a4,
+  //       orientation: pw.PageOrientation.landscape,
+  //       build: (pw.Context context) {
+  //         return pw.Widget[
+  //           pw.Center(child: )
+  //         ];
+
+  //       },
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -25,12 +47,21 @@ class CertificateDetailScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () => Navigator.pop(context),
                   icon: const Icon(Icons.close_rounded, color: Colors.white),
                 ),
                 ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(primary: Colors.white),
-                  onPressed: () {},
+                  onPressed: () async {
+                    final certificateFile = await CertificateAPI.generate(
+                      PdfPageFormat.a4,
+                      CustomData(
+                        name: 'Bro',
+                        courseName: 'Become a Flutter Master From Zero to Hero',
+                      ),
+                    );
+                    CertificateAPI.openFile(certificateFile);
+                  },
                   icon: Icon(
                     Icons.file_download_sharp,
                     color: Theme.of(context).primaryColor,

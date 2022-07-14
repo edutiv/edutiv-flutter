@@ -7,6 +7,8 @@ import 'package:provider/provider.dart';
 import '../../components/category_card.dart';
 import '../../components/course_card.dart';
 import '../../model/course/course_viewmodel.dart';
+import '../../model/profile/profile_viewmodel.dart';
+import '../screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -16,19 +18,17 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // bool isLoading = true;
-
   @override
   void initState() {
-    Provider.of<CourseViewModel>(context, listen: false).getAllCategory();
     Provider.of<CourseViewModel>(context, listen: false).getAllCourse();
-    // Provider.of<ProfileViewModel>(context, listen: false).getUserById(widget.id!);
+    Provider.of<CourseViewModel>(context, listen: false).getAllCategory();
+    Provider.of<ProfileViewModel>(context, listen: false).getEnrolledCourse();
+    Provider.of<ProfileViewModel>(context, listen: false).getWhoLogin();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    var data = Provider.of<CourseViewModel>(context);
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -77,12 +77,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   shrinkWrap: true,
                   itemCount: courseData.allCourse!.length >= 3 ? 3 : 1,
                   itemBuilder: (context, index) {
+                    // courseData.allCourse?.where((e) => e.totalRating! > 4);
                     return GestureDetector(
-                      onTap: () => Navigator.pushNamed(
-                        context,
-                        '/detailCourse',
-                        arguments: courseData.allCourse?[index],
-                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DetailCourseScreen(
+                              courseId: courseData.allCourse?[index],
+                            ),
+                          ),
+                        );
+                      },
                       child: CourseCard(
                         courseImage:
                             courseData.allCourse?[index].courseImage ?? '-',

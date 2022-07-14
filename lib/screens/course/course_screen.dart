@@ -1,4 +1,5 @@
 import 'package:edutiv/model/course/course_viewmodel.dart';
+import 'package:edutiv/screens/course/detail_course_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -113,11 +114,21 @@ class _CourseScreenState extends State<CourseScreen> {
                 itemCount: course.allCourse?.length ?? 0,
                 itemBuilder: (context, index) {
                   return GestureDetector(
-                    onTap: () => Navigator.pushNamed(
-                      context,
-                      '/detailCourse',
-                      arguments: course.allCourse?[index],
-                    ),
+                    onTap: () async {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DetailCourseScreen(
+                            courseId: course.allCourse?[index],
+                          ),
+                        ),
+                      );
+                    },
+                    // Navigator.pushNamed(
+                    //   context,
+                    //   '/detailCourse',
+                    //   arguments: course.allCourse?[index],
+                    // ),
                     child: CourseCard(
                       courseImage: course.allCourse?[index].courseImage ?? '',
                       courseName: course.allCourse?[index].courseName ?? '',

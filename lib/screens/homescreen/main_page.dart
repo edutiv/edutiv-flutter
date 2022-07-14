@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../model/course/course_viewmodel.dart';
+
+import '../../model/profile/profile_viewmodel.dart';
 import '../screen.dart';
 
 class MainPage extends StatefulWidget {
@@ -24,20 +26,16 @@ class _MainPageState extends State<MainPage> {
 
   @override
   void initState() {
-    Provider.of<CourseViewModel>(context, listen: false).getAllCategory();
     Provider.of<CourseViewModel>(context, listen: false).getAllCourse();
-    // Provider.of<ProfileViewModel>(context, listen: false)
-    //     .getUserById(widget.id!);
+    Provider.of<CourseViewModel>(context, listen: false).getAllCategory();
+    Provider.of<ProfileViewModel>(context, listen: false).getEnrolledCourse();
+    Provider.of<ProfileViewModel>(context, listen: false).getWhoLogin();
     currentIndex = widget.index ?? 0;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    // final newIndex = ModalRoute.of(context)?.settings.arguments as int;
-
-    // currentIndex = newIndex;
-
     return Scaffold(
       body: screens[currentIndex],
       bottomNavigationBar: BottomNavigationBar(

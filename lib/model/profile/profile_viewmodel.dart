@@ -1,24 +1,26 @@
 import 'package:edutiv/api/auth_api.dart';
 import 'package:edutiv/api/faq_api.dart';
 import 'package:edutiv/api/user_api.dart';
+import 'package:edutiv/model/course/enrolled_course_model.dart';
 import 'package:edutiv/model/faq/faq_model.dart';
 import 'package:edutiv/model/profile/user_model.dart';
 import 'package:edutiv/model/request/request_model.dart';
 import 'package:flutter/material.dart';
 
-import '../review/review_model.dart';
-
 class ProfileViewModel extends ChangeNotifier {
   bool isLoading = true;
 
-  List<Review> _enrolledCourse = [];
-  List<Review> get enrolledCourse => _enrolledCourse;
+  List<EnrolledCourseModel> _enrolledCourse = [];
+  List<EnrolledCourseModel> get enrolledCourse => _enrolledCourse;
 
   List<FAQModel> _allFAQ = [];
   List<FAQModel> get allFAQ => _allFAQ;
 
   late UserModel _userData;
   UserModel get userData => _userData;
+
+  late EnrolledCourseModel _enrolledCourseData;
+  EnrolledCourseModel get enrolledCourseData => _enrolledCourseData;
 
   Future<UserModel> getUserById(int id) async {
     final user = await UserAPI().fetchUserById(id);
@@ -54,7 +56,7 @@ class ProfileViewModel extends ChangeNotifier {
     return changedPassword;
   }
 
-  Future<List<Review>> getEnrolledCourse() async {
+  Future<List<EnrolledCourseModel>> getEnrolledCourse() async {
     final enrolled = await UserAPI().fetchEnrolledCourse();
     _enrolledCourse = enrolled;
     notifyListeners();
@@ -74,5 +76,12 @@ class ProfileViewModel extends ChangeNotifier {
     _allFAQ = faqData;
     notifyListeners();
     return allFAQ;
+  }
+
+  Future<EnrolledCourseModel> getEnrolledById(int enrolledCourseId) async {
+    final enrolledData = await UserAPI().fetchEnrolledById(enrolledCourseId);
+    _enrolledCourseData = enrolledData;
+    notifyListeners();
+    return enrolledData;
   }
 }

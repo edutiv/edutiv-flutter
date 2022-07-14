@@ -54,6 +54,11 @@ dependencies:
   jwt_decoder: ^2.0.1
   shared_preferences: ^2.0.15
   http: ^0.13.4
+  percent_indicator: ^4.0.1
+  pdf: ^3.8.1
+  printing: ^5.9.1
+  path_provider: ^2.0.11
+  open_file: ^3.2.1
 
 
 dev_dependencies:

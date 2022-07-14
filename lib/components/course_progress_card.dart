@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class CourseProgressCard extends StatelessWidget {
   String courseImage;
   String courseName;
   String? categoryName;
   double? rating;
-  String? totalVideo;
+  double? progress;
 
   CourseProgressCard({
     Key? key,
@@ -13,7 +14,7 @@ class CourseProgressCard extends StatelessWidget {
     required this.courseName,
     this.categoryName,
     this.rating,
-    this.totalVideo,
+    this.progress,
   }) : super(key: key);
 
   @override
@@ -109,18 +110,27 @@ class CourseProgressCard extends StatelessWidget {
                   Row(
                     children: [
                       //ProgressBar
-                      const Expanded(
-                        child: LinearProgressIndicator(
-                          value: 0.5,
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                            Color(0xFF126E64),
-                          ),
-                          backgroundColor: Colors.grey,
-                          // color: Color(0xFF126E64),
-                        ),
+                      LinearPercentIndicator(
+                        width: 160,
+                        lineHeight: 5,
+                        percent: progress ?? 1,
+                        backgroundColor: Colors.grey,
+                        progressColor: const Color(0xFF126E64),
                       ),
-                      const SizedBox(width: 8),
-                      Text('10/$totalVideo')
+
+                      // Expanded(
+                      //   child:
+                      //     LinearProgressIndicator(
+                      //     value: 0.5,
+                      //     valueColor: AlwaysStoppedAnimation<Color>(
+                      //       Color(0xFF126E64),
+                      //     ),
+                      //     backgroundColor: Colors.grey,
+                      //     // color: Color(0xFF126E64),
+                      //   ),
+                      // ),
+                      const SizedBox(width: 5),
+                      Text('$progress %')
                     ],
                   ),
                   // const SizedBox(height: 1),

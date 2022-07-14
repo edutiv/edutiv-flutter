@@ -14,6 +14,12 @@ class ActiveCourseScreen extends StatefulWidget {
 
 class _ActiveCourseScreenState extends State<ActiveCourseScreen> {
   @override
+  void initState() {
+    Provider.of<ProfileViewModel>(context, listen: false).getEnrolledCourse();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     // final user = ModalRoute.of(context)!.settings.arguments as UserModel;
     final user = Provider.of<ProfileViewModel>(context);
@@ -32,7 +38,7 @@ class _ActiveCourseScreenState extends State<ActiveCourseScreen> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => LearningCourseScreen(
-                        courseId: user.enrolledCourse[index].course,
+                        courseId: user.enrolledCourse[index],
                         initURL: user.enrolledCourse[index].course?.sections?[0]
                             .materials?[0].url,
                       ),

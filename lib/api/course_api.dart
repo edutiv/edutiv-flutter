@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:edutiv/model/course/course_model.dart';
+import 'package:edutiv/model/course/enrolled_course_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/review/review_model.dart';
@@ -96,5 +97,21 @@ class CourseAPI {
     } else {
       throw Exception('No Reviews Available');
     }
+  }
+
+  Future<EnrolledCourseModel> updateCourseProgress(
+      int enrolledCourseId, int materialId) async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? token = prefs.getString('token');
+    Response response = await Dio().put(
+      baseUrl + '/enrolled/progress/$enrolledCourseId',
+      options: Options(
+        headers: {'Authorization': 'Bearer $token'},
+      ),
+      data: {
+        "material_id": materialId,
+      },
+    );
+    return EnrolledCourseModel.fromJson(response.data);
   }
 }

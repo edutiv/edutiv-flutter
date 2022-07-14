@@ -1,9 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:edutiv/model/course/enrolled_course_model.dart';
 import 'package:edutiv/model/profile/user_model.dart';
 import 'package:edutiv/model/request/request_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../model/review/review_model.dart';
 
 class UserAPI {
   String baseUrl = 'https://edutiv-capstone.herokuapp.com';
@@ -78,7 +77,7 @@ class UserAPI {
     }
   }
 
-  Future<List<Review>> fetchEnrolledCourse() async {
+  Future<List<EnrolledCourseModel>> fetchEnrolledCourse() async {
     final prefs = await SharedPreferences.getInstance();
     final String? token = prefs.getString('token');
     Response response = await Dio().get(
@@ -89,8 +88,8 @@ class UserAPI {
     );
 
     if (response.statusCode == 200) {
-      List<Review> enrolledCourse = (response.data['data'] as List)
-          .map((e) => Review.fromJson(e))
+      List<EnrolledCourseModel> enrolledCourse = (response.data['data'] as List)
+          .map((e) => EnrolledCourseModel.fromJson(e))
           .toList();
       return enrolledCourse;
     } else {
@@ -118,6 +117,23 @@ class UserAPI {
       return RequestModel.fromJson(response.data['data']);
     } else {
       throw Exception('Failed to Make Request Form');
+    }
+  }
+
+  Future<EnrolledCourseModel> fetchEnrolledById(int enrolledCourseId) async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? token = prefs.getString('token');
+    Response response = await Dio().get(
+      baseUrl + '/enrolled/$enrolledCourseId',
+      options: Options(
+        headers: {'Authorization': 'Bearer $token'},
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      return EnrolledCourseModel.fromJson(response.data['data']);
+    } else {
+      throw Exception('Course Not Available');
     }
   }
 }

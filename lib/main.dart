@@ -9,13 +9,12 @@ import 'model/profile/profile_viewmodel.dart';
 import 'model/wishlist/wishlist_viewmodel.dart';
 
 void main() {
-  
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-  
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -76,7 +75,7 @@ class MyApp extends StatelessWidget {
           '/faq': (context) => const FAQScreen(),
           '/formRequest': (context) => const FormRequestScreen(),
           '/certificate': (context) => const CertificateScreen(),
-          '/certificateDetail': (context) => const CertificateDetailScreen(),
+          '/certificateDetail': (context) => CertificateDetailScreen(),
           '/search': (context) => const SearchScreen(),
         },
       ),

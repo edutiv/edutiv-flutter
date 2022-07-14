@@ -6,6 +6,8 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
+import '../../model/course/enrolled_course_model.dart';
+
 class SuccessCourseScreen extends StatefulWidget {
   const SuccessCourseScreen({Key? key}) : super(key: key);
 
@@ -24,7 +26,7 @@ class _SuccessCourseScreenState extends State<SuccessCourseScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final data = ModalRoute.of(context)!.settings.arguments as CourseModel;
+    final data = ModalRoute.of(context)!.settings.arguments as EnrolledCourseModel;
     final user = Provider.of<ProfileViewModel>(context);
     final course = Provider.of<CourseViewModel>(context);
     return Scaffold(
@@ -44,7 +46,7 @@ class _SuccessCourseScreenState extends State<SuccessCourseScreen> {
                 const Text('What a Day!'),
                 const SizedBox(height: 8),
                 Text(
-                  'Finally you have completed the ${data.courseName} course very well.',
+                  'Finally you have completed the ${data.course?.courseName} course very well.',
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 16),
@@ -88,7 +90,7 @@ class _SuccessCourseScreenState extends State<SuccessCourseScreen> {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Text(data.courseName!),
+                                    child: Text(data.course!.courseName!),
                                   ),
                                   RatingBar.builder(
                                     initialRating: 1,

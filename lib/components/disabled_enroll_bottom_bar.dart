@@ -4,8 +4,8 @@ import 'package:edutiv/screens/course/my_course_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class EnrollBottomBar extends StatelessWidget {
-  const EnrollBottomBar({Key? key}) : super(key: key);
+class DisabledEnrollBottomBar extends StatelessWidget {
+  const DisabledEnrollBottomBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +26,8 @@ class EnrollBottomBar extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: ElevatedButton(
+          style: ElevatedButton.styleFrom(primary: Colors.grey),
           onPressed: () async {
-            await course.enrollCourse(user.userData.id!, course.courseData.id!);
             await Navigator.push(
               context,
               MaterialPageRoute(
@@ -41,7 +41,7 @@ class EnrollBottomBar extends StatelessWidget {
               // ),
             );
           },
-          child: const Text('ENROLL COURSE'),
+          child: const Text('ALREADY ENROLLED'),
         ),
       ),
     );

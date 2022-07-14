@@ -1,4 +1,6 @@
+import 'package:edutiv/components/disabled_enroll_bottom_bar.dart';
 import 'package:edutiv/model/course/course_model.dart';
+import 'package:edutiv/model/profile/profile_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -10,29 +12,45 @@ import '../../model/course/course_viewmodel.dart';
 import '../../model/wishlist/wishlist_viewmodel.dart';
 
 class DetailCourseScreen extends StatefulWidget {
-  const DetailCourseScreen({Key? key}) : super(key: key);
+  final CourseModel? courseId;
+  const DetailCourseScreen({Key? key, this.courseId}) : super(key: key);
 
   @override
   State<DetailCourseScreen> createState() => _DetailCourseScreenState();
 }
 
 class _DetailCourseScreenState extends State<DetailCourseScreen> {
+  bool isDisabled = false;
   @override
-  void didChangeDependencies() {
-    final courseDetail =
-        ModalRoute.of(context)!.settings.arguments as CourseModel;
-    Provider.of<CourseViewModel>(context).getCourseById(courseDetail.id!);
-    Provider.of<CourseViewModel>(context)
-        .getAllReviewByCourseId(courseDetail.id!);
+  void initState() {
+    Provider.of<CourseViewModel>(context, listen: false)
+        .getCourseById(widget.courseId!.id!);
+    Provider.of<CourseViewModel>(context, listen: false)
+        .getAllReviewByCourseId(widget.courseId!.id!);
+    Provider.of<ProfileViewModel>(context, listen: false).getEnrolledCourse();
+    checkIsEnrolled();
+    super.initState();
+  }
 
-    super.didChangeDependencies();
+  checkIsEnrolled() async {
+    final enrolled = Provider.of<ProfileViewModel>(context, listen: false);
+    final detail = Provider.of<CourseViewModel>(context, listen: false);
+
+    if (enrolled.enrolledCourse
+        .any((e) => e.course?.courseName == detail.courseData.courseName)) {
+      setState(() {
+        isDisabled = true;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final courseDetail =
-        ModalRoute.of(context)!.settings.arguments as CourseModel;
-    var wishlist = Provider.of<WishlistViewModel>(context);
+    checkIsEnrolled();
+    // final detail = Provider.of<CourseViewModel>(context);
+    final wishlist = Provider.of<WishlistViewModel>(context);
+    final enrolledCourseData = Provider.of<ProfileViewModel>(context);
+
     return DefaultTabController(
       length: 4,
       child: Scaffold(
@@ -57,16 +75,23 @@ class _DetailCourseScreenState extends State<DetailCourseScreen> {
               height: 220,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: NetworkImage(courseDetail.courseImage!),
+                  image: NetworkImage(widget.courseId!.courseImage!),
+                  onError: (exception, stackTrace) {
+                    Image.asset(
+                      'assets/empty_image.png',
+                      fit: BoxFit.cover,
+                    );
+                  },
                   fit: BoxFit.cover,
                   colorFilter: ColorFilter.mode(
-                      const Color(0xFF126E64).withOpacity(1), BlendMode.darken),
+                    const Color(0xFF126E64).withOpacity(1),
+                    BlendMode.darken,
+                  ),
                 ),
                 borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(15),
                   bottomRight: Radius.circular(15),
                 ),
-                // color: const Color(0xFF258b80),
               ),
               child: Padding(
                 padding: const EdgeInsets.only(top: 50),
@@ -74,12 +99,13 @@ class _DetailCourseScreenState extends State<DetailCourseScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      courseDetail.courseName!,
+                      widget.courseId!.courseName ?? '',
                       textAlign: TextAlign.center,
                       style: const TextStyle(
-                          fontSize: 18,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
+                        fontSize: 18,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     TextButton.icon(
                       onPressed: () {
@@ -100,10 +126,12 @@ class _DetailCourseScreenState extends State<DetailCourseScreen> {
                                     ],
                                     controller: YoutubePlayerController(
                                       initialVideoId:
-                                          YoutubePlayer.convertUrlToId(
-                                                  courseDetail.sections?[0]
-                                                          .materials?[0].url ??
-                                                      '') ??
+                                          YoutubePlayer.convertUrlToId(widget
+                                                      .courseId!
+                                                      .sections?[0]
+                                                      .materials?[0]
+                                                      .url ??
+                                                  '') ??
                                               '',
                                     ),
                                   ),
@@ -140,11 +168,10 @@ class _DetailCourseScreenState extends State<DetailCourseScreen> {
                   backgroundColor: const Color.fromARGB(62, 158, 158, 158),
                   child: IconButton(
                     onPressed: () {
-                      wishlist.wishlishedCourse?.add(courseDetail);
+                      wishlist.wishlishedCourse?.add(widget.courseId!);
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Added to Wishlist!')),
                       );
-                      print(wishlist.wishlishedCourse);
                     },
                     icon:
                         const Icon(Icons.bookmark_outline, color: Colors.white),
@@ -170,14 +197,16 @@ class _DetailCourseScreenState extends State<DetailCourseScreen> {
             Expanded(
               child: TabBarView(
                 children: [
-                  const AboutTabSection(),
+                  AboutTabSection(data: widget.courseId),
                   const LessonTabSection(),
                   const ToolsTabSection(),
-                  ReviewsTabSection(id: courseDetail.id),
+                  const ReviewsTabSection(),
                 ],
               ),
             ),
-            const EnrollBottomBar()
+            isDisabled
+                ? const DisabledEnrollBottomBar()
+                : const EnrollBottomBar()
           ],
         ),
       ),
@@ -186,14 +215,12 @@ class _DetailCourseScreenState extends State<DetailCourseScreen> {
 }
 
 class AboutTabSection extends StatelessWidget {
-  const AboutTabSection({
-    Key? key,
-  }) : super(key: key);
+  final CourseModel? data;
+  const AboutTabSection({Key? key, this.data}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final courseDetail =
-        ModalRoute.of(context)!.settings.arguments as CourseModel;
+    final detail = Provider.of<CourseViewModel>(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -204,27 +231,25 @@ class AboutTabSection extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(24),
                   child: Text(
-                    courseDetail.description!,
+                    data?.description ?? '',
+                    // detail.courseData.description ?? '',
                   ),
                 ),
               ],
             ),
           ),
         ),
-        // const EnrollBottomBar(),
       ],
     );
   }
 }
 
 class LessonTabSection extends StatelessWidget {
-  const LessonTabSection({
-    Key? key,
-  }) : super(key: key);
+  const LessonTabSection({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var section = Provider.of<CourseViewModel>(context);
+    final section = Provider.of<CourseViewModel>(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -287,7 +312,6 @@ class LessonTabSection extends StatelessWidget {
             },
           ),
         ),
-        // const EnrollBottomBar(),
       ],
     );
   }
@@ -298,44 +322,35 @@ class ToolsTabSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var tools = Provider.of<CourseViewModel>(context);
+    var detail = Provider.of<CourseViewModel>(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
           child: ListView.builder(
-            itemCount: tools.courseData.tools!.length,
+            itemCount: detail.courseData.tools?.length ?? 0,
             itemBuilder: (context, index) {
               return ToolsCard(
-                toolsName: tools.courseData.tools?[index].toolsName,
-                imgUrl: tools.courseData.tools?[index].toolsIcon,
-                toolUrl: tools.courseData.tools?[index].url,
+                toolsName: detail.courseData.tools?[index].toolsName,
+                imgUrl: detail.courseData.tools?[index].toolsIcon,
+                toolUrl: detail.courseData.tools?[index].url,
               );
             },
           ),
         ),
-        // const EnrollBottomBar(),
       ],
     );
   }
 }
 
 class ReviewsTabSection extends StatefulWidget {
-  int? id;
-  ReviewsTabSection({Key? key, this.id}) : super(key: key);
+  const ReviewsTabSection({Key? key}) : super(key: key);
 
   @override
   State<ReviewsTabSection> createState() => _ReviewsTabSectionState();
 }
 
 class _ReviewsTabSectionState extends State<ReviewsTabSection> {
-  @override
-  void initState() {
-    Provider.of<CourseViewModel>(context, listen: false)
-        .getAllReviewByCourseId(widget.id!);
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     final review = Provider.of<CourseViewModel>(context);
@@ -359,7 +374,6 @@ class _ReviewsTabSectionState extends State<ReviewsTabSection> {
             },
           ),
         ),
-        // const EnrollBottomBar(),
       ],
     );
   }

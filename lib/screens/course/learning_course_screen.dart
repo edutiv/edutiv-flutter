@@ -1,16 +1,17 @@
 import 'dart:io';
 
+import 'package:edutiv/model/course/enrolled_course_model.dart';
+import 'package:edutiv/model/profile/profile_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../../components/tools_card.dart';
-import '../../model/course/course_model.dart';
 import '../../model/course/course_viewmodel.dart';
 
 class LearningCourseScreen extends StatefulWidget {
-  final CourseModel? courseId;
+  final EnrolledCourseModel? courseId;
   final String? initURL;
   const LearningCourseScreen({Key? key, this.courseId, this.initURL})
       : super(key: key);
@@ -33,11 +34,9 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
   void initState() {
     super.initState();
     if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
-    Provider.of<CourseViewModel>(context, listen: false)
-        .getCourseById(widget.courseId!.id!);
+    Provider.of<ProfileViewModel>(context, listen: false)
+        .getEnrolledById(widget.courseId!.id!);
     playYT();
-    // slideController;
-    // quizController;
     setState(() {
       isLoading = false;
     });
@@ -46,7 +45,7 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
   void playYT() {
     ytController = YoutubePlayerController(
       initialVideoId: YoutubePlayer.convertUrlToId(
-          widget.courseId!.sections![sectionIndex].materials![0].url!)!,
+          widget.courseId!.course!.sections![sectionIndex].materials![0].url!)!,
       flags: const YoutubePlayerFlags(
         useHybridComposition: false,
       ),
@@ -66,15 +65,15 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
   }
 
   getMaterialType() {
-    String materialType = widget.courseId!.sections![sectionIndex]
+    String materialType = widget.courseId!.course!.sections![sectionIndex]
         .materials![materialIndex].materialType!;
     if (materialType == 'video') {
       setState(() {
         widgetType = '';
         isToolsVisible = true;
         ytController!.load(
-          YoutubePlayer.convertUrlToId(widget.courseId!.sections![sectionIndex]
-              .materials![materialIndex].url!)!,
+          YoutubePlayer.convertUrlToId(widget.courseId!.course!
+              .sections![sectionIndex].materials![materialIndex].url!)!,
         );
       });
     }
@@ -94,8 +93,8 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
 
   nextVideo() {
     int materialLength =
-        widget.courseId!.sections![sectionIndex].materials!.length;
-    int sectionLength = widget.courseId!.sections!.length;
+        widget.courseId!.course!.sections![sectionIndex].materials!.length;
+    int sectionLength = widget.courseId!.course!.sections!.length;
 
     if (sectionIndex == sectionLength - 1 &&
         materialIndex == materialLength - 1) {
@@ -116,13 +115,21 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
   }
 
   prevVideo() {
-    setState(() {
-      materialIndex--;
-      ytController!.load(
-        YoutubePlayer.convertUrlToId(widget
-            .courseId!.sections![sectionIndex].materials![materialIndex].url!)!,
-      );
-    });
+    int materialLength =
+        widget.courseId!.course!.sections![sectionIndex].materials!.length;
+    int sectionLength = widget.courseId!.course!.sections!.length;
+
+    if (materialIndex != 0) {
+      setState(() {
+        materialIndex--;
+        ytController!.load(
+          YoutubePlayer.convertUrlToId(widget.courseId!.course!
+              .sections![sectionIndex].materials![materialIndex].url!)!,
+        );
+      });
+    } else {
+      return;
+    }
   }
 
   slideView() {
@@ -131,8 +138,8 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
       width: double.infinity,
       child: WebView(
         javascriptMode: JavascriptMode.unrestricted,
-        initialUrl: widget
-            .courseId!.sections![sectionIndex].materials![materialIndex].url!,
+        initialUrl: widget.courseId!.course!.sections![sectionIndex]
+            .materials![materialIndex].url!,
         onWebViewCreated: (controller) {
           controller = slideController!;
         },
@@ -141,8 +148,8 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
   }
 
   quizView() {
-    String quizUrl =
-        widget.courseId!.sections![sectionIndex].materials![materialIndex].url!;
+    String quizUrl = widget.courseId!.course!.sections![sectionIndex]
+        .materials![materialIndex].url!;
     return Material(
       child: SizedBox(
         height: 450,
@@ -162,7 +169,8 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
 
   @override
   Widget build(BuildContext context) {
-    int sectionLength = widget.courseId!.sections!.length;
+    int sectionLength = widget.courseId!.course!.sections!.length;
+    final enrolledData = Provider.of<ProfileViewModel>(context);
     print('haloo banggg $materialIndex');
     print('ini $sectionLength');
     print('ini material index $materialIndex');
@@ -186,7 +194,7 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
             ),
             centerTitle: true,
             title: Text(
-              widget.courseId!.courseName!,
+              widget.courseId!.course!.courseName!,
               softWrap: true,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(color: Colors.black, fontSize: 14),
@@ -225,7 +233,7 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
                   children: [
                     Expanded(
                       child: Text(
-                        widget.courseId!.sections![sectionIndex]
+                        widget.courseId!.course!.sections![sectionIndex]
                             .materials![materialIndex].materialName!,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
@@ -245,16 +253,36 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
                         child: const Text('Previous'),
                       ),
                     ),
-                  ],
-                ),
-                Row(
-                  children: [
+                    const SizedBox(width: 8),
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () {
                           nextVideo();
                         },
                         child: const Text('Next Video'),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedButton.icon(
+                        onPressed: () {
+                          // nextVideo();
+                        },
+                        icon:
+                            // enrolledData.enrolledCourseData
+                            //         .reports![materialIndex].isCompleted!
+                            //     ? const Icon(Icons.check_box)
+                            //     :
+                            const Icon(Icons.check_box_outline_blank),
+                        label: const Text('Complete'),
+                        style: OutlinedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
                       ),
                     ),
                   ],

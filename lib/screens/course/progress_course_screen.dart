@@ -1,5 +1,5 @@
 import 'package:edutiv/components/course_progress_card.dart';
-import 'package:edutiv/model/course/course_viewmodel.dart';
+import 'package:edutiv/model/profile/profile_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,18 +13,19 @@ class ProgressCourseScreen extends StatefulWidget {
 class _ProgressCourseScreenState extends State<ProgressCourseScreen> {
   @override
   Widget build(BuildContext context) {
-    final data = Provider.of<CourseViewModel>(context);
+    final data = Provider.of<ProfileViewModel>(context);
     return Scaffold(
       body: ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        itemCount: 1,
+        itemCount: data.enrolledCourse.length,
         itemBuilder: (context, index) {
           return CourseProgressCard(
-            courseImage: data.allCourse?[index].courseImage ?? '',
-            rating: data.allCourse?[index].totalRating ?? 0,
-            courseName: data.allCourse?[index].courseName ?? '',
-            categoryName: data.allCourse?[index].category?.categoryName ?? '',
-            totalVideo: data.allCourse?[index].totalVideo.toString() ?? '',
+            courseImage: data.enrolledCourse[index].course?.courseImage ?? '',
+            rating: data.enrolledCourse[index].course?.totalRating ?? 0,
+            courseName: data.enrolledCourse[index].course?.courseName ?? '',
+            categoryName:
+                data.enrolledCourse[index].course?.category?.categoryName ?? '',
+            progress: data.enrolledCourse[index].progress! / 100,
           );
         },
       ),

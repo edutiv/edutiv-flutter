@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../components/course_card.dart';
 import '../../model/wishlist/wishlist_viewmodel.dart';
+import '../course/detail_course_screen.dart';
 
 class WishlistScreen extends StatefulWidget {
   const WishlistScreen({Key? key}) : super(key: key);
@@ -44,15 +45,21 @@ class _WishlistScreenState extends State<WishlistScreen> {
               );
             },
             child: GestureDetector(
-              onTap: () => Navigator.pushNamed(context, '/detailCourse'),
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => DetailCourseScreen(
+                    courseId: wishlishedCourse.wishlishedCourse?[index],
+                  ),
+                ),
+              ),
               child: CourseCard(
                 courseImage:
                     wishlishedCourse.wishlishedCourse?[index].courseImage ?? '',
                 courseName:
                     wishlishedCourse.wishlishedCourse?[index].courseName ?? '',
-                rating: wishlishedCourse
-                        .wishlishedCourse?[index].reviews?[index].rating ??
-                    0,
+                rating:
+                    wishlishedCourse.wishlishedCourse?[index].totalRating ?? 0,
                 totalTime:
                     wishlishedCourse.wishlishedCourse?[index].totalTime ?? '',
                 totalVideo: wishlishedCourse.wishlishedCourse?[index].totalVideo
