@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../components/course_card.dart';
+import '../../model/choiceChip/choice_chip_data.dart';
+import '../../model/choiceChip/choice_chip_model.dart';
 
 class CourseScreen extends StatefulWidget {
   const CourseScreen({Key? key}) : super(key: key);
@@ -14,7 +16,8 @@ class CourseScreen extends StatefulWidget {
 
 class _CourseScreenState extends State<CourseScreen> {
   bool isEmpty = false;
-  bool isSelected = false;
+  // bool isSelected = false;
+  List<ChoiceChipData> choiceChips = ChoiceChips.all;
   TextEditingController controller = TextEditingController();
   final List categories = [
     'All',
@@ -76,38 +79,48 @@ class _CourseScreenState extends State<CourseScreen> {
               },
             ),
             const SizedBox(height: 8),
+            //Filter ChoiceChip ROW
             Row(
               children: [
                 Expanded(
-                  child: SizedBox(
-                    width: double.infinity,
-                    height: 40,
-                    child: ListView.separated(
-                      physics: const BouncingScrollPhysics(),
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 5,
-                      separatorBuilder: (context, index) =>
-                          const SizedBox(width: 4),
-                      itemBuilder: (context, index) {
-                        return ChoiceChip(
-                          label: Text(
-                            categories[index],
-                          ),
-                          selected: isSelected,
-                          onSelected: (selected) {
-                            setState(() {
-                              isSelected = selected;
-                            });
-                          },
-                          selectedColor: Colors.green,
-                        );
-                      },
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        Wrap(
+                          runSpacing: 8,
+                          spacing: 8,
+                          children: choiceChips
+                              .map(
+                                (choiceChip) => ChoiceChip(
+                                  label: Text(choiceChip.label!),
+                                  labelStyle: const TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                  selected: choiceChip.isSelected,
+                                  selectedColor: const Color(0xFF126E64),
+                                  backgroundColor: Colors.grey[500],
+                                  onSelected: (isSelected) => setState(() {
+                                    choiceChips = choiceChips.map((otherChip) {
+                                      final newChip =
+                                          otherChip.copy(isSelected: false);
+                                      return choiceChip == newChip
+                                          ? newChip.copy(isSelected: isSelected)
+                                          : newChip;
+                                    }).toList();
+                                    //////////////////setState//////////////////
+                                  }),
+                                ),
+                              )
+                              .toList(),
+                        )
+                      ],
                     ),
                   ),
-                ),
+                )
               ],
             ),
-            // const ChoiceChipRow(),
+            /////////END OF Filter ChoiceChip ROW///////////////////
             Expanded(
               child: ListView.builder(
                 physics: const BouncingScrollPhysics(),

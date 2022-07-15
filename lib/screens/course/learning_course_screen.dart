@@ -36,7 +36,10 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
     super.initState();
     if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
     Provider.of<ProfileViewModel>(context, listen: false)
-        .getEnrolledById(widget.courseId!.id!);
+        .getEnrolledById(widget.courseId!.id!)
+        .whenComplete(() {
+      setState(() {});
+    });
     playYT();
     setState(() {
       isLoading = false;
@@ -188,7 +191,7 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
     print('ini $sectionLength');
     print('ini material index $materialIndex');
     print('ini section index $sectionIndex');
-    print('ini all reports ${widget.courseId?.reports}');
+    // print('ini all reports ${widget.courseId?.reports}');
     print('ini reports index $reportsIndex');
     print('ini reports ${widget.courseId?.reports?[reportsIndex].id}');
     print(
@@ -300,7 +303,6 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
                               .whenComplete(() {
                             setState(() {});
                           });
-                          // setState(() {});
                         },
                         icon: enrolledData.enrolledCourseData
                                 .reports![reportsIndex].isCompleted!
@@ -366,8 +368,8 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
 }
 
 class LearningMenuDrawer extends StatefulWidget {
-  int id;
-  LearningMenuDrawer({Key? key, required this.id}) : super(key: key);
+  final int id;
+  const LearningMenuDrawer({Key? key, required this.id}) : super(key: key);
 
   @override
   State<LearningMenuDrawer> createState() => _LearningMenuDrawerState();
@@ -375,17 +377,8 @@ class LearningMenuDrawer extends StatefulWidget {
 
 class _LearningMenuDrawerState extends State<LearningMenuDrawer> {
   @override
-  void didChangeDependencies() {
-    // final courseDetail =
-    //     ModalRoute.of(context)!.settings.arguments as CourseModel;
-    Provider.of<CourseViewModel>(context, listen: false)
-        .getCourseById(widget.id);
-    super.didChangeDependencies();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    var section = Provider.of<CourseViewModel>(context, listen: false);
+    var section = Provider.of<ProfileViewModel>(context);
     return Drawer(
       child: Container(
         padding: const EdgeInsets.all(12),
@@ -394,19 +387,21 @@ class _LearningMenuDrawerState extends State<LearningMenuDrawer> {
           children: [
             Expanded(
               child: ListView.separated(
-                itemCount: section.courseData.sections?.length ?? 0,
+                itemCount:
+                    section.enrolledCourseData.course?.sections?.length ?? 0,
                 separatorBuilder: (context, index) => const SizedBox(height: 8),
                 itemBuilder: (context, index) {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(section.courseData.sections![index].sectionName!),
+                      Text(section.enrolledCourseData.course!.sections![index]
+                          .sectionName!),
                       const SizedBox(height: 8),
                       ListView.separated(
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
-                        itemCount: section.courseData.sections?[index].materials
-                                ?.length ??
+                        itemCount: section.enrolledCourseData.course
+                                ?.sections?[index].materials?.length ??
                             0,
                         separatorBuilder: (context, index) =>
                             const SizedBox(height: 8),
@@ -418,12 +413,17 @@ class _LearningMenuDrawerState extends State<LearningMenuDrawer> {
                               borderRadius:
                                   BorderRadius.all(Radius.circular(5)),
                             ),
-                            leading: section.courseData.sections![index]
-                                        .materials![subIndex].materialType ==
+                            leading: section
+                                        .enrolledCourseData
+                                        .course!
+                                        .sections![index]
+                                        .materials![subIndex]
+                                        .materialType ==
                                     'slide'
                                 ? const Icon(Icons.slideshow_rounded)
                                 : section
-                                            .courseData
+                                            .enrolledCourseData
+                                            .course!
                                             .sections![index]
                                             .materials![subIndex]
                                             .materialType ==
@@ -432,8 +432,12 @@ class _LearningMenuDrawerState extends State<LearningMenuDrawer> {
                                     : const Icon(
                                         Icons.play_circle_filled_rounded),
                             title: Text(
-                              section.courseData.sections![index]
-                                  .materials![subIndex].materialName!,
+                              section
+                                  .enrolledCourseData
+                                  .course!
+                                  .sections![index]
+                                  .materials![subIndex]
+                                  .materialName!,
                             ),
                           );
                         },
