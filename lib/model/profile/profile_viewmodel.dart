@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:edutiv/api/auth_api.dart';
 import 'package:edutiv/api/faq_api.dart';
 import 'package:edutiv/api/user_api.dart';
@@ -27,6 +29,9 @@ class ProfileViewModel extends ChangeNotifier {
 
   late EnrolledCourseModel _enrolledCourseData;
   EnrolledCourseModel get enrolledCourseData => _enrolledCourseData;
+
+  File? _reportData;
+  File get reportData => _reportData!;
 
   Future<UserModel> getUserById(int id) async {
     final user = await UserAPI().fetchUserById(id);
@@ -108,11 +113,12 @@ class ProfileViewModel extends ChangeNotifier {
     return updateProgress;
   }
 
-  Future getDataReport(int enrolledCourseId) async {
+  Future<File>? getDataReport(int enrolledCourseId) async {
     isLoadingData;
-    final reportData = await UserAPI().getDataReport(enrolledCourseId);
+    final data = await UserAPI().getDataReport(enrolledCourseId);
+    _reportData = data;
     isLoadingData = false;
     notifyListeners();
-    return reportData;
+    return data!;
   }
 }

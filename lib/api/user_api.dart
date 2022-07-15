@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:edutiv/model/course/enrolled_course_model.dart';
 import 'package:edutiv/model/profile/user_model.dart';
@@ -137,7 +139,7 @@ class UserAPI {
     }
   }
 
-  Future getDataReport(int enrolledCourseId) async {
+  Future<File>? getDataReport(int enrolledCourseId) async {
     final prefs = await SharedPreferences.getInstance();
     final String? token = prefs.getString('token');
     Response response = await Dio().get(

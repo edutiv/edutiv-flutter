@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:open_file/open_file.dart';
 import 'package:provider/provider.dart';
 
 import '../../model/course/enrolled_course_model.dart';
@@ -52,11 +53,6 @@ class DataReportScreen extends StatelessWidget {
             separatorBuilder: (context, index) => const SizedBox(height: 20),
             itemBuilder: (context, index) {
               return ListTile(
-                // leading: ,
-                // Image.asset(
-                //   'assets/edutiv_certificate_preview_dummy.jpg',
-                //   height: 100,
-                // ),
                 title: Text(snapshot.data?[index].course?.courseName ?? ''),
                 trailing: IconButton(
                   onPressed: () async {
@@ -67,9 +63,7 @@ class DataReportScreen extends StatelessWidget {
                     // );
                     await enrolledCourse
                         .getDataReport(snapshot.data![index].id!);
-                    print(enrolledCourse
-                        .getDataReport(snapshot.data![index].id!)
-                        .runtimeType);
+                    OpenFile.open(enrolledCourse.reportData.path);
                   },
                   icon: const Icon(Icons.download_for_offline_rounded),
                 ),
