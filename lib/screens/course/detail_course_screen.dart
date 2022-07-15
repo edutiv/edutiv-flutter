@@ -34,10 +34,9 @@ class _DetailCourseScreenState extends State<DetailCourseScreen> {
 
   checkIsEnrolled() async {
     final enrolled = Provider.of<ProfileViewModel>(context, listen: false);
-    final detail = Provider.of<CourseViewModel>(context, listen: false);
 
     if (enrolled.enrolledCourse
-        .any((e) => e.course?.courseName == detail.courseData.courseName)) {
+        .any((e) => e.course?.courseName == widget.courseId!.courseName)) {
       setState(() {
         isDisabled = true;
       });

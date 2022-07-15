@@ -108,6 +108,9 @@ class _CourseScreenState extends State<CourseScreen> {
                                           ? newChip.copy(isSelected: isSelected)
                                           : newChip;
                                     }).toList();
+                                    course.filterCourseByCategory(
+                                      choiceChip.label!,
+                                    );
                                     //////////////////setState//////////////////
                                   }),
                                 ),

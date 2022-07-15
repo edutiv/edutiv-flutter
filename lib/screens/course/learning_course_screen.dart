@@ -8,7 +8,6 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../../components/tools_card.dart';
-import '../../model/course/course_viewmodel.dart';
 
 class LearningCourseScreen extends StatefulWidget {
   final EnrolledCourseModel? courseId;
@@ -186,7 +185,7 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
   Widget build(BuildContext context) {
     int sectionLength = widget.courseId!.course!.sections!.length;
     final enrolledData = Provider.of<ProfileViewModel>(context);
-    final courseVM = Provider.of<CourseViewModel>(context);
+    final courseVM = Provider.of<ProfileViewModel>(context);
     print('ini haloo banggg $materialIndex');
     print('ini $sectionLength');
     print('ini material index $materialIndex');
@@ -203,7 +202,8 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
       player: YoutubePlayer(controller: ytController!),
       builder: (context, player) {
         return Scaffold(
-          endDrawer: LearningMenuDrawer(id: widget.courseId!.id!),
+          endDrawer: LearningMenuDrawer(
+              id: widget.courseId!.id!, courseId: widget.courseId),
           appBar: AppBar(
             leading: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 7),
@@ -291,30 +291,37 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
                 Row(
                   children: [
                     Expanded(
-                      child: OutlinedButton.icon(
-                        onPressed: () async {
-                          await courseVM.updateCourseProgress(
-                            widget.courseId!.id!,
-                            widget
-                                .courseId!.reports![reportsIndex].material!.id,
+                      child: Consumer<ProfileViewModel>(
+                          builder: (context, progress, child) {
+                        if (progress.isLoadingData) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else {
+                          return OutlinedButton.icon(
+                            onPressed: () async {
+                              await progress.updateCourseProgress(
+                                widget.courseId!.id!,
+                                widget.courseId!.reports![reportsIndex]
+                                    .material!.id,
+                              );
+                              await Provider.of<ProfileViewModel>(context,
+                                      listen: false)
+                                  .getEnrolledById(widget.courseId!.id!);
+                              setState(() {});
+                            },
+                            icon: enrolledData.enrolledCourseData
+                                    .reports![reportsIndex].isCompleted!
+                                ? const Icon(Icons.check_box)
+                                : const Icon(Icons.check_box_outline_blank),
+                            label: const Text('Complete'),
+                            style: OutlinedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                            ),
                           );
-                          Provider.of<ProfileViewModel>(context, listen: false)
-                              .getEnrolledById(widget.courseId!.id!)
-                              .whenComplete(() {
-                            setState(() {});
-                          });
-                        },
-                        icon: enrolledData.enrolledCourseData
-                                .reports![reportsIndex].isCompleted!
-                            ? const Icon(Icons.check_box)
-                            : const Icon(Icons.check_box_outline_blank),
-                        label: const Text('Complete'),
-                        style: OutlinedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
-                      ),
+                        }
+                      }),
                     ),
                   ],
                 ),
@@ -338,22 +345,27 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
                     height: 290,
                     child: Consumer<ProfileViewModel>(
                       builder: (context, data, child) {
-                        return ListView.builder(
-                          physics: const BouncingScrollPhysics(),
-                          itemCount:
-                              data.enrolledCourseData.course?.tools?.length ??
-                                  0,
-                          itemBuilder: (context, index) {
-                            return ToolsCard(
-                              toolsName: data.enrolledCourseData.course
-                                  ?.tools![index].toolsName,
-                              imgUrl: data.enrolledCourseData.course
-                                  ?.tools![index].toolsIcon,
-                              toolUrl: data
-                                  .enrolledCourseData.course?.tools?[index].url,
-                            );
-                          },
-                        );
+                        if (data.isLoadingData) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else {
+                          return ListView.builder(
+                            physics: const BouncingScrollPhysics(),
+                            itemCount:
+                                data.enrolledCourseData.course?.tools?.length ??
+                                    0,
+                            itemBuilder: (context, index) {
+                              return ToolsCard(
+                                toolsName: data.enrolledCourseData.course
+                                    ?.tools![index].toolsName,
+                                imgUrl: data.enrolledCourseData.course
+                                    ?.tools![index].toolsIcon,
+                                toolUrl: data.enrolledCourseData.course
+                                    ?.tools?[index].url,
+                              );
+                            },
+                          );
+                        }
                       },
                     ),
                   ),
@@ -368,14 +380,23 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
 }
 
 class LearningMenuDrawer extends StatefulWidget {
+  final EnrolledCourseModel? courseId;
   final int id;
-  const LearningMenuDrawer({Key? key, required this.id}) : super(key: key);
+  const LearningMenuDrawer({Key? key, required this.id, this.courseId})
+      : super(key: key);
 
   @override
   State<LearningMenuDrawer> createState() => _LearningMenuDrawerState();
 }
 
 class _LearningMenuDrawerState extends State<LearningMenuDrawer> {
+  @override
+  void initState() {
+    Provider.of<ProfileViewModel>(context, listen: false)
+        .getEnrolledById(widget.courseId!.id!);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     var section = Provider.of<ProfileViewModel>(context);

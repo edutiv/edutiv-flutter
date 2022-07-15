@@ -1,6 +1,5 @@
 import 'package:edutiv/api/category_api.dart';
 import 'package:edutiv/model/course/course_model.dart';
-import 'package:edutiv/model/course/enrolled_course_model.dart';
 import 'package:flutter/material.dart';
 
 import '../../api/course_api.dart';
@@ -81,12 +80,19 @@ class CourseViewModel extends ChangeNotifier {
     return enroll;
   }
 
-  Future<EnrolledCourseModel> updateCourseProgress(
-      int enrolledCourseId, int materialId) async {
-    final updateProgress =
-        await CourseAPI().updateCourseProgress(enrolledCourseId, materialId);
+  Future<List<CourseModel>> filterCourseByCategory(String query) async {
+    final filter =
+        _allCourse.where((e) => e.category?.categoryName == query).toList();
+    _allCourse = filter;
+    if (query == 'All') {
+      getAllCourse();
+      notifyListeners();
+    } else if (query.isEmpty) {
+      getAllCourse();
+      notifyListeners();
+    }
     notifyListeners();
-    return updateProgress;
+    return filter;
   }
 
   // searchCourse(String query) {
