@@ -16,7 +16,6 @@ class CourseScreen extends StatefulWidget {
 
 class _CourseScreenState extends State<CourseScreen> {
   bool isEmpty = false;
-  // bool isSelected = false;
   List<ChoiceChipData> choiceChips = ChoiceChips.all;
   TextEditingController controller = TextEditingController();
   final List categories = [
@@ -32,16 +31,6 @@ class _CourseScreenState extends State<CourseScreen> {
     Provider.of<CourseViewModel>(context, listen: false).getAllCourse();
     super.initState();
   }
-
-  // searchCourse(String query) {
-  //   var data = Provider.of<CourseViewModel>(context, listen: false);
-  //   final suggestions = data.allCourse.where((c) {
-  //     final courseTitle = c.courseName?.toLowerCase();
-  //     final input = query.toLowerCase();
-  //     return courseTitle!.contains(input);
-  //   }).toList();
-  //   setState(() => data.allCourse == suggestions);
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -140,11 +129,6 @@ class _CourseScreenState extends State<CourseScreen> {
                         ),
                       );
                     },
-                    // Navigator.pushNamed(
-                    //   context,
-                    //   '/detailCourse',
-                    //   arguments: course.allCourse?[index],
-                    // ),
                     child: CourseCard(
                       courseImage: course.allCourse?[index].courseImage ?? '',
                       courseName: course.allCourse?[index].courseName ?? '',

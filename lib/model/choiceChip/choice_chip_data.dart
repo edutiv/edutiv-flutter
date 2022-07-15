@@ -23,7 +23,7 @@ class ChoiceChips {
       selectedColor: const Color(0xFF126E64),
     ),
     ChoiceChipData(
-      label: 'Mobile Developer',
+      label: 'Mobile Engineer',
       isSelected: false,
       textColor: Colors.white,
       selectedColor: const Color(0xFF126E64),

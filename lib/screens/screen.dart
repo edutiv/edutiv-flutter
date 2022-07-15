@@ -30,3 +30,4 @@ export './profile/faq_screen.dart';
 export './profile/form_request_screen.dart';
 export './profile/certificate_screen.dart';
 export './profile/certificate_detail_screen.dart';
+export './profile/data_report_screen.dart';
