@@ -117,19 +117,7 @@ class CourseProgressCard extends StatelessWidget {
                         backgroundColor: Colors.grey,
                         progressColor: const Color(0xFF126E64),
                       ),
-
-                      // Expanded(
-                      //   child:
-                      //     LinearProgressIndicator(
-                      //     value: 0.5,
-                      //     valueColor: AlwaysStoppedAnimation<Color>(
-                      //       Color(0xFF126E64),
-                      //     ),
-                      //     backgroundColor: Colors.grey,
-                      //     // color: Color(0xFF126E64),
-                      //   ),
-                      // ),
-                      const SizedBox(width: 5),
+                      const SizedBox(width: 1),
                       Text('$progress %')
                     ],
                   ),

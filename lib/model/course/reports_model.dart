@@ -5,6 +5,7 @@ part 'reports_model.g.dart';
 @JsonSerializable()
 class ReportsModel {
   int? id;
+  @JsonKey(name: 'is_completed')
   bool? isCompleted;
   Materials? material;
 

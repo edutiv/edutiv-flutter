@@ -8,7 +8,7 @@ part of 'reports_model.dart';
 
 ReportsModel _$ReportsModelFromJson(Map<String, dynamic> json) => ReportsModel(
       id: json['id'] as int?,
-      isCompleted: json['isCompleted'] as bool?,
+      isCompleted: json['is_completed'] as bool?,
       material: json['material'] == null
           ? null
           : Materials.fromJson(json['material'] as Map<String, dynamic>),
@@ -17,6 +17,6 @@ ReportsModel _$ReportsModelFromJson(Map<String, dynamic> json) => ReportsModel(
 Map<String, dynamic> _$ReportsModelToJson(ReportsModel instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'isCompleted': instance.isCompleted,
+      'is_completed': instance.isCompleted,
       'material': instance.material,
     };

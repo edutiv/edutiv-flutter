@@ -26,6 +26,7 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
   WebViewController? quizController;
   int sectionIndex = 0;
   int materialIndex = 0;
+  int reportsIndex = 0;
   bool isLoading = true;
   String widgetType = '';
   bool isToolsVisible = true;
@@ -95,6 +96,13 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
     int materialLength =
         widget.courseId!.course!.sections![sectionIndex].materials!.length;
     int sectionLength = widget.courseId!.course!.sections!.length;
+    int reportsLength = widget.courseId!.reports!.length;
+
+    if (reportsIndex == reportsLength - 1) {
+      return;
+    } else {
+      reportsIndex++;
+    }
 
     if (sectionIndex == sectionLength - 1 &&
         materialIndex == materialLength - 1) {
@@ -171,10 +179,19 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
   Widget build(BuildContext context) {
     int sectionLength = widget.courseId!.course!.sections!.length;
     final enrolledData = Provider.of<ProfileViewModel>(context);
-    print('haloo banggg $materialIndex');
+    final courseVM = Provider.of<CourseViewModel>(context);
+    print('ini haloo banggg $materialIndex');
     print('ini $sectionLength');
     print('ini material index $materialIndex');
     print('ini section index $sectionIndex');
+    print('ini all reports ${widget.courseId?.reports}');
+    print('ini reports index $reportsIndex');
+    print('ini reports ${widget.courseId?.reports?[reportsIndex].id}');
+    print(
+        'ini reports ${widget.courseId?.reports?[reportsIndex].material?.materialName}');
+    print(
+        'ini reports data ${widget.courseId?.reports?[reportsIndex].isCompleted}');
+    print('ini Jumlah reports ${widget.courseId?.reports?.length}');
     return YoutubePlayerBuilder(
       player: YoutubePlayer(controller: ytController!),
       builder: (context, player) {
@@ -268,15 +285,23 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
                   children: [
                     Expanded(
                       child: OutlinedButton.icon(
-                        onPressed: () {
-                          // nextVideo();
+                        onPressed: () async {
+                          await courseVM.updateCourseProgress(
+                            widget.courseId!.id!,
+                            widget
+                                .courseId!.reports![reportsIndex].material!.id,
+                          );
+                          Provider.of<ProfileViewModel>(context, listen: false)
+                              .getEnrolledById(widget.courseId!.id!)
+                              .whenComplete(() {
+                            setState(() {});
+                          });
+                          // setState(() {});
                         },
-                        icon:
-                            // enrolledData.enrolledCourseData
-                            //         .reports![materialIndex].isCompleted!
-                            //     ? const Icon(Icons.check_box)
-                            //     :
-                            const Icon(Icons.check_box_outline_blank),
+                        icon: enrolledData.enrolledCourseData
+                                .reports![reportsIndex].isCompleted!
+                            ? const Icon(Icons.check_box)
+                            : const Icon(Icons.check_box_outline_blank),
                         label: const Text('Complete'),
                         style: OutlinedButton.styleFrom(
                           shape: RoundedRectangleBorder(
@@ -305,16 +330,21 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
                   child: SizedBox(
                     width: double.infinity,
                     height: 290,
-                    child: Consumer<CourseViewModel>(
+                    child: Consumer<ProfileViewModel>(
                       builder: (context, data, child) {
                         return ListView.builder(
                           physics: const BouncingScrollPhysics(),
-                          itemCount: data.courseData.tools?.length ?? 0,
+                          itemCount:
+                              data.enrolledCourseData.course?.tools?.length ??
+                                  0,
                           itemBuilder: (context, index) {
                             return ToolsCard(
-                              toolsName:
-                                  data.courseData.tools![index].toolsName,
-                              imgUrl: data.courseData.tools![index].toolsIcon,
+                              toolsName: data.enrolledCourseData.course
+                                  ?.tools![index].toolsName,
+                              imgUrl: data.enrolledCourseData.course
+                                  ?.tools![index].toolsIcon,
+                              toolUrl: data
+                                  .enrolledCourseData.course?.tools?[index].url,
                             );
                           },
                         );
