@@ -98,16 +98,20 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
     int sectionLength = widget.courseId!.course!.sections!.length;
     int reportsLength = widget.courseId!.reports!.length;
 
-    if (reportsIndex == reportsLength - 1) {
-      return;
-    } else {
-      reportsIndex++;
-    }
-
     if (sectionIndex == sectionLength - 1 &&
         materialIndex == materialLength - 1) {
       Navigator.pushReplacementNamed(context, '/successCourse',
           arguments: widget.courseId);
+    }
+
+    if (reportsIndex == reportsLength - 1 ||
+        sectionIndex == sectionLength - 1 &&
+            materialIndex == materialLength - 1) {
+      Navigator.pushReplacementNamed(context, '/successCourse',
+          arguments: widget.courseId);
+      // return;
+    } else {
+      reportsIndex++;
     }
 
     if (materialIndex < materialLength - 1) {

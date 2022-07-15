@@ -13,6 +13,9 @@ class ProfileViewModel extends ChangeNotifier {
   List<EnrolledCourseModel> _enrolledCourse = [];
   List<EnrolledCourseModel> get enrolledCourse => _enrolledCourse;
 
+  List<EnrolledCourseModel> _finishedCourse = [];
+  List<EnrolledCourseModel> get finishedCourse => _finishedCourse;
+
   List<FAQModel> _allFAQ = [];
   List<FAQModel> get allFAQ => _allFAQ;
 
@@ -83,5 +86,12 @@ class ProfileViewModel extends ChangeNotifier {
     _enrolledCourseData = enrolledData;
     notifyListeners();
     return enrolledData;
+  }
+
+  Future<List<EnrolledCourseModel>> getFinishedCourse() async {
+    final done = enrolledCourse.where((e) => e.progress == 100).toList();
+    _finishedCourse = done;
+    // notifyListeners();
+    return done;
   }
 }

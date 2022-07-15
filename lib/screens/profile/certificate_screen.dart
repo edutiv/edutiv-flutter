@@ -1,4 +1,7 @@
+import 'package:edutiv/model/course/enrolled_course_model.dart';
+import 'package:edutiv/model/profile/profile_viewmodel.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CertificateScreen extends StatefulWidget {
   const CertificateScreen({Key? key}) : super(key: key);
@@ -10,6 +13,7 @@ class CertificateScreen extends StatefulWidget {
 class _CertificateScreenState extends State<CertificateScreen> {
   @override
   Widget build(BuildContext context) {
+    final enrolledCourse = Provider.of<ProfileViewModel>(context);
     return Scaffold(
       appBar: AppBar(
         leading: Padding(
@@ -43,19 +47,28 @@ class _CertificateScreenState extends State<CertificateScreen> {
           ),
         ],
       ),
-      body: ListView.separated(
-        padding: const EdgeInsets.only(top: 12),
-        itemCount: 3,
-        separatorBuilder: (context, index) => const SizedBox(height: 20),
-        itemBuilder: (context, index) {
-          return ListTile(
-            onTap: () => Navigator.pushNamed(context, '/certificateDetail'),
-            leading: Image.asset(
-              'assets/certif_dummy.png',
-              height: 100,
-            ),
-            title: const Text('Data'),
-            trailing: const Icon(Icons.chevron_right_outlined),
+      body: FutureBuilder<List<EnrolledCourseModel>>(
+        future: enrolledCourse.getFinishedCourse(),
+        builder: (context, snapshot) {
+          return ListView.separated(
+            padding: const EdgeInsets.only(top: 12),
+            itemCount: snapshot.data?.length ?? 0,
+            separatorBuilder: (context, index) => const SizedBox(height: 20),
+            itemBuilder: (context, index) {
+              return ListTile(
+                onTap: () => Navigator.pushNamed(
+                  context,
+                  '/certificateDetail',
+                  arguments: snapshot.data?[index],
+                ),
+                leading: Image.asset(
+                  'assets/edutiv_certificate_preview_dummy.jpg',
+                  height: 100,
+                ),
+                title: Text(snapshot.data?[index].course?.courseName ?? ''),
+                trailing: const Icon(Icons.chevron_right_outlined),
+              );
+            },
           );
         },
       ),

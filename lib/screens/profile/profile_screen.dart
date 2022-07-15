@@ -56,7 +56,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     tileColor: Colors.grey[200],
                     shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(5))),
-                    leading: const Icon(Icons.book),
+                    // leading: const Icon(Icons.book),
                     title: const Text('My Course'),
                     trailing: const Icon(Icons.chevron_right_outlined),
                   ),
@@ -66,7 +66,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     tileColor: Colors.grey[200],
                     shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(5))),
-                    leading: const Icon(Icons.school_rounded),
+                    // leading: const Icon(Icons.school_rounded),
                     title: const Text('Certificate'),
                     trailing: const Icon(Icons.chevron_right_outlined),
                   ),
@@ -76,7 +76,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     tileColor: Colors.grey[200],
                     shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(5))),
-                    leading: const Icon(Icons.request_page_outlined),
+                    // leading: const Icon(Icons.request_page_outlined),
                     title: const Text('Request'),
                     trailing: const Icon(Icons.chevron_right_outlined),
                   ),
@@ -86,7 +86,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     tileColor: Colors.grey[200],
                     shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(5))),
-                    leading: const Icon(Icons.info),
+                    // leading: const Icon(Icons.info),
                     title: const Text('FAQ'),
                     trailing: const Icon(Icons.chevron_right_outlined),
                   ),
@@ -114,7 +114,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     tileColor: Colors.grey[200],
                     shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(5))),
-                    leading: const Icon(Icons.mail),
+                    // leading: const Icon(Icons.mail),
                     title: const Text('Email Support'),
                     trailing: const Icon(Icons.chevron_right_outlined),
                   ),

@@ -1,4 +1,5 @@
 import 'package:edutiv/api/certificate_api.dart';
+import 'package:edutiv/model/course/enrolled_course_model.dart';
 import 'package:flutter/material.dart';
 import 'package:pdf/pdf.dart';
 
@@ -9,6 +10,8 @@ class CertificateDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final data =
+        ModalRoute.of(context)!.settings.arguments as EnrolledCourseModel;
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       body: Center(
@@ -16,14 +19,14 @@ class CertificateDetailScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            const Text(
-              'Mastering Front-End Development with React JS',
-              style: TextStyle(color: Colors.white),
+            Text(
+              data.course!.courseName!,
+              style: const TextStyle(color: Colors.white),
             ),
             SizedBox(
               width: 250,
               height: 180,
-              child: Image.asset('assets/certif_dummy.png'),
+              child: Image.asset('assets/edutiv_certificate_preview_dummy.jpg'),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -38,8 +41,9 @@ class CertificateDetailScreen extends StatelessWidget {
                     final certificateFile = await CertificateAPI.generate(
                       PdfPageFormat.a4,
                       CustomData(
-                        name: 'Bro',
-                        courseName: 'Become a Flutter Master From Zero to Hero',
+                        name:
+                            '${data.user!.firstname!.toUpperCase()} ${data.user!.lastname!.toUpperCase()}',
+                        courseName: data.course!.courseName,
                       ),
                     );
                     CertificateAPI.openFile(certificateFile);
