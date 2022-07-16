@@ -138,27 +138,4 @@ class UserAPI {
       throw Exception('Course Not Available');
     }
   }
-
-  Future<File>? getDataReport(int enrolledCourseId) async {
-    final prefs = await SharedPreferences.getInstance();
-    final String? token = prefs.getString('token');
-    Response response = await Dio().get(
-      baseUrl + '/enrolled/download-report/$enrolledCourseId',
-      options: Options(
-        headers: {'Authorization': 'Bearer $token'},
-      ),
-    );
-
-    if (response.statusCode == 200) {
-      return response.data;
-    } else {
-      throw Exception('Data Not Available');
-    }
-
-    // if (response.statusCode == 200) {
-    //   return UserModel.fromJson(response.data['data']);
-    // } else {
-    //   throw Exception('User Not Available');
-    // }
-  }
 }

@@ -112,13 +112,4 @@ class ProfileViewModel extends ChangeNotifier {
     notifyListeners();
     return updateProgress;
   }
-
-  Future<File>? getDataReport(int enrolledCourseId) async {
-    isLoadingData;
-    final data = await UserAPI().getDataReport(enrolledCourseId);
-    _reportData = data;
-    isLoadingData = false;
-    notifyListeners();
-    return data!;
-  }
 }

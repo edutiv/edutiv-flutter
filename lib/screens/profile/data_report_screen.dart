@@ -1,5 +1,5 @@
+import 'package:edutiv/api/download.dart';
 import 'package:flutter/material.dart';
-import 'package:open_file/open_file.dart';
 import 'package:provider/provider.dart';
 
 import '../../model/course/enrolled_course_model.dart';
@@ -56,14 +56,10 @@ class DataReportScreen extends StatelessWidget {
                 title: Text(snapshot.data?[index].course?.courseName ?? ''),
                 trailing: IconButton(
                   onPressed: () async {
-                    // openFile(
-                    //   url: snapshot.data!.toString(),
-                    //   fileName:
-                    //       '${snapshot.data?[index].course?.courseName}.pdf',
-                    // );
-                    await enrolledCourse
-                        .getDataReport(snapshot.data![index].id!);
-                    OpenFile.open(enrolledCourse.reportData.path);
+                    await open(
+                      snapshot.data![index].id!,
+                      '${snapshot.data?[index].course?.courseName} Report.pdf',
+                    );
                   },
                   icon: const Icon(Icons.download_for_offline_rounded),
                 ),
