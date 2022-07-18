@@ -192,8 +192,87 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
       player: YoutubePlayer(controller: ytController!),
       builder: (context, player) {
         return Scaffold(
-          endDrawer: LearningMenuDrawer(
-              id: widget.courseId!.id!, courseId: widget.courseId),
+          endDrawer: Drawer(
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: ListView.separated(
+                      itemCount: enrolledData
+                              .enrolledCourseData.course?.sections?.length ??
+                          0,
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(height: 8),
+                      itemBuilder: (context, index) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(enrolledData.enrolledCourseData.course!
+                                .sections![index].sectionName!),
+                            const SizedBox(height: 8),
+                            ListView.separated(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: enrolledData.enrolledCourseData.course
+                                      ?.sections?[index].materials?.length ??
+                                  0,
+                              separatorBuilder: (context, index) =>
+                                  const SizedBox(height: 8),
+                              itemBuilder: (context, subIndex) {
+                                return ListTile(
+                                  onTap: () {
+                                    setState(() {
+                                      sectionIndex = index;
+                                      materialIndex = subIndex;
+                                      getMaterialType();
+                                    });
+                                  },
+                                  tileColor: Colors.grey[200],
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(5)),
+                                  ),
+                                  leading: enrolledData
+                                              .enrolledCourseData
+                                              .course!
+                                              .sections![index]
+                                              .materials![subIndex]
+                                              .materialType ==
+                                          'slide'
+                                      ? const Icon(Icons.slideshow_rounded)
+                                      : enrolledData
+                                                  .enrolledCourseData
+                                                  .course!
+                                                  .sections![index]
+                                                  .materials![subIndex]
+                                                  .materialType ==
+                                              'quiz'
+                                          ? const Icon(
+                                              Icons.history_edu_rounded)
+                                          : const Icon(
+                                              Icons.play_circle_filled_rounded),
+                                  title: Text(
+                                    enrolledData
+                                        .enrolledCourseData
+                                        .course!
+                                        .sections![index]
+                                        .materials![subIndex]
+                                        .materialName!,
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
           appBar: AppBar(
             leading: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 7),
@@ -367,102 +446,6 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
           ),
         );
       },
-    );
-  }
-}
-
-class LearningMenuDrawer extends StatefulWidget {
-  final EnrolledCourseModel? courseId;
-  final int id;
-  const LearningMenuDrawer({Key? key, required this.id, this.courseId})
-      : super(key: key);
-
-  @override
-  State<LearningMenuDrawer> createState() => _LearningMenuDrawerState();
-}
-
-class _LearningMenuDrawerState extends State<LearningMenuDrawer> {
-  @override
-  void initState() {
-    Provider.of<ProfileViewModel>(context, listen: false)
-        .getEnrolledById(widget.courseId!.id!);
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    var section = Provider.of<ProfileViewModel>(context);
-    return Drawer(
-      child: Container(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: ListView.separated(
-                itemCount:
-                    section.enrolledCourseData.course?.sections?.length ?? 0,
-                separatorBuilder: (context, index) => const SizedBox(height: 8),
-                itemBuilder: (context, index) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(section.enrolledCourseData.course!.sections![index]
-                          .sectionName!),
-                      const SizedBox(height: 8),
-                      ListView.separated(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: section.enrolledCourseData.course
-                                ?.sections?[index].materials?.length ??
-                            0,
-                        separatorBuilder: (context, index) =>
-                            const SizedBox(height: 8),
-                        itemBuilder: (context, subIndex) {
-                          return ListTile(
-                            onTap: () {},
-                            tileColor: Colors.grey[200],
-                            shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(5)),
-                            ),
-                            leading: section
-                                        .enrolledCourseData
-                                        .course!
-                                        .sections![index]
-                                        .materials![subIndex]
-                                        .materialType ==
-                                    'slide'
-                                ? const Icon(Icons.slideshow_rounded)
-                                : section
-                                            .enrolledCourseData
-                                            .course!
-                                            .sections![index]
-                                            .materials![subIndex]
-                                            .materialType ==
-                                        'quiz'
-                                    ? const Icon(Icons.history_edu_rounded)
-                                    : const Icon(
-                                        Icons.play_circle_filled_rounded),
-                            title: Text(
-                              section
-                                  .enrolledCourseData
-                                  .course!
-                                  .sections![index]
-                                  .materials![subIndex]
-                                  .materialName!,
-                            ),
-                          );
-                        },
-                      ),
-                    ],
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
