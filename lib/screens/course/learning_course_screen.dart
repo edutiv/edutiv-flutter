@@ -48,8 +48,8 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
 
   void playYT() {
     ytController = YoutubePlayerController(
-      initialVideoId: YoutubePlayer.convertUrlToId(
-          widget.courseId!.course!.sections![sectionIndex].materials![0].url!)!,
+      initialVideoId: YoutubePlayer.convertUrlToId(widget.courseId!.course!
+          .sections![sectionIndex].materials![materialIndex].url!)!,
       flags: const YoutubePlayerFlags(
         useHybridComposition: false,
       ),
@@ -119,6 +119,7 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
       sectionIndex++;
       reportsIndex++;
       materialIndex = 0;
+      playYT();
       setState(() {});
     } else {
       checkProgress();
