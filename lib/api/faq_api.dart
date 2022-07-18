@@ -6,7 +6,6 @@ class FaqAPI {
 
   Future<List<FAQModel>> fetchAllFAQ() async {
     Response response = await Dio().get(baseUrl + '/faq');
-
     if (response.statusCode == 200) {
       List<FAQModel> faq = (response.data['data'] as List)
           .map((e) => FAQModel.fromJson(e))

@@ -47,24 +47,33 @@ class DataReportScreen extends StatelessWidget {
       body: FutureBuilder<List<EnrolledCourseModel>>(
         future: enrolledCourse.getEnrolledCourse(),
         builder: (context, snapshot) {
-          return ListView.separated(
-            padding: const EdgeInsets.only(top: 12),
-            itemCount: snapshot.data?.length ?? 0,
-            separatorBuilder: (context, index) => const SizedBox(height: 20),
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(snapshot.data?[index].course?.courseName ?? ''),
-                trailing: IconButton(
-                  onPressed: () async {
-                    await open(
-                      snapshot.data![index].id!,
-                      '${snapshot.data?[index].course?.courseName} Report.pdf',
-                    );
-                  },
-                  icon: const Icon(Icons.download_for_offline_rounded),
-                ),
-              );
-            },
+          if (snapshot.hasData) {
+            return ListView.separated(
+              padding: const EdgeInsets.only(top: 12),
+              itemCount: snapshot.data?.length ?? 0,
+              separatorBuilder: (context, index) => const SizedBox(height: 20),
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(snapshot.data?[index].course?.courseName ?? ''),
+                  trailing: IconButton(
+                    onPressed: () async {
+                      await open(
+                        snapshot.data![index].id!,
+                        '${snapshot.data?[index].course?.courseName} Report.pdf',
+                      );
+                    },
+                    icon: const Icon(Icons.download_for_offline_rounded),
+                  ),
+                );
+              },
+            );
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return const Center(
+            child: Text('Kamu Belum Mengambil Course!'),
           );
         },
       ),

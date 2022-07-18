@@ -7,6 +7,7 @@ class CourseProgressCard extends StatelessWidget {
   String? categoryName;
   double? rating;
   double? progress;
+  int? teksProgressPersen;
 
   CourseProgressCard({
     Key? key,
@@ -15,6 +16,7 @@ class CourseProgressCard extends StatelessWidget {
     this.categoryName,
     this.rating,
     this.progress,
+    this.teksProgressPersen,
   }) : super(key: key);
 
   @override
@@ -109,16 +111,17 @@ class CourseProgressCard extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      //ProgressBar
                       LinearPercentIndicator(
                         width: 160,
                         lineHeight: 5,
                         percent: progress ?? 1,
+                        trailing: Text(teksProgressPersen.toString() + ' %'),
+                        animation: true,
                         backgroundColor: Colors.grey,
                         progressColor: const Color(0xFF126E64),
                       ),
                       const SizedBox(width: 1),
-                      Text('$progress %')
+                      // Text('$progress %')
                     ],
                   ),
                   // const SizedBox(height: 1),

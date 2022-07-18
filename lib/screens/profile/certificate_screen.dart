@@ -50,26 +50,36 @@ class _CertificateScreenState extends State<CertificateScreen> {
       body: FutureBuilder<List<EnrolledCourseModel>>(
         future: enrolledCourse.getFinishedCourse(),
         builder: (context, snapshot) {
-          return ListView.separated(
-            padding: const EdgeInsets.only(top: 12),
-            itemCount: snapshot.data?.length ?? 0,
-            separatorBuilder: (context, index) => const SizedBox(height: 20),
-            itemBuilder: (context, index) {
-              return ListTile(
-                onTap: () => Navigator.pushNamed(
-                  context,
-                  '/certificateDetail',
-                  arguments: snapshot.data?[index],
-                ),
-                leading: Image.asset(
-                  'assets/edutiv_certificate_preview_dummy.jpg',
-                  height: 100,
-                ),
-                title: Text(snapshot.data?[index].course?.courseName ?? ''),
-                trailing: const Icon(Icons.chevron_right_outlined),
-              );
-            },
-          );
+          if (snapshot.hasData) {
+            return ListView.separated(
+              padding: const EdgeInsets.only(top: 12),
+              itemCount: snapshot.data?.length ?? 0,
+              separatorBuilder: (context, index) => const SizedBox(height: 20),
+              itemBuilder: (context, index) {
+                return ListTile(
+                  onTap: () => Navigator.pushNamed(
+                    context,
+                    '/certificateDetail',
+                    arguments: snapshot.data?[index],
+                  ),
+                  leading: Image.asset(
+                    'assets/edutiv_certificate_preview_dummy.jpg',
+                    height: 100,
+                  ),
+                  title: Text(snapshot.data?[index].course?.courseName ?? ''),
+                  trailing: const Icon(Icons.chevron_right_outlined),
+                );
+              },
+            );
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            return const Center(
+              child: Text('Kamu Belum Menyelesaikan Course!'),
+            );
+          }
         },
       ),
     );

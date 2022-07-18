@@ -172,7 +172,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     final Uri emailLaunchUri = Uri(
                       scheme: 'mailto',
-                      path: 'admin@edutiv.com',
+                      path: 'online@edutiv.com',
                       query: encodeQueryParameters(
                           <String, String>{'subject': 'Request an Account'}),
                     );

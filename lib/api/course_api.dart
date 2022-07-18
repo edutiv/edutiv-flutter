@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:edutiv/model/course/course_model.dart';
 import 'package:edutiv/model/course/enrolled_course_model.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/review/review_model.dart';
@@ -51,17 +52,25 @@ class CourseAPI {
       int enrolledCourseId, int rating, String review) async {
     final prefs = await SharedPreferences.getInstance();
     final String? token = prefs.getString('token');
-    Response response = await Dio().put(
-      baseUrl + '/enrolled/$enrolledCourseId',
-      options: Options(
-        headers: {'Authorization': 'Bearer $token'},
-      ),
-      data: {
-        "rating": rating,
-        "review": review,
-      },
-    );
-    return Review.fromJson(response.data);
+    try {
+      EasyLoading.show(status: 'Loading...');
+      Response response = await Dio().put(
+        baseUrl + '/enrolled/$enrolledCourseId',
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ),
+        data: {
+          "rating": rating,
+          "review": review,
+        },
+      );
+      EasyLoading.showSuccess('Review Posted!');
+      EasyLoading.dismiss();
+      return Review.fromJson(response.data);
+    } catch (e) {
+      print(e);
+      throw EasyLoading.showError('Failed to Update!');
+    }
   }
 
   Future searchCourseByName(String query) async {
@@ -103,15 +112,22 @@ class CourseAPI {
       int enrolledCourseId, int materialId) async {
     final prefs = await SharedPreferences.getInstance();
     final String? token = prefs.getString('token');
-    Response response = await Dio().put(
-      baseUrl + '/enrolled/progress/$enrolledCourseId',
-      options: Options(
-        headers: {'Authorization': 'Bearer $token'},
-      ),
-      data: {
-        "material_id": materialId,
-      },
-    );
-    return EnrolledCourseModel.fromJson(response.data);
+    try {
+      EasyLoading.show(status: 'Updating...');
+      Response response = await Dio().put(
+        baseUrl + '/enrolled/progress/$enrolledCourseId',
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ),
+        data: {
+          "material_id": materialId,
+        },
+      );
+      EasyLoading.dismiss();
+      return EnrolledCourseModel.fromJson(response.data);
+    } catch (e) {
+      print(e);
+      throw EasyLoading.showError('Failed to Complete!');
+    }
   }
 }

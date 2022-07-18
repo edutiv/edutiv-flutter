@@ -25,7 +25,8 @@ class _ProgressCourseScreenState extends State<ProgressCourseScreen> {
             courseName: data.enrolledCourse[index].course?.courseName ?? '',
             categoryName:
                 data.enrolledCourse[index].course?.category?.categoryName ?? '',
-            progress: data.enrolledCourse[index].progress! / 100,
+            progress: data.enrolledCourse[index].progress!.toDouble() / 100,
+            teksProgressPersen: data.enrolledCourse[index].progress!.toInt(),
           );
         },
       ),

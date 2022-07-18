@@ -22,6 +22,7 @@ class CertificateDetailScreen extends StatelessWidget {
             Text(
               data.course!.courseName!,
               style: const TextStyle(color: Colors.white),
+              textAlign: TextAlign.center,
             ),
             SizedBox(
               width: 250,

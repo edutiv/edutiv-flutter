@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:edutiv/model/course/enrolled_course_model.dart';
 import 'package:edutiv/model/profile/profile_viewmodel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -47,8 +48,8 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
 
   void playYT() {
     ytController = YoutubePlayerController(
-      initialVideoId: YoutubePlayer.convertUrlToId(
-          widget.courseId!.course!.sections![sectionIndex].materials![0].url!)!,
+      initialVideoId: YoutubePlayer.convertUrlToId(widget.courseId!.course!
+          .sections![sectionIndex].materials![materialIndex].url!)!,
       flags: const YoutubePlayerFlags(
         useHybridComposition: false,
       ),
@@ -67,30 +68,42 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
     super.dispose();
   }
 
+  checkProgress() {
+    final enrolledData = Provider.of<ProfileViewModel>(context, listen: false);
+    if (enrolledData.enrolledCourseData.progress != 100) {
+      EasyLoading.showInfo(
+        'Kamu Ada Diakhir Materi! Selesaikan Materi Yang Terlewat!',
+      );
+    } else {
+      Navigator.pushReplacementNamed(
+        context,
+        '/successCourse',
+        arguments: widget.courseId,
+      );
+    }
+  }
+
   getMaterialType() {
     String materialType = widget.courseId!.course!.sections![sectionIndex]
         .materials![materialIndex].materialType!;
     if (materialType == 'video') {
-      setState(() {
-        widgetType = '';
-        isToolsVisible = true;
-        ytController!.load(
-          YoutubePlayer.convertUrlToId(widget.courseId!.course!
-              .sections![sectionIndex].materials![materialIndex].url!)!,
-        );
-      });
+      widgetType = '';
+      isToolsVisible = true;
+      ytController!.load(
+        YoutubePlayer.convertUrlToId(widget.courseId!.course!
+            .sections![sectionIndex].materials![materialIndex].url!)!,
+      );
+      setState(() {});
     }
     if (materialType == 'slide') {
-      setState(() {
-        widgetType = 'slide';
-        isToolsVisible = true;
-      });
+      widgetType = 'slide';
+      isToolsVisible = true;
+      setState(() {});
     }
     if (materialType == 'quiz') {
-      setState(() {
-        widgetType = 'quiz';
-        isToolsVisible = false;
-      });
+      widgetType = 'quiz';
+      isToolsVisible = false;
+      setState(() {});
     }
   }
 
@@ -98,33 +111,18 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
     int materialLength =
         widget.courseId!.course!.sections![sectionIndex].materials!.length;
     int sectionLength = widget.courseId!.course!.sections!.length;
-    int reportsLength = widget.courseId!.reports!.length;
 
-    if (sectionIndex == sectionLength - 1 &&
-        materialIndex == materialLength - 1) {
-      Navigator.pushReplacementNamed(context, '/successCourse',
-          arguments: widget.courseId);
-    }
-
-    if (reportsIndex == reportsLength - 1 ||
-        sectionIndex == sectionLength - 1 &&
-            materialIndex == materialLength - 1) {
-      Navigator.pushReplacementNamed(context, '/successCourse',
-          arguments: widget.courseId);
-      // return;
-    } else {
-      reportsIndex++;
-    }
-
-    if (materialIndex < materialLength - 1) {
+    if (materialIndex != materialLength - 1) {
       materialIndex++;
-      getMaterialType();
+      reportsIndex++;
+    } else if (sectionIndex != sectionLength - 1) {
+      sectionIndex++;
+      reportsIndex++;
+      materialIndex = 0;
+      playYT();
+      setState(() {});
     } else {
-      setState(() {
-        sectionIndex++;
-        materialIndex = 0;
-        getMaterialType();
-      });
+      checkProgress();
     }
   }
 
@@ -134,13 +132,20 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
     int sectionLength = widget.courseId!.course!.sections!.length;
 
     if (materialIndex != 0) {
-      setState(() {
-        materialIndex--;
-        ytController!.load(
-          YoutubePlayer.convertUrlToId(widget.courseId!.course!
-              .sections![sectionIndex].materials![materialIndex].url!)!,
-        );
-      });
+      materialIndex--;
+      reportsIndex--;
+      getMaterialType();
+      ytController!.load(
+        YoutubePlayer.convertUrlToId(widget.courseId!.course!
+            .sections![sectionIndex].materials![materialIndex].url!)!,
+      );
+      setState(() {});
+    } else if (materialIndex == 0 && sectionIndex != 0) {
+      sectionIndex--;
+      materialIndex = materialLength - 1;
+      reportsIndex--;
+      getMaterialType();
+      setState(() {});
     } else {
       return;
     }
@@ -183,27 +188,92 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
 
   @override
   Widget build(BuildContext context) {
-    int sectionLength = widget.courseId!.course!.sections!.length;
     final enrolledData = Provider.of<ProfileViewModel>(context);
-    final courseVM = Provider.of<ProfileViewModel>(context);
-    print('ini haloo banggg $materialIndex');
-    print('ini $sectionLength');
-    print('ini material index $materialIndex');
-    print('ini section index $sectionIndex');
-    // print('ini all reports ${widget.courseId?.reports}');
-    print('ini reports index $reportsIndex');
-    print('ini reports ${widget.courseId?.reports?[reportsIndex].id}');
-    print(
-        'ini reports ${widget.courseId?.reports?[reportsIndex].material?.materialName}');
-    print(
-        'ini reports data ${widget.courseId?.reports?[reportsIndex].isCompleted}');
-    print('ini Jumlah reports ${widget.courseId?.reports?.length}');
     return YoutubePlayerBuilder(
       player: YoutubePlayer(controller: ytController!),
       builder: (context, player) {
         return Scaffold(
-          endDrawer: LearningMenuDrawer(
-              id: widget.courseId!.id!, courseId: widget.courseId),
+          endDrawer: Drawer(
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: ListView.separated(
+                      itemCount: enrolledData
+                              .enrolledCourseData.course?.sections?.length ??
+                          0,
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(height: 8),
+                      itemBuilder: (context, index) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(enrolledData.enrolledCourseData.course!
+                                .sections![index].sectionName!),
+                            const SizedBox(height: 8),
+                            ListView.separated(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: enrolledData.enrolledCourseData.course
+                                      ?.sections?[index].materials?.length ??
+                                  0,
+                              separatorBuilder: (context, index) =>
+                                  const SizedBox(height: 8),
+                              itemBuilder: (context, subIndex) {
+                                return ListTile(
+                                  onTap: () {
+                                    setState(() {
+                                      sectionIndex = index;
+                                      materialIndex = subIndex;
+                                      getMaterialType();
+                                    });
+                                  },
+                                  tileColor: Colors.grey[200],
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(5)),
+                                  ),
+                                  leading: enrolledData
+                                              .enrolledCourseData
+                                              .course!
+                                              .sections![index]
+                                              .materials![subIndex]
+                                              .materialType ==
+                                          'slide'
+                                      ? const Icon(Icons.slideshow_rounded)
+                                      : enrolledData
+                                                  .enrolledCourseData
+                                                  .course!
+                                                  .sections![index]
+                                                  .materials![subIndex]
+                                                  .materialType ==
+                                              'quiz'
+                                          ? const Icon(
+                                              Icons.history_edu_rounded)
+                                          : const Icon(
+                                              Icons.play_circle_filled_rounded),
+                                  title: Text(
+                                    enrolledData
+                                        .enrolledCourseData
+                                        .course!
+                                        .sections![index]
+                                        .materials![subIndex]
+                                        .materialName!,
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
           appBar: AppBar(
             leading: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 7),
@@ -273,6 +343,7 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
                       child: OutlinedButton(
                         onPressed: () {
                           prevVideo();
+                          getMaterialType();
                         },
                         child: const Text('Previous'),
                       ),
@@ -282,6 +353,7 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
                       child: ElevatedButton(
                         onPressed: () {
                           nextVideo();
+                          getMaterialType();
                         },
                         child: const Text('Next Video'),
                       ),
@@ -375,102 +447,6 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
           ),
         );
       },
-    );
-  }
-}
-
-class LearningMenuDrawer extends StatefulWidget {
-  final EnrolledCourseModel? courseId;
-  final int id;
-  const LearningMenuDrawer({Key? key, required this.id, this.courseId})
-      : super(key: key);
-
-  @override
-  State<LearningMenuDrawer> createState() => _LearningMenuDrawerState();
-}
-
-class _LearningMenuDrawerState extends State<LearningMenuDrawer> {
-  @override
-  void initState() {
-    Provider.of<ProfileViewModel>(context, listen: false)
-        .getEnrolledById(widget.courseId!.id!);
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    var section = Provider.of<ProfileViewModel>(context);
-    return Drawer(
-      child: Container(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: ListView.separated(
-                itemCount:
-                    section.enrolledCourseData.course?.sections?.length ?? 0,
-                separatorBuilder: (context, index) => const SizedBox(height: 8),
-                itemBuilder: (context, index) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(section.enrolledCourseData.course!.sections![index]
-                          .sectionName!),
-                      const SizedBox(height: 8),
-                      ListView.separated(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: section.enrolledCourseData.course
-                                ?.sections?[index].materials?.length ??
-                            0,
-                        separatorBuilder: (context, index) =>
-                            const SizedBox(height: 8),
-                        itemBuilder: (context, subIndex) {
-                          return ListTile(
-                            onTap: () {},
-                            tileColor: Colors.grey[200],
-                            shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(5)),
-                            ),
-                            leading: section
-                                        .enrolledCourseData
-                                        .course!
-                                        .sections![index]
-                                        .materials![subIndex]
-                                        .materialType ==
-                                    'slide'
-                                ? const Icon(Icons.slideshow_rounded)
-                                : section
-                                            .enrolledCourseData
-                                            .course!
-                                            .sections![index]
-                                            .materials![subIndex]
-                                            .materialType ==
-                                        'quiz'
-                                    ? const Icon(Icons.history_edu_rounded)
-                                    : const Icon(
-                                        Icons.play_circle_filled_rounded),
-                            title: Text(
-                              section
-                                  .enrolledCourseData
-                                  .course!
-                                  .sections![index]
-                                  .materials![subIndex]
-                                  .materialName!,
-                            ),
-                          );
-                        },
-                      ),
-                    ],
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
