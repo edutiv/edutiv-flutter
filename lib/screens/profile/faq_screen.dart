@@ -2,13 +2,6 @@ import 'package:edutiv/model/profile/profile_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-// class FAQ {
-//   String? title;
-//   String? desc;
-//   bool isExpanded;
-//   FAQ({this.title, this.desc, this.isExpanded = false});
-// }
-
 class FAQScreen extends StatefulWidget {
   const FAQScreen({Key? key}) : super(key: key);
 
@@ -17,16 +10,8 @@ class FAQScreen extends StatefulWidget {
 }
 
 class _FAQScreenState extends State<FAQScreen> {
-  // List<FAQ> faq = [
-  //   FAQ(title: 'Faq 1', desc: 'Ini faq nomor 1'),
-  //   FAQ(title: 'Faq 2', desc: 'Ini faq nomor 2'),
-  //   FAQ(title: 'Faq 3', desc: 'Ini faq nomor 3'),
-  //   FAQ(title: 'Faq 4', desc: 'Ini faq nomor 4'),
-  //   FAQ(title: 'Faq 5', desc: 'Ini faq nomor 5'),
-  // ];
   @override
   void initState() {
-    // TODO: implement
     Provider.of<ProfileViewModel>(context, listen: false).getAllFAQ();
     super.initState();
   }

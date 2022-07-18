@@ -2,7 +2,7 @@ import 'package:edutiv/model/course/course_viewmodel.dart';
 import 'package:edutiv/screens/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'model/auth/auth_viewmodel.dart';
 import 'model/profile/profile_viewmodel.dart';
@@ -15,7 +15,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -52,7 +51,11 @@ class MyApp extends StatelessWidget {
           ),
           iconTheme: const IconThemeData(color: Colors.black),
           fontFamily: 'Poppins',
+          progressIndicatorTheme: const ProgressIndicatorThemeData(
+            color: Color(0xFF126E64),
+          ),
         ),
+        builder: EasyLoading.init(),
         initialRoute: '/',
         routes: {
           '/': (context) => const LoginScreen(),

@@ -1,9 +1,8 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:edutiv/model/course/enrolled_course_model.dart';
 import 'package:edutiv/model/profile/user_model.dart';
 import 'package:edutiv/model/request/request_model.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserAPI {
@@ -42,19 +41,27 @@ class UserAPI {
   Future<UserModel> updateProfile(int specializationId) async {
     final prefs = await SharedPreferences.getInstance();
     final String? token = prefs.getString('token');
-    Response response = await Dio().put(
-      baseUrl + '/user/edit-user',
-      options: Options(
-        headers: {'Authorization': 'Bearer $token'},
-      ),
-      data: {
-        "specialization_id": specializationId,
-      },
-    );
-    if (response.statusCode == 200) {
-      return UserModel.fromJson(response.data['data']);
-    } else {
-      throw Exception('User Not Available');
+    try {
+      EasyLoading.show(status: 'Updating...');
+      Response response = await Dio().put(
+        baseUrl + '/user/edit-user',
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ),
+        data: {
+          "specialization_id": specializationId,
+        },
+      );
+      if (response.statusCode == 200) {
+        EasyLoading.showSuccess('Update Success!');
+        EasyLoading.dismiss();
+        return UserModel.fromJson(response.data['data']);
+      } else {
+        throw Exception('User Not Available');
+      }
+    } catch (e) {
+      print(e);
+      throw EasyLoading.showError('Failed to Update!');
     }
   }
 
@@ -62,20 +69,28 @@ class UserAPI {
       String currentPassword, String newPassword) async {
     final prefs = await SharedPreferences.getInstance();
     final String? token = prefs.getString('token');
-    Response response = await Dio().put(
-      baseUrl + '/user/change-password',
-      options: Options(
-        headers: {'Authorization': 'Bearer $token'},
-      ),
-      data: {
-        "current_password": currentPassword,
-        "new_password": newPassword,
-      },
-    );
-    if (response.statusCode == 200) {
-      return UserModel.fromJson(response.data['data']);
-    } else {
-      throw Exception('Failed to Change Password');
+    try {
+      EasyLoading.show(status: 'Updating...');
+      Response response = await Dio().put(
+        baseUrl + '/user/change-password',
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ),
+        data: {
+          "current_password": currentPassword,
+          "new_password": newPassword,
+        },
+      );
+      if (response.statusCode == 200) {
+        EasyLoading.showSuccess('Change Password Success!');
+        EasyLoading.dismiss();
+        return UserModel.fromJson(response.data['data']);
+      } else {
+        throw Exception('Failed to Change Password');
+      }
+    } catch (e) {
+      print(e);
+      throw EasyLoading.showError('Failed to Update!');
     }
   }
 
@@ -103,22 +118,30 @@ class UserAPI {
       int userId, String title, int categoryId, String requestType) async {
     final prefs = await SharedPreferences.getInstance();
     final String? token = prefs.getString('token');
-    Response response = await Dio().post(
-      baseUrl + '/request',
-      options: Options(
-        headers: {'Authorization': 'Bearer $token'},
-      ),
-      data: {
-        "user_id": userId,
-        "title": title,
-        "category_id": categoryId,
-        "request_type": requestType,
-      },
-    );
-    if (response.statusCode == 200) {
-      return RequestModel.fromJson(response.data['data']);
-    } else {
-      throw Exception('Failed to Make Request Form');
+    try {
+      EasyLoading.show(status: 'Sending Form Request...');
+      Response response = await Dio().post(
+        baseUrl + '/request',
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ),
+        data: {
+          "user_id": userId,
+          "title": title,
+          "category_id": categoryId,
+          "request_type": requestType,
+        },
+      );
+      if (response.statusCode == 200) {
+        EasyLoading.showSuccess('Send Request Success!');
+        EasyLoading.dismiss();
+        return RequestModel.fromJson(response.data['data']);
+      } else {
+        throw Exception('Failed to Make Request Form');
+      }
+    } catch (e) {
+      print(e);
+      throw EasyLoading.showError('Failed to Send!');
     }
   }
 

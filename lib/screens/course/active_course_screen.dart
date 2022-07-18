@@ -21,9 +21,7 @@ class _ActiveCourseScreenState extends State<ActiveCourseScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // final user = ModalRoute.of(context)!.settings.arguments as UserModel;
     final user = Provider.of<ProfileViewModel>(context);
-    //Enroll History
     return Scaffold(
       body: FutureBuilder(
         future: user.getEnrolledCourse(),

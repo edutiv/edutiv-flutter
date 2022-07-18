@@ -108,7 +108,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                       final Uri emailLaunchUri = Uri(
                         scheme: 'mailto',
-                        path: 'admin@edutiv.com',
+                        path: 'online@edutiv.com',
                         query: encodeQueryParameters(<String, String>{
                           'subject': 'Tell us to improve edutiv services!'
                         }),
