@@ -227,6 +227,18 @@ class _LearningCourseScreenState extends State<LearningCourseScreen> {
                                     setState(() {
                                       sectionIndex = index;
                                       materialIndex = subIndex;
+                                      final reportList = enrolledData
+                                          .enrolledCourseData.reports;
+                                      reportsIndex = reportList!.indexWhere(
+                                        (i) =>
+                                            i.material!.id ==
+                                            widget
+                                                .courseId!
+                                                .course!
+                                                .sections![sectionIndex]
+                                                .materials![materialIndex]
+                                                .id,
+                                      );
                                       getMaterialType();
                                     });
                                   },

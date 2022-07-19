@@ -53,31 +53,35 @@ class _FAQScreenState extends State<FAQScreen> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: ExpansionPanelList(
-          dividerColor: Colors.transparent,
-          elevation: 0,
-          expansionCallback: (index, isExpanded) {
-            setState(() {
-              faq.allFAQ[index].isExpanded = !isExpanded;
-            });
-          },
-          children: faq.allFAQ
-              .map(
-                (item) => ExpansionPanel(
-                  canTapOnHeader: true,
-                  isExpanded: item.isExpanded ?? false,
-                  headerBuilder: (context, isExpanded) => ListTile(
-                    title: Text(item.question!),
-                  ),
-                  body: ListTile(
-                    subtitle: Text(item.answer!),
-                  ),
-                ),
-              )
-              .toList(),
-        ),
-      ),
+      body: faq.isFaqLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : SingleChildScrollView(
+              child: ExpansionPanelList(
+                dividerColor: Colors.transparent,
+                elevation: 0,
+                expansionCallback: (index, isExpanded) {
+                  setState(() {
+                    faq.allFAQ[index].isExpanded = !isExpanded;
+                  });
+                },
+                children: faq.allFAQ
+                    .map(
+                      (item) => ExpansionPanel(
+                        canTapOnHeader: true,
+                        isExpanded: item.isExpanded ?? false,
+                        headerBuilder: (context, isExpanded) => ListTile(
+                          title: Text(item.question!),
+                        ),
+                        body: ListTile(
+                          subtitle: Text(item.answer!),
+                        ),
+                      ),
+                    )
+                    .toList(),
+              ),
+            ),
     );
   }
 }

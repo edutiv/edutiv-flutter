@@ -13,6 +13,7 @@ import '../../api/course_api.dart';
 
 class ProfileViewModel extends ChangeNotifier {
   bool isLoading = true;
+  bool isFaqLoading = true;
   bool isLoadingData = true;
 
   List<EnrolledCourseModel> _enrolledCourse = [];
@@ -83,8 +84,10 @@ class ProfileViewModel extends ChangeNotifier {
   }
 
   Future<List<FAQModel>> getAllFAQ() async {
+    isFaqLoading;
     final faqData = await FaqAPI().fetchAllFAQ();
     _allFAQ = faqData;
+    isFaqLoading = false;
     notifyListeners();
     return allFAQ;
   }
