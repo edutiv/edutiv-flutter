@@ -1,16 +1,23 @@
-# edutiv
+# Edutiv.
 
-A new Flutter project.
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+## About the Apps
+Edutiv is an E-Learning, Learning Management System that we can learn Tech Related Courses by watching videos, materials from slides and quizes.
 
-A few resources to get you started if this is your first Flutter project:
+## Technologies
+- [Flutter](https://docs.flutter.dev/get-started/install)
+- [Dio](https://pub.dev/packages/dio)
+- [Providers](https://pub.dev/packages/provider)
+- [Flutter Youtube Player](https://pub.dev/packages/youtube_player_flutter)
+- [Flutter Easy Loading](https://pub.dev/packages/flutter_easyloading)
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## Screenshots
+![1](./docs/1.png)
+![2](./docs/2.png)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Download the App
+[Click Here To Download](https://drive.google.com/file/d/1QRoxSOueogAZGacMQ2ZokyU1umaqJYtH/view?usp=sharing)
+
+## Demo Video
+[Watch Here!](https://drive.google.com/file/d/1O4YV8IaC75hKMcwkwtX-fRmvoaZqc7wc/view?usp=sharing)
